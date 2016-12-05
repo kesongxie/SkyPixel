@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x7u-VH-g7p">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="r2I-h4-xvS">
+            <objects>
+                <viewController id="N4L-Pw-pLh" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3JY-WC-h85"/>
+                        <viewControllerLayoutGuide type="bottom" id="Uca-DL-Vra"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PMK-0H-Wqe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" id="DbO-Sb-sLA"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oFT-hw-RQE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-268" y="420"/>
+        </scene>
+        <!--SKYCAST-->
+        <scene sceneID="GLL-2g-4L9">
+            <objects>
+                <viewController id="KoT-Mj-zbc" customClass="SkyCastViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QWZ-Si-rxe"/>
+                        <viewControllerLayoutGuide type="bottom" id="uuK-3s-UyX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yXD-ke-T8n">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="SKYCAST" id="aH6-0s-tL4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c3N-Ds-9VL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="481" y="-236"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="mkn-QM-VZR">
+            <objects>
+                <tabBarController id="x7u-VH-g7p" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="ada-WH-RWm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="G3Z-RP-xQN" kind="relationship" relationship="viewControllers" id="fB8-F7-hkN"/>
+                        <segue destination="N4L-Pw-pLh" kind="relationship" relationship="viewControllers" id="XzB-PR-xsv"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OHt-wS-sts" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1219" y="92"/>
+        </scene>
+        <!--Sky Cast Navigation View Controller-->
+        <scene sceneID="IdH-eY-lW8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="G3Z-RP-xQN" customClass="SkyCastNavigationViewController" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" id="iWh-04-8pA"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="M8M-jF-wne">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="KoT-Mj-zbc" kind="relationship" relationship="rootViewController" id="wmF-Dt-ZbC"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="obo-p4-qvG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-268" y="-236.13193403298354"/>
+        </scene>
+    </scenes>
+</document>

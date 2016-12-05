@@ -1,0 +1,362 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
+		98C3DD5B1DF0F5CC00F6B49B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD5A1DF0F5CC00F6B49B /* AppDelegate.m */; };
+		98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */; };
+		98C3DD631DF0F5CC00F6B49B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */; };
+		98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */; };
+		98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D9654D1DF5024500335CC6 /* SkyCastViewController.m */; };
+		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
+		98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		98C3DD571DF0F5CC00F6B49B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		98C3DD591DF0F5CC00F6B49B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		98C3DD5A1DF0F5CC00F6B49B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		98C3DD601DF0F5CC00F6B49B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		98C3DD651DF0F5CC00F6B49B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		98C3DD671DF0F5CC00F6B49B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98D9654D1DF5024500335CC6 /* SkyCastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyCastViewController.m; sourceTree = "<group>"; };
+		98D965501DF5028800335CC6 /* SkyCastViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyCastViewController.h; sourceTree = "<group>"; };
+		98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyCastNavigationViewController.m; sourceTree = "<group>"; };
+		98D965541DF5046800335CC6 /* SkyCastNavigationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyCastNavigationViewController.h; sourceTree = "<group>"; };
+		98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyTabBarViewController.h; sourceTree = "<group>"; };
+		98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyTabBarViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		98C3DD501DF0F5CC00F6B49B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		98C3DD4A1DF0F5CC00F6B49B = {
+			isa = PBXGroup;
+			children = (
+				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
+				98C3DD541DF0F5CC00F6B49B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		98C3DD541DF0F5CC00F6B49B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		98C3DD551DF0F5CC00F6B49B /* SkyPixel */ = {
+			isa = PBXGroup;
+			children = (
+				98C3DD591DF0F5CC00F6B49B /* AppDelegate.h */,
+				98C3DD5A1DF0F5CC00F6B49B /* AppDelegate.m */,
+				98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */,
+				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
+				98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */,
+				98D965561DF5074C00335CC6 /* Macro */,
+				98D965551DF5074400335CC6 /* Category */,
+				98D965511DF5043000335CC6 /* SkyCast */,
+				98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */,
+				98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */,
+				98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */,
+				98C3DD671DF0F5CC00F6B49B /* Info.plist */,
+				98C3DD561DF0F5CC00F6B49B /* Supporting Files */,
+			);
+			path = SkyPixel;
+			sourceTree = "<group>";
+		};
+		98C3DD561DF0F5CC00F6B49B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				98C3DD571DF0F5CC00F6B49B /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		98D965511DF5043000335CC6 /* SkyCast */ = {
+			isa = PBXGroup;
+			children = (
+				98D965541DF5046800335CC6 /* SkyCastNavigationViewController.h */,
+				98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */,
+				98D965501DF5028800335CC6 /* SkyCastViewController.h */,
+				98D9654D1DF5024500335CC6 /* SkyCastViewController.m */,
+			);
+			name = SkyCast;
+			sourceTree = "<group>";
+		};
+		98D965551DF5074400335CC6 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Category;
+			sourceTree = "<group>";
+		};
+		98D965561DF5074C00335CC6 /* Macro */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Macro;
+			sourceTree = "<group>";
+		};
+		98DDFFF81DF5F7B800E2E762 /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = LaunchScreen;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		98C3DD521DF0F5CC00F6B49B /* SkyPixel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98C3DD6A1DF0F5CC00F6B49B /* Build configuration list for PBXNativeTarget "SkyPixel" */;
+			buildPhases = (
+				98C3DD4F1DF0F5CC00F6B49B /* Sources */,
+				98C3DD501DF0F5CC00F6B49B /* Frameworks */,
+				98C3DD511DF0F5CC00F6B49B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SkyPixel;
+			productName = SkyPixel;
+			productReference = 98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98C3DD4B1DF0F5CC00F6B49B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "___KesongXie___";
+				TargetAttributes = {
+					98C3DD521DF0F5CC00F6B49B = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 2ATYTS9SNC;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 98C3DD4E1DF0F5CC00F6B49B /* Build configuration list for PBXProject "SkyPixel" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 98C3DD4A1DF0F5CC00F6B49B;
+			productRefGroup = 98C3DD541DF0F5CC00F6B49B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				98C3DD521DF0F5CC00F6B49B /* SkyPixel */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		98C3DD511DF0F5CC00F6B49B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */,
+				98C3DD631DF0F5CC00F6B49B /* Assets.xcassets in Resources */,
+				98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		98C3DD4F1DF0F5CC00F6B49B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98C3DD5B1DF0F5CC00F6B49B /* AppDelegate.m in Sources */,
+				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
+				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
+				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
+				98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				98C3DD601DF0F5CC00F6B49B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				98C3DD651DF0F5CC00F6B49B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		98C3DD681DF0F5CC00F6B49B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		98C3DD691DF0F5CC00F6B49B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		98C3DD6B1DF0F5CC00F6B49B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2ATYTS9SNC;
+				INFOPLIST_FILE = SkyPixel/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		98C3DD6C1DF0F5CC00F6B49B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2ATYTS9SNC;
+				INFOPLIST_FILE = SkyPixel/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		98C3DD4E1DF0F5CC00F6B49B /* Build configuration list for PBXProject "SkyPixel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98C3DD681DF0F5CC00F6B49B /* Debug */,
+				98C3DD691DF0F5CC00F6B49B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		98C3DD6A1DF0F5CC00F6B49B /* Build configuration list for PBXNativeTarget "SkyPixel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				98C3DD6B1DF0F5CC00F6B49B /* Debug */,
+				98C3DD6C1DF0F5CC00F6B49B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98C3DD4B1DF0F5CC00F6B49B /* Project object */;
+}
