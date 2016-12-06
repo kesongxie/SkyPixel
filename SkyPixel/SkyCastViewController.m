@@ -8,16 +8,28 @@
 
 #import "SkyCastViewController.h"
 
-@interface SkyCastViewController ()
+@interface SkyCastViewController () <MKMapViewDelegate>
+
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
 @end
 
 @implementation SkyCastViewController
+
+
 - (void) viewDidLoad{
     [super viewDidLoad];
+    [self updateUI];
+    self.mapView.delegate = self;
+}
+
+
+
+//MARK: - UPATE UI
+- (void) updateUI{
     [self.navigationController.navigationBar setBarTintColor: [UIColor blackColor]];
     UIFont* titleFont = [UIFont fontWithName:@"Avenir-Heavy" size:17.0];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle{

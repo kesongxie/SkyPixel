@@ -15,6 +15,12 @@
 		98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D9654D1DF5024500335CC6 /* SkyCastViewController.m */; };
 		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
 		98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */; };
+		98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DDFFFA1DF600D300E2E762 /* MapKit.framework */; };
+		98DDFFFE1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */; };
+		98E3A2101DF652A500DB2B23 /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */; };
+		98E3A2111DF652A500DB2B23 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */; };
+		98E3A2121DF652A500DB2B23 /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */; };
+		98E3A2131DF652A500DB2B23 /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20F1DF652A500DB2B23 /* User+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +38,13 @@
 		98D965541DF5046800335CC6 /* SkyCastNavigationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyCastNavigationViewController.h; sourceTree = "<group>"; };
 		98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyTabBarViewController.h; sourceTree = "<group>"; };
 		98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyTabBarViewController.m; sourceTree = "<group>"; };
+		98DDFFFA1DF600D300E2E762 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		98DDFFFD1DF6040F00E2E762 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		98E3A20B1DF652A400DB2B23 /* SkyPixel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SkyPixel-Bridging-Header.h"; sourceTree = "<group>"; };
+		98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataClass.swift"; path = "SkyPixel/Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "SkyPixel/Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "User+CoreDataClass.swift"; path = "SkyPixel/User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		98E3A20F1DF652A500DB2B23 /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "User+CoreDataProperties.swift"; path = "SkyPixel/User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,8 +62,11 @@
 		98C3DD4A1DF0F5CC00F6B49B = {
 			isa = PBXGroup;
 			children = (
+				98E3A2141DF658AC00DB2B23 /* NSManagedObject SubClass */,
 				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
 				98C3DD541DF0F5CC00F6B49B /* Products */,
+				98DDFFF91DF600D300E2E762 /* Frameworks */,
+				98E3A20B1DF652A400DB2B23 /* SkyPixel-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -69,6 +86,7 @@
 				98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */,
 				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
 				98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */,
+				98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */,
 				98D965561DF5074C00335CC6 /* Macro */,
 				98D965551DF5074400335CC6 /* Category */,
 				98D965511DF5043000335CC6 /* SkyCast */,
@@ -121,6 +139,25 @@
 			name = LaunchScreen;
 			sourceTree = "<group>";
 		};
+		98DDFFF91DF600D300E2E762 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				98DDFFFA1DF600D300E2E762 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		98E3A2141DF658AC00DB2B23 /* NSManagedObject SubClass */ = {
+			isa = PBXGroup;
+			children = (
+				98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */,
+				98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */,
+				98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */,
+				98E3A20F1DF652A500DB2B23 /* User+CoreDataProperties.swift */,
+			);
+			name = "NSManagedObject SubClass";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,13 +184,19 @@
 		98C3DD4B1DF0F5CC00F6B49B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "___KesongXie___";
 				TargetAttributes = {
 					98C3DD521DF0F5CC00F6B49B = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 2ATYTS9SNC;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -194,9 +237,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				98C3DD5B1DF0F5CC00F6B49B /* AppDelegate.m in Sources */,
+				98E3A2101DF652A500DB2B23 /* Photo+CoreDataClass.swift in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
+				98DDFFFE1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
+				98E3A2121DF652A500DB2B23 /* User+CoreDataClass.swift in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
+				98E3A2111DF652A500DB2B23 /* Photo+CoreDataProperties.swift in Sources */,
+				98E3A2131DF652A500DB2B23 /* User+CoreDataProperties.swift in Sources */,
 				98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +289,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -288,6 +337,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -307,6 +357,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -315,11 +366,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 2ATYTS9SNC;
 				INFOPLIST_FILE = SkyPixel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SkyPixel-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -327,11 +383,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 2ATYTS9SNC;
 				INFOPLIST_FILE = SkyPixel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SkyPixel-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -357,6 +417,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				98DDFFFD1DF6040F00E2E762 /* CoreDataModel.xcdatamodel */,
+			);
+			currentVersion = 98DDFFFD1DF6040F00E2E762 /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 98C3DD4B1DF0F5CC00F6B49B /* Project object */;
 }
