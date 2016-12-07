@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */; };
 		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
-		98C3DD5B1DF0F5CC00F6B49B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD5A1DF0F5CC00F6B49B /* AppDelegate.m */; };
 		98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */; };
 		98C3DD631DF0F5CC00F6B49B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */; };
 		98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */; };
@@ -24,10 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9826C9C91DF6ABC10025F58F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98C3DD571DF0F5CC00F6B49B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		98C3DD591DF0F5CC00F6B49B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		98C3DD5A1DF0F5CC00F6B49B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		98C3DD601DF0F5CC00F6B49B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD651DF0F5CC00F6B49B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -59,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9826C9A21DF699540025F58F /* Core Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */,
+			);
+			name = "Core Data Model";
+			sourceTree = "<group>";
+		};
 		98C3DD4A1DF0F5CC00F6B49B = {
 			isa = PBXGroup;
 			children = (
@@ -81,12 +89,12 @@
 		98C3DD551DF0F5CC00F6B49B /* SkyPixel */ = {
 			isa = PBXGroup;
 			children = (
-				98C3DD591DF0F5CC00F6B49B /* AppDelegate.h */,
-				98C3DD5A1DF0F5CC00F6B49B /* AppDelegate.m */,
+				9826C9C91DF6ABC10025F58F /* AppDelegate.h */,
+				9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */,
 				98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */,
 				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
 				98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */,
-				98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */,
+				9826C9A21DF699540025F58F /* Core Data Model */,
 				98D965561DF5074C00335CC6 /* Macro */,
 				98D965551DF5074400335CC6 /* Category */,
 				98D965511DF5043000335CC6 /* SkyCast */,
@@ -236,11 +244,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98C3DD5B1DF0F5CC00F6B49B /* AppDelegate.m in Sources */,
 				98E3A2101DF652A500DB2B23 /* Photo+CoreDataClass.swift in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
 				98DDFFFE1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
+				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
 				98E3A2121DF652A500DB2B23 /* User+CoreDataClass.swift in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
 				98E3A2111DF652A500DB2B23 /* Photo+CoreDataProperties.swift in Sources */,

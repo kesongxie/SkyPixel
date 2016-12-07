@@ -6,6 +6,7 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

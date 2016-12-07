@@ -17,6 +17,38 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSURL* docsDir = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject;
+    if(docsDir){
+        NSURL* url = [docsDir URLByAppendingPathComponent:@"storage"];
+        UIManagedDocument* document = [[UIManagedDocument alloc] initWithFileURL: url];
+        
+        if(document.documentState == UIDocumentStateNormal){
+            NSLog(@"Normal");
+        }else if(document.documentState == UIDocumentStateClosed){
+            NSLog(@"close");
+            if([[NSFileManager defaultManager] fileExistsAtPath: url.path]){
+                //the document exists, open it
+                [document openWithCompletionHandler:^(BOOL success){
+                    if(success){
+                        NSLog(@"opened succeed");
+                    }else{
+                        NSLog(@"Open falied");
+                    }
+                }];
+            }else{
+                //the document does not exist, create one
+                [document saveToURL:url forSaveOperation: UIDocumentSaveForCreating completionHandler:^(BOOL success){
+                        if(success){
+                            NSLog(@"saveToURL succeed");
+                        }else{
+                            NSLog(@"saveToURL falied");
+                        }
+                }];
+            }
+        }
+    }
+    
     return YES;
 }
 

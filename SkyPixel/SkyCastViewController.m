@@ -7,6 +7,8 @@
 //
 
 #import "SkyCastViewController.h"
+#import "AppDelegate.h"
+#import "SkyPixel-Swift.h"
 
 @interface SkyCastViewController () <MKMapViewDelegate>
 
@@ -16,7 +18,6 @@
 
 @implementation SkyCastViewController
 
-
 - (void) viewDidLoad{
     [super viewDidLoad];
     [self updateUI];
@@ -24,12 +25,19 @@
 }
 
 
-
 //MARK: - UPATE UI
 - (void) updateUI{
     [self.navigationController.navigationBar setBarTintColor: [UIColor blackColor]];
     UIFont* titleFont = [UIFont fontWithName:@"Avenir-Heavy" size:17.0];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    
+//    NSManagedObjectContext *context = self.persistentContainer.viewContext;
+//
+//    AppDelegate *appDelegate  = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    NSManagedObjectContext *context = appDelegate.persistentContainer.viewContext;
+//    NSManagedObject* photo = [NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:context];
+//    
+    
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle{
