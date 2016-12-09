@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */; };
+		98AD1AA61DFAD59200679629 /* Photo+Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AD1AA51DFAD59200679629 /* Photo+Annotation.m */; };
+		98AD1AA81DFB519E00679629 /* draft.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AD1AA71DFB519E00679629 /* draft.m */; };
+		98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98AF06471DFA88AF0060D993 /* Assets.xcassets */; };
 		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
 		98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */; };
-		98C3DD631DF0F5CC00F6B49B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */; };
 		98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */; };
 		98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D9654D1DF5024500335CC6 /* SkyCastViewController.m */; };
 		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
@@ -26,10 +28,13 @@
 /* Begin PBXFileReference section */
 		9826C9C91DF6ABC10025F58F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		98AD1AA41DFAD59200679629 /* Photo+Annotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photo+Annotation.h"; sourceTree = "<group>"; };
+		98AD1AA51DFAD59200679629 /* Photo+Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photo+Annotation.m"; sourceTree = "<group>"; };
+		98AD1AA71DFB519E00679629 /* draft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = draft.m; sourceTree = "<group>"; };
+		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98C3DD571DF0F5CC00F6B49B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		98C3DD601DF0F5CC00F6B49B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD651DF0F5CC00F6B49B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		98C3DD671DF0F5CC00F6B49B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98D9654D1DF5024500335CC6 /* SkyCastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyCastViewController.m; sourceTree = "<group>"; };
@@ -40,7 +45,6 @@
 		98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyTabBarViewController.m; sourceTree = "<group>"; };
 		98DDFFFA1DF600D300E2E762 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		98DDFFFD1DF6040F00E2E762 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
-		98E3A20B1DF652A400DB2B23 /* SkyPixel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SkyPixel-Bridging-Header.h"; sourceTree = "<group>"; };
 		98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataClass.swift"; path = "SkyPixel/Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "SkyPixel/Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "User+CoreDataClass.swift"; path = "SkyPixel/User+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -74,7 +78,6 @@
 				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
 				98C3DD541DF0F5CC00F6B49B /* Products */,
 				98DDFFF91DF600D300E2E762 /* Frameworks */,
-				98E3A20B1DF652A400DB2B23 /* SkyPixel-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,9 +102,9 @@
 				98D965551DF5074400335CC6 /* Category */,
 				98D965511DF5043000335CC6 /* SkyCast */,
 				98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */,
-				98C3DD621DF0F5CC00F6B49B /* Assets.xcassets */,
 				98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */,
 				98C3DD671DF0F5CC00F6B49B /* Info.plist */,
+				98AF06471DFA88AF0060D993 /* Assets.xcassets */,
 				98C3DD561DF0F5CC00F6B49B /* Supporting Files */,
 			);
 			path = SkyPixel;
@@ -122,6 +125,8 @@
 				98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */,
 				98D965501DF5028800335CC6 /* SkyCastViewController.h */,
 				98D9654D1DF5024500335CC6 /* SkyCastViewController.m */,
+				98AD1AA41DFAD59200679629 /* Photo+Annotation.h */,
+				98AD1AA51DFAD59200679629 /* Photo+Annotation.m */,
 			);
 			name = SkyCast;
 			sourceTree = "<group>";
@@ -161,6 +166,7 @@
 				98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */,
 				98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */,
 				98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */,
+				98AD1AA71DFB519E00679629 /* draft.m */,
 				98E3A20F1DF652A500DB2B23 /* User+CoreDataProperties.swift */,
 			);
 			name = "NSManagedObject SubClass";
@@ -232,7 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */,
-				98C3DD631DF0F5CC00F6B49B /* Assets.xcassets in Resources */,
+				98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */,
 				98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,8 +250,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98AD1AA61DFAD59200679629 /* Photo+Annotation.m in Sources */,
 				98E3A2101DF652A500DB2B23 /* Photo+CoreDataClass.swift in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
+				98AD1AA81DFB519E00679629 /* draft.m in Sources */,
 				98DDFFFE1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
@@ -381,7 +389,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SkyPixel-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -398,7 +406,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SkyPixel-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

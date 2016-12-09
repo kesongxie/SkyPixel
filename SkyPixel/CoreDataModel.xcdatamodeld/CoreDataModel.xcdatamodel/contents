@@ -10,7 +10,7 @@
     </entity>
     <entity name="User" representedClassName=".User" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="photo" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Photo" inverseName="whoTook" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="photo" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="whoTook" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <elements>
         <element name="Photo" positionX="-63" positionY="-18" width="128" height="133"/>

@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "SkyPixel-Swift.h"
+
+
+NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotification";
 
 @interface AppDelegate ()
 
@@ -14,31 +18,27 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSURL* docsDir = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject;
     if(docsDir){
         NSURL* url = [docsDir URLByAppendingPathComponent:@"storage"];
-        UIManagedDocument* document = [[UIManagedDocument alloc] initWithFileURL: url];
-        
-        if(document.documentState == UIDocumentStateNormal){
-            NSLog(@"Normal");
-        }else if(document.documentState == UIDocumentStateClosed){
-            NSLog(@"close");
+        self.document = [[UIManagedDocument alloc] initWithFileURL: url];
+        if(self.document.documentState != UIDocumentStateNormal){
             if([[NSFileManager defaultManager] fileExistsAtPath: url.path]){
                 //the document exists, open it
-                [document openWithCompletionHandler:^(BOOL success){
+                [self.document openWithCompletionHandler:^(BOOL success){
                     if(success){
-                        NSLog(@"opened succeed");
-                    }else{
-                        NSLog(@"Open falied");
+                        //post a notification that document is ready
+                        NSNotification* documentReadyNotification = [[NSNotification alloc] initWithName:DocumentReadyNotificationName object:self userInfo: nil];
+                        [[NSNotificationCenter defaultCenter] postNotification: documentReadyNotification];
                     }
                 }];
             }else{
                 //the document does not exist, create one
-                [document saveToURL:url forSaveOperation: UIDocumentSaveForCreating completionHandler:^(BOOL success){
+                [self.document saveToURL:url forSaveOperation: UIDocumentSaveForCreating completionHandler:^(BOOL success){
+                        //post a notification that document is ready
                         if(success){
                             NSLog(@"saveToURL succeed");
                         }else{
