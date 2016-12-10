@@ -10,5 +10,4 @@
 #import <MapKit/MapKit.h>
 
 @interface Photo (Annotation)<MKAnnotation>
-@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @end

@@ -20,35 +20,7 @@ NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotifica
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSURL* docsDir = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject;
-    if(docsDir){
-        NSURL* url = [docsDir URLByAppendingPathComponent:@"storage"];
-        self.document = [[UIManagedDocument alloc] initWithFileURL: url];
-        if(self.document.documentState != UIDocumentStateNormal){
-            if([[NSFileManager defaultManager] fileExistsAtPath: url.path]){
-                //the document exists, open it
-                [self.document openWithCompletionHandler:^(BOOL success){
-                    if(success){
-                        //post a notification that document is ready
-                        NSNotification* documentReadyNotification = [[NSNotification alloc] initWithName:DocumentReadyNotificationName object:self userInfo: nil];
-                        [[NSNotificationCenter defaultCenter] postNotification: documentReadyNotification];
-                    }
-                }];
-            }else{
-                //the document does not exist, create one
-                [self.document saveToURL:url forSaveOperation: UIDocumentSaveForCreating completionHandler:^(BOOL success){
-                        //post a notification that document is ready
-                        if(success){
-                            NSLog(@"saveToURL succeed");
-                        }else{
-                            NSLog(@"saveToURL falied");
-                        }
-                }];
-            }
-        }
-    }
-    
+       
     return YES;
 }
 
