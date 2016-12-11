@@ -12,9 +12,9 @@
 
 @property (strong, nonatomic) NSString* fullname;
 @property (strong, nonatomic) NSString* email;
-@property (strong, nonatomic) NSString* avatorUrl;
+@property (strong, nonatomic) NSURL* avatorUrl;
 
-- (id)init: (NSString*)fullname emailAddress: (NSString*)email avatorUrl: (NSString*)url;
+- (id)init: (NSString*)fullname emailAddress: (NSString*)email avatorUrl: (NSURL*)url;
 
 
 @end

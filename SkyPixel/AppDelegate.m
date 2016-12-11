@@ -7,8 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "SkyPixel-Swift.h"
-
 
 NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotification";
 

@@ -11,7 +11,7 @@
 @implementation VideoStream (Annotation)
 
 - (CLLocationCoordinate2D)coordinate{
-    return self.coordinate;
+    return self.location.coordinate;
 }
 
 @end

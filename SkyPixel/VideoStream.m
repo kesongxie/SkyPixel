@@ -14,7 +14,7 @@
 
 @implementation VideoStream
 
-- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSString*)url streamLocation: (CLLocation*) location{
+- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location{
     self = [super init];
     if(self){
         self.title = title;

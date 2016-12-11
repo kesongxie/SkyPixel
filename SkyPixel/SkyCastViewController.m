@@ -20,7 +20,8 @@ static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
 //static double const Longitude = -117.2413945199151;
 //static double const Latitude2 = 32.905528;
 //static double const Longitude2 = -117.242703;
-static NSString* const email1 = @"JohnApp@skypixel.com";
+
+static NSString* const email1 = @"frankwang@skypixel.com";
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -30,12 +31,18 @@ static NSString* const email1 = @"JohnApp@skypixel.com";
 
 @property (strong, nonatomic) CLLocationManager* locationManager;
 
+@property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamAnnotations;
 
+//create a video stream record
+- (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset;
+
+//create a asset from file info
 - (CKAsset*) getCKAssetFromFileName: (NSString*)filename withExtension:(NSString*)ext inDirectory: (NSString*)dir;
 
-- (void) fetchDataForUser: (CKRecord*)user;
+- (void) fetchLive;
 
-- (void) createUser;
+- (void) createEntries;
+
 
 
 @end
@@ -52,25 +59,62 @@ static NSString* const email1 = @"JohnApp@skypixel.com";
     [self.locationManager requestWhenInUseAuthorization];
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
+        [self fetchLive];
+        
+//        [self createEntries];
     }
     
 }
 
-- (void) createUser{
+- (void) createEntries{
     //create a user
     CKRecord* user = [[CKRecord alloc] initWithRecordType:@"user"];
-    user[@"fullname"] = @"Johnny Appleseed";
+    user[@"fullname"] = @"Frank Wang";
     user[@"email"] = email1;
     user[@"avator"] = [self getCKAssetFromFileName:@"avator1" withExtension:@"jpg" inDirectory:@"avator"];
     CKDatabase* publicDb = [[CKContainer defaultContainer] publicCloudDatabase];
     [publicDb saveRecord:user completionHandler:^(CKRecord* record, NSError* error){
         if(error == nil){
-            [self fetchDataForUser:record];
+            CKRecord* user = record;
+                if(user){
+                    //create a videostream record
+                    CKRecord* videoStreamRecord1 = [self getVideoStreamRecord: @"Aerial Shots of Sedona Arizona" fromLocation:[[CLLocation alloc] initWithLatitude:32.88831721994364 longitude: -117.2413945199151] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip1" withExtension:@"mp4" inDirectory:@"clip"]];
+                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Beach Walk Sunset" fromLocation:[[CLLocation alloc] initWithLatitude:32.905528 longitude: -117.242703] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip2" withExtension:@"mp4" inDirectory:@"clip"]];
+                    NSArray<CKRecord*>* recordToBeSaved = @[videoStreamRecord1, videoStreamRecord2];
+                    
+                    //configure the CKModifyRecordsOperation and save multiple records
+                    CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
+                    CKModifyRecordsOperation* saveOperation = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:recordToBeSaved recordIDsToDelete:nil];
+                    saveOperation.database = publicDB;
+                    saveOperation.atomic = NO;
+                    saveOperation.modifyRecordsCompletionBlock = ^(NSArray<CKRecord *> *savedRecords, NSArray<CKRecordID *> *deletedRecordIDs, NSError *operationError){
+                        NSLog(@"%@", savedRecords);
+                    };
+                    NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
+                    
+                    //save records
+                    [operationQueue addOperation:saveOperation];
+                }
         }else{
             NSLog(@"%@", error.localizedDescription);
         }
     }];
 
+
+
+
+}
+
+
+
+- (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset  {
+    CKRecord* videoStreamRecord = [[CKRecord alloc] initWithRecordType:@"videostream"];
+    videoStreamRecord[@"title"] = title;
+    videoStreamRecord[@"location"] = location;
+    videoStreamRecord[@"live"] = [[NSNumber alloc] initWithInt:live];
+    videoStreamRecord[@"user"] = user;
+    videoStreamRecord[@"video"] = asset;
+    return videoStreamRecord;
 }
 
 
@@ -86,7 +130,50 @@ static NSString* const email1 = @"JohnApp@skypixel.com";
     return nil;
 }
 
-- (void) fetchDataForUser: (CKRecord*)user {
+- (void) fetchLive {
+    //start loading drone flying user
+    CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
+    NSString* liveAttrName = @"live";
+    NSNumber* liveValue = [[NSNumber alloc] initWithInt:1];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat: @" %K = %@", liveAttrName, liveValue];
+    CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
+    [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
+        if(error == nil){
+            if(records){
+                self.videoStreamAnnotations = [[NSMutableArray alloc]init];
+                for(CKRecord* record in records){
+                    CKReference* userReference = record[@"user"];
+                    CLLocation* location = record[@"location"];
+                    CKAsset* videoAsset = record[@"video"];
+                    
+                    CKRecordID * recordId = userReference.recordID;
+                    [publicDB fetchRecordWithID:recordId completionHandler:^(CKRecord* userRecord, NSError* error){
+                        if(error == nil){
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                CKAsset* avatorAsset = userRecord[@"avator"];
+                                User* user =  [[User alloc] init:userRecord[@"fullname"] emailAddress:userRecord[@"email"] avatorUrl:avatorAsset.fileURL];
+                                VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:user videoStreamUrl:videoAsset.fileURL streamLocation:location];
+                                [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
+                                [self.mapView addAnnotations: self.videoStreamAnnotations];
+                            });
+                        }
+                    }];
+                }
+            }
+            
+        }else{
+            NSLog(@"%@", error.localizedDescription);
+        }
+    }];
+
+    
+    
+    
+    
+    
+    
+    
+    
     //fetch
 //    CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
 //    NSString* emailAttrName = @"email";
@@ -94,25 +181,6 @@ static NSString* const email1 = @"JohnApp@skypixel.com";
 //    NSPredicate* predicate = [NSPredicate predicateWithFormat: @" %K = %@", emailAttrName, email];
 //    CKQuery* query = [[CKQuery alloc] initWithRecordType:@"user" predicate: predicate];
 //    
-    //get the first record that matches
-    if(user){
-        //create a videostream record
-        CKRecord* videoStreamRecord = [[CKRecord alloc] initWithRecordType:@"videostream"];
-        videoStreamRecord[@"title"] = @"Aerial Shots of Sedona Arizona";
-        CLLocation* location = [[CLLocation alloc] initWithLatitude:32.88831721994364 longitude: -117.2413945199151];
-        videoStreamRecord[@"location"] = location;
-        videoStreamRecord[@"live"] = [[NSNumber alloc] initWithInt:0];
-        videoStreamRecord[@"user"] = [[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf];
-        videoStreamRecord[@"video"] = [self getCKAssetFromFileName:@"clip1" withExtension:@"mp4" inDirectory:@"clip"];
-        CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-        [publicDB saveRecord:videoStreamRecord completionHandler:^(CKRecord* record, NSError* error){
-            if(error == nil){
-                NSLog(@"%@", record);
-            }else{
-                NSLog(@"%@", error.localizedDescription);
-            }
-        }];
-    }
 }
 
 
@@ -160,18 +228,27 @@ static NSString* const email1 = @"JohnApp@skypixel.com";
     }
     
     
-    
-    
-    
-//    NSString* thumbnailUrl = ((User*)annotation).;
-//    UIImage* image = [UIImage imageNamed: thumbnailUrl];
-//    annotationView.image = image;
-//    annotationView.frame = CGRectMake(0, 0, 48, 48);
-//    annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
-//    annotationView.layer.borderWidth = 2.0;
-//    annotationView.layer.cornerRadius = 4.0;
-//    annotationView.clipsToBounds = YES;
+    VideoStream* videoStream = (VideoStream*)annotation;
+    User* user = videoStream.user;
+    NSLog(@"the avtor url is %@", user.avatorUrl);
+
+    NSData* imageData = [[NSData alloc]initWithContentsOfURL:user.avatorUrl];
+    NSLog(@"the image data is  %@", imageData);
+
+    UIImage* image = [[UIImage alloc] initWithData: imageData];
+    NSLog(@"the image is  %@", image);
+
+    annotationView.image = image;
+    annotationView.frame = CGRectMake(0, 0, 48, 48);
+    annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    annotationView.layer.borderWidth = 2.0;
+    annotationView.layer.cornerRadius = 4.0;
+    annotationView.clipsToBounds = YES;
     return annotationView;
 }
 
 @end
+
+
+
+
