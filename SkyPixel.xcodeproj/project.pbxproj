@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */; };
-		98621A7A1DFBB51F00417978 /* PhotoAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A791DFBB51F00417978 /* PhotoAnnotation.m */; };
-		98AD1AA61DFAD59200679629 /* Photo+Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AD1AA51DFAD59200679629 /* Photo+Annotation.m */; };
+		98621A7E1DFBE48A00417978 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98621A7D1DFBE48A00417978 /* CloudKit.framework */; };
+		98621A841DFC9B7500417978 /* clip in Resources */ = {isa = PBXBuildFile; fileRef = 98621A831DFC9B7500417978 /* clip */; };
+		98621A861DFCA40500417978 /* avator in Resources */ = {isa = PBXBuildFile; fileRef = 98621A851DFCA40500417978 /* avator */; };
+		98621A8A1DFCBBE100417978 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A891DFCBBE100417978 /* User.m */; };
+		98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A8E1DFCCCC300417978 /* VideoStream.m */; };
+		98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A921DFCCF1400417978 /* VideoStream+Annotation.m */; };
 		98AD1AA81DFB519E00679629 /* draft.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AD1AA71DFB519E00679629 /* draft.m */; };
 		98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98AF06471DFA88AF0060D993 /* Assets.xcassets */; };
 		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
@@ -19,20 +23,21 @@
 		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
 		98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */; };
 		98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DDFFFA1DF600D300E2E762 /* MapKit.framework */; };
-		98DDFFFE1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */; };
-		98E3A2101DF652A500DB2B23 /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */; };
-		98E3A2111DF652A500DB2B23 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */; };
-		98E3A2121DF652A500DB2B23 /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */; };
-		98E3A2131DF652A500DB2B23 /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3A20F1DF652A500DB2B23 /* User+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9826C9C91DF6ABC10025F58F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		98621A791DFBB51F00417978 /* PhotoAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAnnotation.m; sourceTree = "<group>"; };
-		98621A7B1DFBB52D00417978 /* PhotoAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoAnnotation.h; sourceTree = "<group>"; };
-		98AD1AA41DFAD59200679629 /* Photo+Annotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photo+Annotation.h"; sourceTree = "<group>"; };
-		98AD1AA51DFAD59200679629 /* Photo+Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photo+Annotation.m"; sourceTree = "<group>"; };
+		98621A7C1DFBE48500417978 /* SkyPixel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SkyPixel.entitlements; sourceTree = "<group>"; };
+		98621A7D1DFBE48A00417978 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		98621A831DFC9B7500417978 /* clip */ = {isa = PBXFileReference; lastKnownFileType = folder; name = clip; path = SkyPixel/clip; sourceTree = "<group>"; };
+		98621A851DFCA40500417978 /* avator */ = {isa = PBXFileReference; lastKnownFileType = folder; name = avator; path = SkyPixel/avator; sourceTree = "<group>"; };
+		98621A881DFCBBD600417978 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		98621A891DFCBBE100417978 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		98621A8E1DFCCCC300417978 /* VideoStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoStream.m; sourceTree = "<group>"; };
+		98621A901DFCCCCC00417978 /* VideoStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoStream.h; sourceTree = "<group>"; };
+		98621A911DFCCF1400417978 /* VideoStream+Annotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VideoStream+Annotation.h"; sourceTree = "<group>"; };
+		98621A921DFCCF1400417978 /* VideoStream+Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VideoStream+Annotation.m"; sourceTree = "<group>"; };
 		98AD1AA71DFB519E00679629 /* draft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = draft.m; sourceTree = "<group>"; };
 		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,11 +52,6 @@
 		98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyTabBarViewController.h; sourceTree = "<group>"; };
 		98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyTabBarViewController.m; sourceTree = "<group>"; };
 		98DDFFFA1DF600D300E2E762 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		98DDFFFD1DF6040F00E2E762 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
-		98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataClass.swift"; path = "SkyPixel/Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "SkyPixel/Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "User+CoreDataClass.swift"; path = "SkyPixel/User+CoreDataClass.swift"; sourceTree = "<group>"; };
-		98E3A20F1DF652A500DB2B23 /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "User+CoreDataProperties.swift"; path = "SkyPixel/User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,27 +60,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */,
+				98621A7E1DFBE48A00417978 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9826C9A21DF699540025F58F /* Core Data Model */ = {
+		98621A871DFCBBB500417978 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */,
+				98621A881DFCBBD600417978 /* User.h */,
+				98621A891DFCBBE100417978 /* User.m */,
+				98621A901DFCCCCC00417978 /* VideoStream.h */,
+				98621A8E1DFCCCC300417978 /* VideoStream.m */,
 			);
-			name = "Core Data Model";
+			name = Model;
 			sourceTree = "<group>";
 		};
 		98C3DD4A1DF0F5CC00F6B49B = {
 			isa = PBXGroup;
 			children = (
-				98E3A20C1DF652A500DB2B23 /* Photo+CoreDataClass.swift */,
-				98E3A20D1DF652A500DB2B23 /* Photo+CoreDataProperties.swift */,
-				98E3A20E1DF652A500DB2B23 /* User+CoreDataClass.swift */,
-				98E3A20F1DF652A500DB2B23 /* User+CoreDataProperties.swift */,
+				98621A851DFCA40500417978 /* avator */,
+				98621A831DFC9B7500417978 /* clip */,
 				98AD1AA71DFB519E00679629 /* draft.m */,
 				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
 				98C3DD541DF0F5CC00F6B49B /* Products */,
@@ -99,12 +101,13 @@
 		98C3DD551DF0F5CC00F6B49B /* SkyPixel */ = {
 			isa = PBXGroup;
 			children = (
+				98621A7C1DFBE48500417978 /* SkyPixel.entitlements */,
 				9826C9C91DF6ABC10025F58F /* AppDelegate.h */,
 				9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */,
 				98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */,
 				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
 				98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */,
-				9826C9A21DF699540025F58F /* Core Data Model */,
+				98621A871DFCBBB500417978 /* Model */,
 				98D965561DF5074C00335CC6 /* Macro */,
 				98D965551DF5074400335CC6 /* Category */,
 				98D965511DF5043000335CC6 /* SkyCast */,
@@ -132,10 +135,6 @@
 				98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */,
 				98D965501DF5028800335CC6 /* SkyCastViewController.h */,
 				98D9654D1DF5024500335CC6 /* SkyCastViewController.m */,
-				98AD1AA41DFAD59200679629 /* Photo+Annotation.h */,
-				98AD1AA51DFAD59200679629 /* Photo+Annotation.m */,
-				98621A7B1DFBB52D00417978 /* PhotoAnnotation.h */,
-				98621A791DFBB51F00417978 /* PhotoAnnotation.m */,
 			);
 			name = SkyCast;
 			sourceTree = "<group>";
@@ -143,6 +142,8 @@
 		98D965551DF5074400335CC6 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				98621A911DFCCF1400417978 /* VideoStream+Annotation.h */,
+				98621A921DFCCF1400417978 /* VideoStream+Annotation.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -164,6 +165,7 @@
 		98DDFFF91DF600D300E2E762 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				98621A7D1DFBE48A00417978 /* CloudKit.framework */,
 				98DDFFFA1DF600D300E2E762 /* MapKit.framework */,
 			);
 			name = Frameworks;
@@ -207,6 +209,12 @@
 							com.apple.Maps.iOS = {
 								enabled = 1;
 							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -234,6 +242,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98621A861DFCA40500417978 /* avator in Resources */,
+				98621A841DFC9B7500417978 /* clip in Resources */,
 				98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */,
 				98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */,
 				98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */,
@@ -247,18 +257,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98AD1AA61DFAD59200679629 /* Photo+Annotation.m in Sources */,
-				98E3A2101DF652A500DB2B23 /* Photo+CoreDataClass.swift in Sources */,
+				98621A8A1DFCBBE100417978 /* User.m in Sources */,
+				98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
 				98AD1AA81DFB519E00679629 /* draft.m in Sources */,
-				98DDFFFE1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
-				98E3A2121DF652A500DB2B23 /* User+CoreDataClass.swift in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
-				98E3A2111DF652A500DB2B23 /* Photo+CoreDataProperties.swift in Sources */,
-				98621A7A1DFBB51F00417978 /* PhotoAnnotation.m in Sources */,
-				98E3A2131DF652A500DB2B23 /* User+CoreDataProperties.swift in Sources */,
+				98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */,
 				98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,6 +387,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SkyPixel/SkyPixel.entitlements;
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 2ATYTS9SNC;
 				INFOPLIST_FILE = SkyPixel/Info.plist;
@@ -398,6 +405,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = SkyPixel/SkyPixel.entitlements;
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 2ATYTS9SNC;
 				INFOPLIST_FILE = SkyPixel/Info.plist;
@@ -431,19 +439,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		98DDFFFC1DF6040F00E2E762 /* CoreDataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				98DDFFFD1DF6040F00E2E762 /* CoreDataModel.xcdatamodel */,
-			);
-			currentVersion = 98DDFFFD1DF6040F00E2E762 /* CoreDataModel.xcdatamodel */;
-			path = CoreDataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 98C3DD4B1DF0F5CC00F6B49B /* Project object */;
 }

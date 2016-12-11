@@ -6,34 +6,36 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
-#import "SkyCastViewController.h"
-#import "AppDelegate.h"
-#import "SkyPixel-Swift.h"
-#import "Photo+Annotation.h"
 #import <CoreLocation/CoreLocation.h>
-#import "PhotoAnnotation.h"
+#import <CloudKit/CloudKit.h>
+#import "SkyCastViewController.h"
+#import "VideoStream+Annotation.h"
 
-
+static double const LocationDegree = 0.05;
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
 static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
 
-static double const Latitude = 32.88831721994364;
-static double const Longitude = -117.2413945199151;
+//static double const Latitude = 32.88831721994364;
+//static double const Longitude = -117.2413945199151;
+//static double const Latitude2 = 32.905528;
+//static double const Longitude2 = -117.242703;
+static NSString* const email1 = @"JohnApp@skypixel.com";
 
-
-static double const Latitude2 = 32.905528;
-static double const Longitude2 = -117.242703;
-
-
-
-
-@interface SkyCastViewController () <MKMapViewDelegate>
+@interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (strong, nonatomic) NSMutableArray* photos;
-@property (strong, nonatomic) UIManagedDocument* document;
 
+@property (strong, nonatomic) NSMutableArray* photos;
+
+@property (strong, nonatomic) CLLocationManager* locationManager;
+
+
+- (CKAsset*) getCKAssetFromFileName: (NSString*)filename withExtension:(NSString*)ext inDirectory: (NSString*)dir;
+
+- (void) fetchDataForUser: (CKRecord*)user;
+
+- (void) createUser;
 
 
 @end
@@ -44,125 +46,73 @@ static double const Longitude2 = -117.242703;
     [super viewDidLoad];
     [self updateUI];
     self.mapView.delegate = self;
-}
-
-- (void) viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    
-    
-    
-    
-    
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    NSURL* docsDir = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask].firstObject;
-    if(docsDir){
-        NSURL* url = [docsDir URLByAppendingPathComponent:@"storage"];
-        self.document = [[UIManagedDocument alloc] initWithFileURL: url];
-        if(self.document.documentState != UIDocumentStateNormal){
-            if([[NSFileManager defaultManager] fileExistsAtPath: url.path]){
-                //the document exists, open it
-                [self.document openWithCompletionHandler:^(BOOL success){
-                    if(success){
-                        [self documentInit];
-                    }
-                }];
-            }else{
-                //the document does not exist, create one
-                [self.document saveToURL:url forSaveOperation: UIDocumentSaveForCreating completionHandler:^(BOOL success){
-                    //post a notification that document is ready
-                    if(success){
-                        NSLog(@"saveToURL succeed");
-                        [self documentInit];
-                    }else{
-                        NSLog(@"saveToURL falied");
-                    }
-                }];
-            }
-        }
-        
+    self.mapView.showsUserLocation = YES;
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    [self.locationManager requestWhenInUseAuthorization];
+    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
+        [self.locationManager startUpdatingLocation];
     }
+    
+}
+
+- (void) createUser{
+    //create a user
+    CKRecord* user = [[CKRecord alloc] initWithRecordType:@"user"];
+    user[@"fullname"] = @"Johnny Appleseed";
+    user[@"email"] = email1;
+    user[@"avator"] = [self getCKAssetFromFileName:@"avator1" withExtension:@"jpg" inDirectory:@"avator"];
+    CKDatabase* publicDb = [[CKContainer defaultContainer] publicCloudDatabase];
+    [publicDb saveRecord:user completionHandler:^(CKRecord* record, NSError* error){
+        if(error == nil){
+            [self fetchDataForUser:record];
+        }else{
+            NSLog(@"%@", error.localizedDescription);
+        }
+    }];
 
 }
 
 
-
-
-// document ready observer
-- (void) documentInit{
-    NSManagedObjectContext* context = self.document.managedObjectContext;
-    Photo* photo1 = [NSEntityDescription insertNewObjectForEntityForName: @"Photo" inManagedObjectContext: context];
-    [photo1 setLongitude: Longitude];
-    [photo1 setLatitude: Latitude];
-    [photo1 setTitle:@"Aerial Shots of Sedona Arizona"];
-    [photo1 setThumbnailUrl:@"shot1"];
-    
-    Photo* photo2 = [NSEntityDescription insertNewObjectForEntityForName: @"Photo" inManagedObjectContext: context];
-    [photo2 setLongitude: Longitude2];
-    [photo2 setLatitude: Latitude2];
-    [photo2 setTitle:@"Beach Walking"];
-    [photo2 setThumbnailUrl:@"shot2"];
-    
-    
-    User* user1 = [NSEntityDescription insertNewObjectForEntityForName:@"User" inManagedObjectContext:context];
-    [user1 setName:@"Kesong Xie"];
-    NSMutableSet* photoSet = [[NSMutableSet alloc] init];
-    [photoSet addObject:photo1];
-    [photoSet addObject:photo2];
-    
-    [user1 setPhoto: photoSet];
-    
-    
-
-    //--fetch
-//    NSFetchRequest* request = [[NSFetchRequest alloc] initWithEntityName:@"User"];
-//    request.fetchBatchSize = 10;
-//    request.fetchLimit = 100;
-//    NSString* nameAttr = @"name";
-//    NSString* nameValue = @"Kesong Xie";
-//    request.predicate = [NSPredicate predicateWithFormat:@"%K like %@", nameAttr, nameValue];
-//    NSError* error;
-//    NSArray* users = [context executeFetchRequest: request error: &error];
-//    
-//    if(users.count > 0){
-//        for(User* user in users){
-//            for(Photo* photo in user.photo){
-//                NSLog(@"%@", photo.title);
-//                NSLog(@"%@", photo.thumbnailUrl);
-//                NSLog(@"%f", photo.latitude);
-//                NSLog(@"%f", photo.longitude);
-//            }
-//        }
-//    }
-//   
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSError* error;
-        //fetch objects
-        NSFetchRequest* request = [[NSFetchRequest alloc] initWithEntityName:@"User"];
-        request.fetchBatchSize = 10;
-        request.fetchLimit = 100;
-        NSString* nameAttr = @"name";
-        NSString* nameValue = @"Kesong Xie";
-        request.predicate = [NSPredicate predicateWithFormat:@"%K like %@", nameAttr, nameValue];
-        NSArray* users = [context executeFetchRequest:request error: &error];
-        if(error != nil){
-            NSLog(@"%@", error.localizedDescription);
-        }else{
-            if(users.count > 0){
-                for(User* user in users){
-                    self.photos = [[NSMutableArray alloc] init];
-                    for(Photo* photo in user.photo){
-                        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(photo.latitude, photo.longitude);
-                        PhotoAnnotation* myAnnotation = [[PhotoAnnotation alloc]initWithThumbnailUrl: location url: photo.thumbnailUrl];
-                        [self.photos insertObject:myAnnotation atIndex:0];
-                    }
-                }
-            }
+- (CKAsset*) getCKAssetFromFileName: (NSString*)filename withExtension:(NSString*)ext inDirectory: (NSString*)dir{
+    NSString* pathname = [[NSBundle mainBundle] pathForResource:filename ofType: ext inDirectory:dir];
+    if(pathname){
+        NSURL* url = [[NSURL alloc] initFileURLWithPath:pathname];
+        if(url){
+            CKAsset* asset = [[CKAsset alloc] initWithFileURL:url];
+            return asset;
         }
-        [self.mapView addAnnotations:self.photos];
-        [self.mapView showAnnotations:self.photos animated:YES];
-    });
+    }
+    return nil;
+}
 
+- (void) fetchDataForUser: (CKRecord*)user {
+    //fetch
+//    CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
+//    NSString* emailAttrName = @"email";
+//    NSString* email = email1;
+//    NSPredicate* predicate = [NSPredicate predicateWithFormat: @" %K = %@", emailAttrName, email];
+//    CKQuery* query = [[CKQuery alloc] initWithRecordType:@"user" predicate: predicate];
+//    
+    //get the first record that matches
+    if(user){
+        //create a videostream record
+        CKRecord* videoStreamRecord = [[CKRecord alloc] initWithRecordType:@"videostream"];
+        videoStreamRecord[@"title"] = @"Aerial Shots of Sedona Arizona";
+        CLLocation* location = [[CLLocation alloc] initWithLatitude:32.88831721994364 longitude: -117.2413945199151];
+        videoStreamRecord[@"location"] = location;
+        videoStreamRecord[@"live"] = [[NSNumber alloc] initWithInt:0];
+        videoStreamRecord[@"user"] = [[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf];
+        videoStreamRecord[@"video"] = [self getCKAssetFromFileName:@"clip1" withExtension:@"mp4" inDirectory:@"clip"];
+        CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
+        [publicDB saveRecord:videoStreamRecord completionHandler:^(CKRecord* record, NSError* error){
+            if(error == nil){
+                NSLog(@"%@", record);
+            }else{
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+    }
 }
 
 
@@ -178,9 +128,27 @@ static double const Longitude2 = -117.242703;
 }
 
 
+//MARK: - CLLocationManagerDelegate
+-(void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
+    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
+        [manager startUpdatingLocation];
+    }else{
+        NSLog(@"Location not authorized");
+    }
+}
+
+-(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+    if([locations count] > 0){
+        CLLocation* currentLocation = locations.lastObject;
+        MKCoordinateRegion region = MKCoordinateRegionMake(currentLocation.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
+        [self.mapView setRegion:region];
+        [manager stopUpdatingLocation];
+    }
+}
+
+
 //MARK: - MKMapViewDelegate
 -(MKAnnotationView*) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
-    NSLog(@"called from viewForAnnotation");
     if([annotation isKindOfClass:[ MKUserLocation class]]){
         return nil;
     }
@@ -190,12 +158,19 @@ static double const Longitude2 = -117.242703;
     }else{
         annotationView.annotation = annotation;
     }
-    NSString* thumbnailUrl = ((PhotoAnnotation*)annotation).thumbnailUrl;
-    UIImage* image = [UIImage imageNamed: thumbnailUrl];
-    NSLog(@"%@", image);
-    annotationView.image = image;
-    annotationView.frame = CGRectMake(0, 0, 60, 60);
-    annotationView.clipsToBounds = YES;
+    
+    
+    
+    
+    
+//    NSString* thumbnailUrl = ((User*)annotation).;
+//    UIImage* image = [UIImage imageNamed: thumbnailUrl];
+//    annotationView.image = image;
+//    annotationView.frame = CGRectMake(0, 0, 48, 48);
+//    annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
+//    annotationView.layer.borderWidth = 2.0;
+//    annotationView.layer.cornerRadius = 4.0;
+//    annotationView.clipsToBounds = YES;
     return annotationView;
 }
 
