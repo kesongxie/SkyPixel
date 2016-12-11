@@ -10,18 +10,21 @@
 #import <CloudKit/CloudKit.h>
 #import "SkyCastViewController.h"
 #import "VideoStream+Annotation.h"
+#import "PlayView.h"
 
 static double const LocationDegree = 0.05;
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
 static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
+static const NSString *playerItemContext;
+
 
 //static double const Latitude = 32.88831721994364;
 //static double const Longitude = -117.2413945199151;
 //static double const Latitude2 = 32.905528;
 //static double const Longitude2 = -117.242703;
 
-static NSString* const email1 = @"frankwang@skypixel.com";
+static NSString* const email1 = @"kesongxie@skypixel.com";
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -33,6 +36,15 @@ static NSString* const email1 = @"frankwang@skypixel.com";
 
 @property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamAnnotations;
 
+
+@property (strong, nonatomic) AVAsset* asset;
+
+@property (strong, nonatomic) AVPlayerItem* playerItem;
+
+@property (strong, nonatomic) AVPlayer* player;
+
+@property (strong, nonatomic) PlayerView* playerView;
+
 //create a video stream record
 - (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset;
 
@@ -43,7 +55,9 @@ static NSString* const email1 = @"frankwang@skypixel.com";
 
 - (void) createEntries;
 
+- (void) syncUI;
 
+- (void) prepareToPlayWithURL: (NSURL*)url;
 
 @end
 
@@ -61,7 +75,7 @@ static NSString* const email1 = @"frankwang@skypixel.com";
         [self.locationManager startUpdatingLocation];
         [self fetchLive];
         
-//        [self createEntries];
+      //  [self createEntries];
     }
     
 }
@@ -69,9 +83,9 @@ static NSString* const email1 = @"frankwang@skypixel.com";
 - (void) createEntries{
     //create a user
     CKRecord* user = [[CKRecord alloc] initWithRecordType:@"user"];
-    user[@"fullname"] = @"Frank Wang";
+    user[@"fullname"] = @"Kesong Xie";
     user[@"email"] = email1;
-    user[@"avator"] = [self getCKAssetFromFileName:@"avator1" withExtension:@"jpg" inDirectory:@"avator"];
+    user[@"avator"] = [self getCKAssetFromFileName:@"avator1" withExtension:@"png" inDirectory:@"avator"];
     CKDatabase* publicDb = [[CKContainer defaultContainer] publicCloudDatabase];
     [publicDb saveRecord:user completionHandler:^(CKRecord* record, NSError* error){
         if(error == nil){
@@ -168,19 +182,6 @@ static NSString* const email1 = @"frankwang@skypixel.com";
 
     
     
-    
-    
-    
-    
-    
-    
-    //fetch
-//    CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-//    NSString* emailAttrName = @"email";
-//    NSString* email = email1;
-//    NSPredicate* predicate = [NSPredicate predicateWithFormat: @" %K = %@", emailAttrName, email];
-//    CKQuery* query = [[CKQuery alloc] initWithRecordType:@"user" predicate: predicate];
-//    
 }
 
 
@@ -196,10 +197,84 @@ static NSString* const email1 = @"frankwang@skypixel.com";
 }
 
 
+//MARK: - Audio player
+- (void) syncUI{
+    if ((self.player.currentItem != nil) &&
+        ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
+        [self.player play];
+    }
+}
+
+
+- (void) prepareToPlayWithURL: (NSURL*)url {
+    // Create asset to be played
+    NSURL* viedoURL = [self videoURL:url];
+    AVAsset* asset = [AVAsset assetWithURL:viedoURL];
+    
+    self.asset = asset;
+    
+    // Create a new AVPlayerItem with the asset and an
+    // array of asset keys to be automatically loaded
+    NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
+    self.playerItem = [[AVPlayerItem alloc] initWithAsset:self.asset automaticallyLoadedAssetKeys:assetKeys];
+    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &playerItemContext];
+    
+    // Associate the player item with the player
+    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+    self.playerView.player = self.player;
+}
+
+
+
+- (NSURL *)videoURL: (NSURL*)fileURL {
+    return [self createHardLinkToVideoFile: fileURL];
+}
+
+//returns a hard link
+- (NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
+    NSError *err;
+    NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
+    if (![hardURL checkResourceIsReachableAndReturnError:nil]) {
+        if (![[NSFileManager defaultManager] linkItemAtURL: fileURL toURL: hardURL error:&err]) {
+            // if creating hard link failed it is still possible to create a copy of self.asset.fileURL and return the URL of the copy
+        }
+    }
+    return hardURL;
+}
+
+//The paramter is the CKAsset fileURL
+- (void)removeHardLinkToVideoFile: (NSURL*)fileURL {
+    NSError *err;
+    NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"MP4"];
+    if ([hardURL checkResourceIsReachableAndReturnError:nil]) {
+        if (![[NSFileManager defaultManager] removeItemAtURL:hardURL error:&err]) {
+        }
+    }
+}
+
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == &playerItemContext) {
+        dispatch_async(dispatch_get_main_queue(),^{
+            [self syncUI];
+        });
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    return;
+    
+}
+
+
+
+
 //MARK: - CLLocationManagerDelegate
 -(void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [manager startUpdatingLocation];
+        //[self createEntries];
+        [self fetchLive];
     }else{
         NSLog(@"Location not authorized");
     }
@@ -223,32 +298,39 @@ static NSString* const email1 = @"frankwang@skypixel.com";
     MKAnnotationView* annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier: MapViewReuseIdentifier];
     if(!annotationView){
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MapViewReuseIdentifier];
+        VideoStream* videoStream = (VideoStream*)annotation;
+        User* user = videoStream.user;
+        NSData* imageData = [[NSData alloc]initWithContentsOfURL:user.avatorUrl];
+        UIImage* image = [[UIImage alloc] initWithData: imageData];
+        
+        annotationView.image = image;
+        annotationView.frame = CGRectMake(0, 0, 56, 56);
+        annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
+        annotationView.layer.borderWidth = 2.0;
+        annotationView.backgroundColor = [UIColor whiteColor];
+        
+        annotationView.canShowCallout = YES;
+        CGRect frame = CGRectMake(0, 0, 80, 50);
+        self.playerView = [[PlayerView alloc] initWithFrame:frame];
+        self.playerView.backgroundColor = [UIColor blackColor];
+        annotationView.leftCalloutAccessoryView = self.playerView;
+        
+        
+        
+        
     }else{
         annotationView.annotation = annotation;
     }
     
-    
-    VideoStream* videoStream = (VideoStream*)annotation;
-    User* user = videoStream.user;
-    NSLog(@"the avtor url is %@", user.avatorUrl);
-
-    NSData* imageData = [[NSData alloc]initWithContentsOfURL:user.avatorUrl];
-    NSLog(@"the image data is  %@", imageData);
-
-    UIImage* image = [[UIImage alloc] initWithData: imageData];
-    NSLog(@"the image is  %@", image);
-
-    annotationView.image = image;
-    annotationView.frame = CGRectMake(0, 0, 48, 48);
-    annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
-    annotationView.layer.borderWidth = 2.0;
-    annotationView.layer.cornerRadius = 4.0;
-    annotationView.clipsToBounds = YES;
     return annotationView;
 }
 
+-(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
+    VideoStream* videoStream = (VideoStream*)view.annotation;
+    [self prepareToPlayWithURL:videoStream.url];
+}
+
+
+
 @end
-
-
-
 

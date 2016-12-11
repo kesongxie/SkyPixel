@@ -14,6 +14,7 @@
 		98621A8A1DFCBBE100417978 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A891DFCBBE100417978 /* User.m */; };
 		98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A8E1DFCCCC300417978 /* VideoStream.m */; };
 		98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A921DFCCF1400417978 /* VideoStream+Annotation.m */; };
+		98621AB71DFD555500417978 /* PlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621AB61DFD555500417978 /* PlayView.m */; };
 		98AD1AA81DFB519E00679629 /* draft.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AD1AA71DFB519E00679629 /* draft.m */; };
 		98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98AF06471DFA88AF0060D993 /* Assets.xcassets */; };
 		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
@@ -38,6 +39,8 @@
 		98621A901DFCCCCC00417978 /* VideoStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoStream.h; sourceTree = "<group>"; };
 		98621A911DFCCF1400417978 /* VideoStream+Annotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VideoStream+Annotation.h"; sourceTree = "<group>"; };
 		98621A921DFCCF1400417978 /* VideoStream+Annotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VideoStream+Annotation.m"; sourceTree = "<group>"; };
+		98621AB61DFD555500417978 /* PlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayView.m; sourceTree = "<group>"; };
+		98621AB81DFD556500417978 /* PlayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayView.h; sourceTree = "<group>"; };
 		98AD1AA71DFB519E00679629 /* draft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = draft.m; sourceTree = "<group>"; };
 		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +138,8 @@
 				98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */,
 				98D965501DF5028800335CC6 /* SkyCastViewController.h */,
 				98D9654D1DF5024500335CC6 /* SkyCastViewController.m */,
+				98621AB81DFD556500417978 /* PlayView.h */,
+				98621AB61DFD555500417978 /* PlayView.m */,
 			);
 			name = SkyCast;
 			sourceTree = "<group>";
@@ -261,6 +266,7 @@
 				98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
 				98AD1AA81DFB519E00679629 /* draft.m in Sources */,
+				98621AB71DFD555500417978 /* PlayView.m in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
