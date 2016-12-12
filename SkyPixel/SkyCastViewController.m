@@ -149,9 +149,9 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 - (void) fetchLive {
     //start loading drone flying user
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-    NSString* liveAttrName = @"live";
-    NSNumber* liveValue = [[NSNumber alloc] initWithInt:1];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat: @" %K = %@", liveAttrName, liveValue];
+//    NSString* liveAttrName = @"live";
+//    NSNumber* liveValue = [[NSNumber alloc] initWithInt:0];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
         if(error == nil){
@@ -161,7 +161,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
                     dispatch_async(dispatch_get_main_queue(), ^{
                         CLLocation* location = record[@"location"];
                         CKAsset* videoAsset = record[@"video"];
-                        VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:nil videoStreamUrl:videoAsset.fileURL streamLocation:location];
+                        VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:nil videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: record[@"live"]];
                         [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
                         [self.mapView addAnnotations: self.videoStreamAnnotations];
                      });
@@ -304,11 +304,24 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MapViewReuseIdentifier];
         VideoStream* videoStream = (VideoStream*)annotation;
         annotationView.image = [self generateThumbImage:[self videoURL:videoStream.url]];
-        annotationView.frame = CGRectMake(0, 0, 56, 56);
+        annotationView.frame = CGRectMake(0, 0, 60, 60);
         annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
         annotationView.layer.borderWidth = 2.0;
         annotationView.backgroundColor = [UIColor whiteColor];
         annotationView.canShowCallout = YES;
+        
+        if([videoStream isLive]){
+            //add overlay
+            UIView* overlayView = [[UIView alloc]initWithFrame:annotationView.frame];
+            overlayView.backgroundColor = [UIColor blackColor];
+            overlayView.alpha = 0.1;
+            [annotationView addSubview:overlayView];
+            //add video icon
+            UIImage* liveIcon = [UIImage imageNamed:@"live-icon"];
+            UIImageView* liveIconImageView = [[UIImageView alloc] initWithImage:liveIcon];
+            liveIconImageView.frame = CGRectMake(36, 6, 18, 14);
+            [annotationView addSubview:liveIconImageView];
+        }
     }else{
         annotationView.annotation = annotation;
     }

@@ -21,7 +21,9 @@
 
 @property (strong, nonatomic) NSURL* url;
 
-- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location;
+@property (strong, nonatomic) NSNumber* live;
 
+- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSNumber*)live;
 
+- (BOOL) isLive;
 @end
