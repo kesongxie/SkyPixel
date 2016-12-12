@@ -16,7 +16,7 @@ static double const LocationDegree = 0.05;
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
 static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
-static const NSString *playerItemContext;
+
 
 
 //static double const Latitude = 32.88831721994364;
@@ -24,7 +24,7 @@ static const NSString *playerItemContext;
 //static double const Latitude2 = 32.905528;
 //static double const Longitude2 = -117.242703;
 
-static NSString* const email1 = @"kesongxie@skypixel.com";
+static NSString const* email1 = @"kesongxie@skypixel.com";
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -45,6 +45,11 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
 
 @property (strong, nonatomic) PlayerView* playerView;
 
+@property (strong, nonatomic) NSString* payerItemContext;
+
+//static const NSString *playerItemContext;
+
+
 //create a video stream record
 - (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset;
 
@@ -54,8 +59,6 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
 - (void) fetchLive;
 
 - (void) createEntries;
-
-- (void) syncUI;
 
 - (void) prepareToPlayWithURL: (NSURL*)url;
 
@@ -74,7 +77,6 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
         [self fetchLive];
-        
       //  [self createEntries];
     }
     
@@ -156,22 +158,13 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
             if(records){
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
                 for(CKRecord* record in records){
-                    CKReference* userReference = record[@"user"];
-                    CLLocation* location = record[@"location"];
-                    CKAsset* videoAsset = record[@"video"];
-                    
-                    CKRecordID * recordId = userReference.recordID;
-                    [publicDB fetchRecordWithID:recordId completionHandler:^(CKRecord* userRecord, NSError* error){
-                        if(error == nil){
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                CKAsset* avatorAsset = userRecord[@"avator"];
-                                User* user =  [[User alloc] init:userRecord[@"fullname"] emailAddress:userRecord[@"email"] avatorUrl:avatorAsset.fileURL];
-                                VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:user videoStreamUrl:videoAsset.fileURL streamLocation:location];
-                                [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
-                                [self.mapView addAnnotations: self.videoStreamAnnotations];
-                            });
-                        }
-                    }];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        CLLocation* location = record[@"location"];
+                        CKAsset* videoAsset = record[@"video"];
+                        VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:nil videoStreamUrl:videoAsset.fileURL streamLocation:location];
+                        [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
+                        [self.mapView addAnnotations: self.videoStreamAnnotations];
+                     });
                 }
             }
             
@@ -179,9 +172,6 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
             NSLog(@"%@", error.localizedDescription);
         }
     }];
-
-    
-    
 }
 
 
@@ -198,39 +188,64 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
 
 
 //MARK: - Audio player
-- (void) syncUI{
-    if ((self.player.currentItem != nil) &&
-        ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-        [self.player play];
-    }
-}
 
+
+-(UIImage *)generateThumbImage : (NSURL *)url
+{
+    AVAsset *asset = [AVAsset assetWithURL:url];
+    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
+    imageGenerator.appliesPreferredTrackTransform = YES;
+    CMTime time = [asset duration];
+    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
+    UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
+    return thumbnail;
+}
 
 - (void) prepareToPlayWithURL: (NSURL*)url {
     // Create asset to be played
     NSURL* viedoURL = [self videoURL:url];
     AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-    
     self.asset = asset;
-    
     // Create a new AVPlayerItem with the asset and an
     // array of asset keys to be automatically loaded
     NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
     self.playerItem = [[AVPlayerItem alloc] initWithAsset:self.asset automaticallyLoadedAssetKeys:assetKeys];
-    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &playerItemContext];
-    
+    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
     // Associate the player item with the player
     self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
     self.playerView.player = self.player;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == &_payerItemContext) {
+        dispatch_async(dispatch_get_main_queue(),^{
+            if ((self.player.currentItem != nil) &&
+                ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
+                [self.player play];
+            }
+        });
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    return;
+    
+}
 
 
+
+-(void)resetPlayer{
+    [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];
+    [self.player pause];
+}
+
+//get the valid videoURL for asisgning to the AVAsset, the icound fileURL is not a valid url
+//because it does not contain a extension
 - (NSURL *)videoURL: (NSURL*)fileURL {
     return [self createHardLinkToVideoFile: fileURL];
 }
 
-//returns a hard link
+//returns a hard link, so as not to maintain another copy of the video file on the disk
 - (NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
     NSError *err;
     NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
@@ -254,17 +269,6 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
 
 
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == &playerItemContext) {
-        dispatch_async(dispatch_get_main_queue(),^{
-            [self syncUI];
-        });
-        return;
-    }
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    return;
-    
-}
 
 
 
@@ -299,36 +303,36 @@ static NSString* const email1 = @"kesongxie@skypixel.com";
     if(!annotationView){
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MapViewReuseIdentifier];
         VideoStream* videoStream = (VideoStream*)annotation;
-        User* user = videoStream.user;
-        NSData* imageData = [[NSData alloc]initWithContentsOfURL:user.avatorUrl];
-        UIImage* image = [[UIImage alloc] initWithData: imageData];
-        
-        annotationView.image = image;
+        annotationView.image = [self generateThumbImage:[self videoURL:videoStream.url]];
         annotationView.frame = CGRectMake(0, 0, 56, 56);
         annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
         annotationView.layer.borderWidth = 2.0;
         annotationView.backgroundColor = [UIColor whiteColor];
-        
         annotationView.canShowCallout = YES;
-        CGRect frame = CGRectMake(0, 0, 80, 50);
-        self.playerView = [[PlayerView alloc] initWithFrame:frame];
-        self.playerView.backgroundColor = [UIColor blackColor];
-        annotationView.leftCalloutAccessoryView = self.playerView;
-        
-        
-        
-        
     }else{
         annotationView.annotation = annotation;
     }
-    
     return annotationView;
 }
 
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
-    VideoStream* videoStream = (VideoStream*)view.annotation;
-    [self prepareToPlayWithURL:videoStream.url];
+    if(![view.annotation isKindOfClass:[MKUserLocation class]]){
+        VideoStream* videoStream = (VideoStream*)view.annotation;
+        CGRect frame = CGRectMake(0, 0, 80, 50);
+        self.playerView = [[PlayerView alloc] initWithFrame:frame];
+        self.playerView.backgroundColor = [UIColor blackColor];
+        view.leftCalloutAccessoryView = self.playerView;
+        [self prepareToPlayWithURL:videoStream.url];
+    }
 }
+
+-(void) mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
+     if(![view.annotation isKindOfClass:[MKUserLocation class]]){
+         [self resetPlayer];
+     }
+};
+
+
 
 
 
