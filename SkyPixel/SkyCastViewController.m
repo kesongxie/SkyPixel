@@ -11,19 +11,13 @@
 #import "SkyCastViewController.h"
 #import "VideoStream+Annotation.h"
 #import "PlayView.h"
+#import "CastingViewController.h"
 
 static double const LocationDegree = 0.05;
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
 static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
-
-
-
-//static double const Latitude = 32.88831721994364;
-//static double const Longitude = -117.2413945199151;
-//static double const Latitude2 = 32.905528;
-//static double const Longitude2 = -117.242703;
-
+static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 static NSString const* email1 = @"kesongxie@skypixel.com";
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
@@ -35,7 +29,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 @property (strong, nonatomic) CLLocationManager* locationManager;
 
 @property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamAnnotations;
-
 
 @property (strong, nonatomic) AVAsset* asset;
 
@@ -49,7 +42,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 //static const NSString *playerItemContext;
 
-
 //create a video stream record
 - (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset;
 
@@ -62,9 +54,17 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 - (void) prepareToPlayWithURL: (NSURL*)url;
 
+- (void)removeHardLinkToVideoFile: (NSURL*)fileURL;
+
+
 @end
 
 @implementation SkyCastViewController
+
+- (IBAction)backFromCastingViewController:(UIStoryboardSegue *)segue {
+    [self.player play];
+}
+
 
 - (void) viewDidLoad{
     [super viewDidLoad];
@@ -115,10 +115,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
             NSLog(@"%@", error.localizedDescription);
         }
     }];
-
-
-
-
 }
 
 
@@ -149,10 +145,9 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 - (void) fetchLive {
     //start loading drone flying user
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-//    NSString* liveAttrName = @"live";
-//    NSNumber* liveValue = [[NSNumber alloc] initWithInt:0];
     NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
+    self.title = @"SEARCHING...";
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
         if(error == nil){
             if(records){
@@ -161,9 +156,11 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
                     dispatch_async(dispatch_get_main_queue(), ^{
                         CLLocation* location = record[@"location"];
                         CKAsset* videoAsset = record[@"video"];
-                        VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:nil videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: record[@"live"]];
+                        NSNumber* live = record[@"live"];
+                        VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:nil videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: live.intValue];
                         [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
                         [self.mapView addAnnotations: self.videoStreamAnnotations];
+                        self.title = @"SKYCAST";
                      });
                 }
             }
@@ -188,8 +185,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 
 //MARK: - Audio player
-
-
 -(UIImage *)generateThumbImage : (NSURL *)url
 {
     AVAsset *asset = [AVAsset assetWithURL:url];
@@ -233,7 +228,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 }
 
 
-
 -(void)resetPlayer{
     [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];
     [self.player pause];
@@ -257,7 +251,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     return hardURL;
 }
 
-//The paramter is the CKAsset fileURL
+//The paramter fileURL is the CKAsset fileURL
 - (void)removeHardLinkToVideoFile: (NSURL*)fileURL {
     NSError *err;
     NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"MP4"];
@@ -269,8 +263,25 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 
 
+//MARK: - Prepare for segue
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    [self.player pause];
+    if([sender isKindOfClass:[MKAnnotationView class]]){
+        if([segue.identifier isEqualToString:ShowCastingSegueIdentifier]){
+            if([segue.destinationViewController isKindOfClass:[CastingViewController class]]){
+                SkyCastViewController* destinationVC = segue.destinationViewController;
+                NSLog(@"enter here");
+                destinationVC.asset = self.asset;
+            }else{
+                NSLog(@"not kind of calss");
 
+            }
+        }else{
+            NSLog(@"wrong iden");
 
+        }
+    }
+}
 
 
 //MARK: - CLLocationManagerDelegate
@@ -330,11 +341,22 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
     if(![view.annotation isKindOfClass:[MKUserLocation class]]){
+        
+        //configure left callout accessory view
         VideoStream* videoStream = (VideoStream*)view.annotation;
-        CGRect frame = CGRectMake(0, 0, 80, 50);
+        CGRect frame = CGRectMake(0, 0, 81, 49);
         self.playerView = [[PlayerView alloc] initWithFrame:frame];
         self.playerView.backgroundColor = [UIColor blackColor];
         view.leftCalloutAccessoryView = self.playerView;
+        
+        //configure right callout accessory view
+        UIImage* arrowIcon = [UIImage imageNamed:@"arrow-icon"];
+        
+        UIButton* disclosureBtn = [[UIButton alloc]init];
+        [disclosureBtn sizeToFit];
+        [disclosureBtn setBackgroundImage:arrowIcon forState:UIControlStateNormal];
+        view.rightCalloutAccessoryView = disclosureBtn;
+        
         [self prepareToPlayWithURL:videoStream.url];
     }
 }
@@ -345,9 +367,9 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
      }
 };
 
-
-
-
+-(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
+    [self performSegueWithIdentifier:ShowCastingSegueIdentifier sender: view];
+}
 
 @end
 

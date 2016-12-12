@@ -14,7 +14,7 @@
 
 @implementation VideoStream
 
-- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSNumber*)live{
+- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSInteger)live{
     self = [super init];
     if(self){
         self.title = title;
@@ -27,7 +27,7 @@
 }
 
 - (BOOL) isLive{
-    return [self.live intValue] == 1;
+    return self.live == 1;
 }
 
 @end

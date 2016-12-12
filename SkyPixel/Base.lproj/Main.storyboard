@@ -17,12 +17,12 @@
                         <viewControllerLayoutGuide type="top" id="QWZ-Si-rxe"/>
                         <viewControllerLayoutGuide type="bottom" id="uuK-3s-UyX"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="yXD-ke-T8n">
+                    <view key="view" contentMode="scaleToFill" misplaced="YES" id="yXD-ke-T8n">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="VxA-iC-XNY">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="VxA-iC-XNY">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -36,11 +36,70 @@
                     <navigationItem key="navigationItem" title="SKYCAST" id="aH6-0s-tL4"/>
                     <connections>
                         <outlet property="mapView" destination="VxA-iC-XNY" id="euB-4E-tdP"/>
+                        <segue destination="b8g-pM-AcO" kind="show" identifier="ShowCasting" id="xoo-R7-mcI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c3N-Ds-9VL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="480.80000000000001" y="-236.13193403298354"/>
+        </scene>
+        <!--CASTING-->
+        <scene sceneID="Wcy-aH-DKE">
+            <objects>
+                <viewController id="b8g-pM-AcO" customClass="CastingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Mpx-V6-cF2"/>
+                        <viewControllerLayoutGuide type="bottom" id="g8X-aS-j8g"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xIb-bk-xNi">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gU8-51-URa" userLabel="playerView" customClass="PlayerView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playButton" translatesAutoresizingMaskIntoConstraints="NO" id="VEj-J0-uOT">
+                                        <rect key="frame" x="167" y="281.5" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="7d4-9T-j2n"/>
+                                            <constraint firstAttribute="height" constant="40" id="EFN-Oy-khI"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <constraints>
+                                    <constraint firstItem="VEj-J0-uOT" firstAttribute="centerY" secondItem="gU8-51-URa" secondAttribute="centerY" id="fYh-VH-FHo"/>
+                                    <constraint firstItem="VEj-J0-uOT" firstAttribute="centerX" secondItem="gU8-51-URa" secondAttribute="centerX" id="xud-bE-0DT"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="gU8-51-URa" firstAttribute="top" secondItem="xIb-bk-xNi" secondAttribute="top" id="0d8-Dc-q7X"/>
+                            <constraint firstItem="g8X-aS-j8g" firstAttribute="top" secondItem="gU8-51-URa" secondAttribute="bottom" id="4gw-Cy-Mch"/>
+                            <constraint firstItem="gU8-51-URa" firstAttribute="leading" secondItem="xIb-bk-xNi" secondAttribute="leading" id="Lsn-kg-sm2"/>
+                            <constraint firstAttribute="trailing" secondItem="gU8-51-URa" secondAttribute="trailing" id="ykh-Fu-Pj1"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" title="CASTING" id="fNh-XM-bQV">
+                        <barButtonItem key="leftBarButtonItem" image="back-icon" id="jBe-kM-dVB">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="backBtnTapped:" destination="b8g-pM-AcO" id="zik-Rb-LpB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="playIconImageView" destination="VEj-J0-uOT" id="9Pm-V7-Wrx"/>
+                        <outlet property="playerView" destination="gU8-51-URa" id="ziq-wy-pQZ"/>
+                        <segue destination="pUf-bd-LNo" kind="unwind" identifier="backFromCastingViewController" unwindAction="backFromCastingViewController:" id="G2N-H9-I17"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="svv-4C-zgS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="pUf-bd-LNo" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1216.8" y="-233.43328335832086"/>
         </scene>
         <!--Sky Cast Navigation View Controller-->
         <scene sceneID="IdH-eY-lW8">
@@ -62,4 +121,8 @@
             <point key="canvasLocation" x="-268" y="-236.13193403298354"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="back-icon" width="30" height="30"/>
+        <image name="playButton" width="78" height="79"/>
+    </resources>
 </document>
