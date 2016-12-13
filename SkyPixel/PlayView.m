@@ -21,4 +21,6 @@
 - (void)setPlayer:(AVPlayer *)player {
     [(AVPlayerLayer *)[self layer] setPlayer:player];
 }
+
+
 @end

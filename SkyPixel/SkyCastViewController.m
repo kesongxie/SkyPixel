@@ -95,7 +95,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
                 if(user){
                     //create a videostream record
                     CKRecord* videoStreamRecord1 = [self getVideoStreamRecord: @"Aerial Shots of Sedona Arizona" fromLocation:[[CLLocation alloc] initWithLatitude:32.88831721994364 longitude: -117.2413945199151] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip1" withExtension:@"mp4" inDirectory:@"clip"]];
-                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Beach Walk Sunset" fromLocation:[[CLLocation alloc] initWithLatitude:32.905528 longitude: -117.242703] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip2" withExtension:@"mp4" inDirectory:@"clip"]];
+                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Brilliant skyline view with Phantom 4 " fromLocation:[[CLLocation alloc] initWithLatitude:32.857198 longitude: -117.252102] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip3" withExtension:@"mp4" inDirectory:@"clip"]];
                     NSArray<CKRecord*>* recordToBeSaved = @[videoStreamRecord1, videoStreamRecord2];
                     
                     //configure the CKModifyRecordsOperation and save multiple records
@@ -153,15 +153,24 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
             if(records){
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
                 for(CKRecord* record in records){
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        CLLocation* location = record[@"location"];
-                        CKAsset* videoAsset = record[@"video"];
-                        NSNumber* live = record[@"live"];
-                        VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:nil videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: live.intValue];
-                        [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
-                        [self.mapView addAnnotations: self.videoStreamAnnotations];
-                        self.title = @"SKYCAST";
-                     });
+                    //record user
+                    CKReference* userReference = record[@"user"];
+                    CKRecordID* userRecordId = userReference.recordID;
+                    [publicDB fetchRecordWithID:userRecordId completionHandler:^(CKRecord* userRecord, NSError* error) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSString* email = userRecord[@"email"];
+                            NSString* fullname = userRecord[@"fullname"];
+                            CKAsset* avator = userRecord[@"avator"];
+                            User* user = [[User alloc]init:fullname emailAddress:email avatorUrl:avator.fileURL];
+                            CLLocation* location = record[@"location"];
+                            CKAsset* videoAsset = record[@"video"];
+                            NSNumber* live = record[@"live"];
+                            VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:user videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: live.intValue];
+                            [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
+                            [self.mapView addAnnotations: self.videoStreamAnnotations];
+                            self.title = @"SKYCAST";
+                        });
+                    }];
                 }
             }
             
@@ -209,6 +218,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
     // Associate the player item with the player
     self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+    [self.player setMuted:YES];
     self.playerView.player = self.player;
 }
 
@@ -269,16 +279,12 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     if([sender isKindOfClass:[MKAnnotationView class]]){
         if([segue.identifier isEqualToString:ShowCastingSegueIdentifier]){
             if([segue.destinationViewController isKindOfClass:[CastingViewController class]]){
-                SkyCastViewController* destinationVC = segue.destinationViewController;
-                NSLog(@"enter here");
+                CastingViewController* destinationVC = segue.destinationViewController;
                 destinationVC.asset = self.asset;
-            }else{
-                NSLog(@"not kind of calss");
-
+                VideoStream* videoStream = ((MKAnnotationView*)sender).annotation;
+                destinationVC.videoStream = videoStream;
+                destinationVC.user = videoStream.user;
             }
-        }else{
-            NSLog(@"wrong iden");
-
         }
     }
 }
@@ -318,7 +324,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
         annotationView.frame = CGRectMake(0, 0, 60, 60);
         annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
         annotationView.layer.borderWidth = 2.0;
-        annotationView.backgroundColor = [UIColor whiteColor];
         annotationView.canShowCallout = YES;
         
         if([videoStream isLive]){

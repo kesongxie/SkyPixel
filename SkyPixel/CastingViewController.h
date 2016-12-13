@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "VideoStream.h"
+#import "User.h"
 
 @interface CastingViewController : UIViewController
 
 @property (strong, nonatomic) AVAsset* asset;
+
+@property (strong, nonatomic) User* user;
+
+@property (strong, nonatomic) VideoStream* videoStream;
 
 @end
