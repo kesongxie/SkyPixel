@@ -15,33 +15,19 @@
 //@property (strong, nonatomic)  PlayerView *playerView;
 
 @property (weak, nonatomic) IBOutlet PlayerView *playerView;
-
-@property (strong, nonatomic) AVPlayerItem* playerItem;
-
-@property (strong, nonatomic) AVPlayer* player;
-
 @property (weak, nonatomic) IBOutlet UIImageView *playIconImageView;
-
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
-
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
-
 @property (weak, nonatomic) IBOutlet UIButton *locationBtn;
-
-@property (strong, nonatomic) NSString* payerItemContext;
-
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoHeightConstraint;
-
 @property (weak, nonatomic) IBOutlet UILabel *videoTitleLabel;
-
 @property (weak, nonatomic) IBOutlet UIImageView *liveIcon;
-
 @property (weak, nonatomic) IBOutlet UILabel *viewStatusLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *viewCountsLabel;
-
+@property (strong, nonatomic) AVPlayerItem* playerItem;
+@property (strong, nonatomic) AVPlayer* player;
+@property (strong, nonatomic) NSString* payerItemContext;
 
 //update the user information, such as fullname, avator
 -(void) updateUI;
@@ -84,6 +70,10 @@
         }];
     }
 }
+
+
+
+
 
 -(void) didPlayToEnd:(NSNotification*)notification{
     [self.player seekToTime:kCMTimeZero];

@@ -14,13 +14,9 @@
 @interface VideoStream : NSObject
 
 @property (strong, nonatomic) NSString* title;
-
 @property (strong, nonatomic) User* user;
-
 @property (strong, nonatomic) CLLocation* location;
-
 @property (strong, nonatomic) NSURL* url;
-
 @property (nonatomic) NSInteger live;
 
 - (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSInteger)live;

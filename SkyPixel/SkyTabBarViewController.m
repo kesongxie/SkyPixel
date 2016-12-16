@@ -17,7 +17,7 @@
 -(void)viewDidLoad{
     UIColor* whiteColor = [UIColor whiteColor];
     [self.tabBar setBarTintColor:whiteColor];
+    self.tabBar.translucent = NO;
 }
-
 
 @end

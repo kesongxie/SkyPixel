@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		980498841E02A72D0091A37C /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498831E02A72D0091A37C /* ContainerViewController.m */; };
+		980498881E03585C0091A37C /* ExploreSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498871E03585C0091A37C /* ExploreSearchViewController.m */; };
+		9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498891E03729E0091A37C /* ExploreSearchTableViewController.m */; };
 		9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */; };
 		98621A7E1DFBE48A00417978 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98621A7D1DFBE48A00417978 /* CloudKit.framework */; };
 		98621A841DFC9B7500417978 /* clip in Resources */ = {isa = PBXBuildFile; fileRef = 98621A831DFC9B7500417978 /* clip */; };
@@ -28,6 +31,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		980498831E02A72D0091A37C /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
+		980498851E02A7380091A37C /* ContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
+		980498861E03584B0091A37C /* ExploreSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchViewController.h; sourceTree = "<group>"; };
+		980498871E03585C0091A37C /* ExploreSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchViewController.m; sourceTree = "<group>"; };
+		980498891E03729E0091A37C /* ExploreSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchTableViewController.m; sourceTree = "<group>"; };
+		9804988B1E0372A70091A37C /* ExploreSearchTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewController.h; sourceTree = "<group>"; };
 		9826C9C91DF6ABC10025F58F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		98621A7C1DFBE48500417978 /* SkyPixel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SkyPixel.entitlements; sourceTree = "<group>"; };
@@ -120,8 +129,8 @@
 				9826C9C91DF6ABC10025F58F /* AppDelegate.h */,
 				9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */,
 				98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */,
-				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
 				98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */,
+				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
 				98621A871DFCBBB500417978 /* Model */,
 				98D965561DF5074C00335CC6 /* Macro */,
 				98D965551DF5074400335CC6 /* Category */,
@@ -146,12 +155,18 @@
 		98D965511DF5043000335CC6 /* SkyCast */ = {
 			isa = PBXGroup;
 			children = (
+				980498861E03584B0091A37C /* ExploreSearchViewController.h */,
+				980498871E03585C0091A37C /* ExploreSearchViewController.m */,
 				98D965541DF5046800335CC6 /* SkyCastNavigationViewController.h */,
 				98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */,
 				98D965501DF5028800335CC6 /* SkyCastViewController.h */,
 				98D9654D1DF5024500335CC6 /* SkyCastViewController.m */,
 				98621AB81DFD556500417978 /* PlayView.h */,
 				98621AB61DFD555500417978 /* PlayView.m */,
+				980498851E02A7380091A37C /* ContainerViewController.h */,
+				980498831E02A72D0091A37C /* ContainerViewController.m */,
+				9804988B1E0372A70091A37C /* ExploreSearchTableViewController.h */,
+				980498891E03729E0091A37C /* ExploreSearchTableViewController.m */,
 				98621AB91DFE94BC00417978 /* Casting */,
 			);
 			name = SkyCast;
@@ -277,6 +292,7 @@
 			files = (
 				98621ABB1DFE94D800417978 /* CastingViewController.m in Sources */,
 				98621A8A1DFCBBE100417978 /* User.m in Sources */,
+				980498841E02A72D0091A37C /* ContainerViewController.m in Sources */,
 				98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
 				98AD1AA81DFB519E00679629 /* draft.m in Sources */,
@@ -285,7 +301,9 @@
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
 				98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */,
+				9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */,
 				98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */,
+				980498881E03585C0091A37C /* ExploreSearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

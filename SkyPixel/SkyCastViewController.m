@@ -12,6 +12,7 @@
 #import "VideoStream+Annotation.h"
 #import "PlayView.h"
 #import "CastingViewController.h"
+#import "ContainerViewController.h"
 
 static double const LocationDegree = 0.05;
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
@@ -23,21 +24,13 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-
 @property (strong, nonatomic) NSMutableArray* photos;
-
 @property (strong, nonatomic) CLLocationManager* locationManager;
-
 @property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamAnnotations;
-
 @property (strong, nonatomic) AVAsset* asset;
-
 @property (strong, nonatomic) AVPlayerItem* playerItem;
-
 @property (strong, nonatomic) AVPlayer* player;
-
 @property (strong, nonatomic) PlayerView* playerView;
-
 @property (strong, nonatomic) NSString* payerItemContext;
 
 //static const NSString *playerItemContext;
@@ -56,7 +49,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 - (void)removeHardLinkToVideoFile: (NSURL*)fileURL;
 
-
 @end
 
 @implementation SkyCastViewController
@@ -64,6 +56,14 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 - (IBAction)backFromCastingViewController:(UIStoryboardSegue *)segue {
     [self.player play];
 }
+
+- (IBAction)searchBtnTapped:(UIBarButtonItem *)sender {
+    if([self.parentViewController.parentViewController isKindOfClass: [ContainerViewController class]]){
+        ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
+        [containerVC toggleLeftMainView];
+    }
+}
+
 
 
 - (void) viewDidLoad{
@@ -79,8 +79,33 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
         [self fetchLive];
       //  [self createEntries];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
+//    self.navigationController.navigationBar.layer.zPosition = -1;
+    
+    
+//    double latitude = 40.782865;
+//    double longitude = -73.965355;
+//    
+    CLGeocoder* geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder geocodeAddressString:@"Central Park new york" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        //NSLog(@"%@", placemarks.firstObject.location);
+    }];
+    
     
 }
+
+
+-(void) didPlayToEnd:(NSNotification*)notification{
+    [self.player seekToTime:kCMTimeZero];
+    [self.player play];
+}
+
+
+
+- (BOOL)hidesBottomBarWhenPushed {
+    return YES;
+}
+
 
 - (void) createEntries{
     //create a user
@@ -147,7 +172,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
     NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
-    self.title = @"SEARCHING...";
+    self.navigationItem.title = @"SEARCHING...";
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
         if(error == nil){
             if(records){
@@ -168,7 +193,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
                             VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:user videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: live.intValue];
                             [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
                             [self.mapView addAnnotations: self.videoStreamAnnotations];
-                            self.title = @"SKYCAST";
+                            self.navigationItem.title = @"SKYCAST";
                         });
                     }];
                 }

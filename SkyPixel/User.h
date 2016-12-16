@@ -15,6 +15,4 @@
 @property (strong, nonatomic) NSURL* avatorUrl;
 
 - (id)init: (NSString*)fullname emailAddress: (NSString*)email avatorUrl: (NSURL*)url;
-
-
 @end

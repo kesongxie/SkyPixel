@@ -56,11 +56,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SkyPixel/SkyCastViewController.m"
-            timestampString = "503227684.282644"
+            timestampString = "503528680.225417"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
             landmarkName = "-createEntries"
             landmarkType = "7">
             <Locations>
