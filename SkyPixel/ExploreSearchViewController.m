@@ -16,7 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+//@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 
 @end
@@ -34,10 +34,7 @@
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, 0.85 * [[UIScreen mainScreen] bounds].size.width, self.view.frame.size.height);
-
+    
 }
-
-
-
 
 @end

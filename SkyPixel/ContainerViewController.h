@@ -11,4 +11,10 @@
 
 -(void) toggleLeftMainView;
 
+//this brings search explore view to the fornt
+-(void) bringExploreViewToFront;
+
+//this brings search main view to the fornt
+-(void) bringMainViewToFront;
+
 @end

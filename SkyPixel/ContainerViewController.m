@@ -19,6 +19,8 @@
 @property (nonatomic) BOOL isLeftPaneOpened;
 @property (strong, nonatomic) UIView* overlayView;
 
+@property (weak, nonatomic) IBOutlet UIView *exploreSearchView;
+
 @end
 
 @implementation ContainerViewController
@@ -30,8 +32,7 @@
     self.overlayView = [[UIView alloc]initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.overlayView.backgroundColor = [UIColor blackColor];
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(resetMainViewToCenter)];
-    [self.view addGestureRecognizer:tap];
-    self.edgesForExtendedLayout = UIRectEdgeNone;
+    [self.mainView addGestureRecognizer:tap];
 }
 
 
@@ -54,6 +55,15 @@
         [self toggleLeftMainView];
     }
 }
+
+-(void) bringExploreViewToFront{
+    [self.view bringSubviewToFront:self.exploreSearchView];
+}
+
+-(void) bringMainViewToFront{
+    [self.view bringSubviewToFront:self.mainView];
+}
+
 
 -(void) toggleLeftMainView{
     CGFloat adjustConstraint = 0;
@@ -84,8 +94,10 @@
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
+
+
 
 -(UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
     return UIStatusBarAnimationSlide;

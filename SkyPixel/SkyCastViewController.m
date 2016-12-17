@@ -32,6 +32,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) PlayerView* playerView;
 @property (strong, nonatomic) NSString* payerItemContext;
+@property (strong, nonatomic) UISearchController* searchController;
 
 //static const NSString *playerItemContext;
 
@@ -49,9 +50,19 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 - (void)removeHardLinkToVideoFile: (NSURL*)fileURL;
 
+
+
+
 @end
 
 @implementation SkyCastViewController
+
+- (IBAction)searchIconTapped:(UIBarButtonItem *)sender {
+    if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
+        ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
+        [containerVC bringExploreViewToFront];
+    }
+}
 
 - (IBAction)backFromCastingViewController:(UIStoryboardSegue *)segue {
     [self.player play];
@@ -80,18 +91,14 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
       //  [self createEntries];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-//    self.navigationController.navigationBar.layer.zPosition = -1;
+   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationDidSelected:) name:@"LocationSelected" object:nil];
     
     
-//    double latitude = 40.782865;
-//    double longitude = -73.965355;
-//    
     CLGeocoder* geoCoder = [[CLGeocoder alloc] init];
     [geoCoder geocodeAddressString:@"Central Park new york" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         //NSLog(@"%@", placemarks.firstObject.location);
     }];
-    
-    
 }
 
 
@@ -99,6 +106,21 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     [self.player seekToTime:kCMTimeZero];
     [self.player play];
 }
+
+
+-(void) locationDidSelected:(NSNotification*)notification{
+    CLLocation* location = (CLLocation*)notification.userInfo[@"LocationSelected"];
+    if(location != nil){
+        //update
+        MKCoordinateRegion region = MKCoordinateRegionMake(location.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
+        [self.mapView setRegion:region];
+        NSLog(@"notification receievd");
+    }else{
+        NSLog(@"location is not nil");
+
+    }
+}
+
 
 
 
@@ -119,9 +141,16 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
             CKRecord* user = record;
                 if(user){
                     //create a videostream record
-                    CKRecord* videoStreamRecord1 = [self getVideoStreamRecord: @"Aerial Shots of Sedona Arizona" fromLocation:[[CLLocation alloc] initWithLatitude:32.88831721994364 longitude: -117.2413945199151] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip1" withExtension:@"mp4" inDirectory:@"clip"]];
-                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Brilliant skyline view with Phantom 4 " fromLocation:[[CLLocation alloc] initWithLatitude:32.857198 longitude: -117.252102] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip3" withExtension:@"mp4" inDirectory:@"clip"]];
-                    NSArray<CKRecord*>* recordToBeSaved = @[videoStreamRecord1, videoStreamRecord2];
+                    CKRecord* videoStreamRecord1 = [self getVideoStreamRecord: @"Eiffel Tower Paris" fromLocation:[[CLLocation alloc] initWithLatitude:48.857610 longitude: 2.294083] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip4" withExtension:@"mp4" inDirectory:@"clip"]];
+                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Paris Skyline View Of The City and Eiffel Tower From The Arc De Triomphe" fromLocation:[[CLLocation alloc] initWithLatitude:48.857697 longitude: 2.297494] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip5" withExtension:@"mp4" inDirectory:@"clip"]];
+                    
+                    CKRecord* videoStreamRecord3 = [self getVideoStreamRecord: @"DJI - Phantom 4 China Launch" fromLocation:[[CLLocation alloc] initWithLatitude:22.543096 longitude: 114.057865] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip6" withExtension:@"mp4" inDirectory:@"clip"]];
+                    
+                    
+                    
+                    
+                    
+                    NSArray<CKRecord*>* recordToBeSaved = @[videoStreamRecord1, videoStreamRecord2, videoStreamRecord3];
                     
                     //configure the CKModifyRecordsOperation and save multiple records
                     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
@@ -371,7 +400,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
     if(![view.annotation isKindOfClass:[MKUserLocation class]]){
-        
         //configure left callout accessory view
         VideoStream* videoStream = (VideoStream*)view.annotation;
         CGRect frame = CGRectMake(0, 0, 81, 49);
@@ -400,6 +428,30 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 -(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
     [self performSegueWithIdentifier:ShowCastingSegueIdentifier sender: view];
 }
+
+
+
+//MARK: - Search bar delegate
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
+}
+
+-(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    // self.viewShouldExpand = YES;
+    //    NSNotification* mainViewShouldDisappear = [[NSNotification alloc]initWithName:@"mainViewShouldDisappear" object:self userInfo:nil];
+    //    [[NSNotificationCenter defaultCenter] postNotification:mainViewShouldDisappear];
+    //    [UIView animateWithDuration:0.3 animations:^{
+    //        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, self.view.frame.size.height);
+    //
+    //    }];
+    return YES;
+}
+
+
+
+
+
+
 
 @end
 
