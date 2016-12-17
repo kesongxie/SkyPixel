@@ -11,15 +11,16 @@
 
 @interface ContainerViewController()
 
-//@property (strong, nonatomic) IBOutlet UIView *rootView;
 @property (weak, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet UIView *exploreSearchView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewTrailingConstraint;
+@property (strong, nonatomic) UIView* overlayView;
 @property (nonatomic) BOOL isStatusBarHidden;
 @property (nonatomic) BOOL isLeftPaneOpened;
-@property (strong, nonatomic) UIView* overlayView;
+@property (nonatomic) UIStatusBarStyle statusBarStyle;
+@property (nonatomic) BOOL isStatusBarStyleSet;
 
-@property (weak, nonatomic) IBOutlet UIView *exploreSearchView;
 
 @end
 
@@ -28,7 +29,6 @@
 -(void) viewDidLoad{
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(mainViewShouldDisappear:) name:@"mainViewShouldDisappear" object:nil];
-    
     self.overlayView = [[UIView alloc]initWithFrame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     self.overlayView.backgroundColor = [UIColor blackColor];
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(resetMainViewToCenter)];
@@ -57,11 +57,17 @@
 }
 
 -(void) bringExploreViewToFront{
+    self.isStatusBarStyleSet = YES;
+    self.statusBarStyle = UIStatusBarStyleDefault;
     [self.view bringSubviewToFront:self.exploreSearchView];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 -(void) bringMainViewToFront{
+    self.isStatusBarStyleSet = YES;
+    self.statusBarStyle = UIStatusBarStyleLightContent;
     [self.view bringSubviewToFront:self.mainView];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 
@@ -94,7 +100,7 @@
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle{
-    return UIStatusBarStyleDefault;
+    return (self.isStatusBarStyleSet) ? self.statusBarStyle: UIStatusBarStyleLightContent;
 }
 
 

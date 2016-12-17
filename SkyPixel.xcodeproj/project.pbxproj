@@ -108,10 +108,10 @@
 		98AEEB4A1E052B8C00431481 /* Explore Search */ = {
 			isa = PBXGroup;
 			children = (
-				9804988B1E0372A70091A37C /* ExploreSearchTableViewController.h */,
-				980498891E03729E0091A37C /* ExploreSearchTableViewController.m */,
 				988E69271E04F86000A9D893 /* ExploreSearchTableViewCell.h */,
 				988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */,
+				9804988B1E0372A70091A37C /* ExploreSearchTableViewController.h */,
+				980498891E03729E0091A37C /* ExploreSearchTableViewController.m */,
 			);
 			name = "Explore Search";
 			sourceTree = "<group>";

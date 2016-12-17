@@ -19,9 +19,15 @@
     [super viewDidLoad];
 }
 
-- (UIViewController*) childViewControllerForStatusBarStyle{
-    return self.childViewControllers.firstObject;
+//- (UIViewController*) childViewControllerForStatusBarStyle{
+//    return self.childViewControllers.firstObject;
+//}
+//
+
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
+
 
 @end
 

@@ -21,6 +21,14 @@
 
 @property (strong, nonatomic) NSArray<CLPlacemark *> * placeMarks;
 
+@property (nonatomic) BOOL didUserStartTyping;
+
+-(void)expandHeaderView;
+
+-(void)collapseHeaderView;
+
+-(void)showSkyCastMapView;
+
 @end
 
 @implementation ExploreSearchTableViewController
@@ -42,19 +50,50 @@
     self.navigationItem.titleView = self.searchController.searchBar;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(searchIconTapped:) name:@"SearchIconTapped" object:nil];
 }
 
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     if(!self.isKeyBoardVisible){
-        CGSize size = self.view.frame.size;
-        CGFloat headerViewWidth = size.width;
-        CGFloat headerViewHeight = size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
-        self.headerView.frame = CGRectMake(0, 0, headerViewWidth, headerViewHeight);
+        [self expandHeaderView];
     }
 }
 
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleDefault;
+}
 
+-(void)expandHeaderView{
+    [self.headerView setHidden:NO];
+    CGSize size = self.view.frame.size;
+    CGFloat headerViewWidth = size.width;
+    CGFloat headerViewHeight = size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
+    self.headerView.frame = CGRectMake(0, 0, headerViewWidth, headerViewHeight);
+}
+
+-(void) searchIconTapped: (NSNotification*) notification{
+    [self.searchController.searchBar becomeFirstResponder];
+}
+
+
+-(void)collapseHeaderView{
+    [self.headerView setHidden:YES];
+    self.headerView.frame = CGRectMake(0, 0, self.headerView.frame.size.width, 0);
+}
+
+-(void)showSkyCastMapView{
+    ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
+    [containerVC bringMainViewToFront];
+    [self expandHeaderView];
+    [self.searchController.searchBar resignFirstResponder];
+    self.searchController.searchBar.text = @"";
+    self.placeMarks = nil;
+    [self.tableView reloadData];
+    self.didUserStartTyping = NO;
+}
+
+//MARK - UITableViewDelegate, UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
@@ -65,7 +104,6 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ExploreSearchCell" forIndexPath:indexPath];
-    
     if([cell isKindOfClass:[ExploreSearchTableViewCell class]]){
         ExploreSearchTableViewCell* searchCell = (ExploreSearchTableViewCell*)cell;
         [searchCell setPlaceMark:self.placeMarks[indexPath.row]];
@@ -82,23 +120,27 @@
     NSDictionary* userInfo = @{@"location": location};
     NSNotification* notification = [[NSNotification alloc] initWithName:@"LocationSelected" object:self userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
-    NSLog(@"row selected");
+    [self showSkyCastMapView];
 }
 
 
+//MARK: - UISearchResultsUpdating protocol
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
-    self.headerView.frame = CGRectMake(0, 0, self.headerView.frame.size.width, 0);
-    CLGeocoder* geoCoder = [[CLGeocoder alloc]init];
-    [geoCoder geocodeAddressString:self.searchController.searchBar.text
- completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
-     dispatch_async(dispatch_get_main_queue(), ^{
-         self.placeMarks = placemarks;
-         [self.tableView reloadData];
-         
-     });
- }];
+    if(self.didUserStartTyping){
+        [self collapseHeaderView];
+        CLGeocoder* geoCoder = [[CLGeocoder alloc]init];
+        [geoCoder geocodeAddressString:self.searchController.searchBar.text
+     completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             self.placeMarks = placemarks;
+             [self.tableView reloadData];
+         });
+     }];
+    }
 }
 
+
+//MARK: - UISearchBarDelegate
 -(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     self.isKeyBoardVisible = YES;
     CGPoint newPoint = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + 60);
@@ -108,17 +150,20 @@
     return YES;
 }
 
--(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
-    if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
-        ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
-        [containerVC bringMainViewToFront];
-    }
-}
-
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     self.isKeyBoardVisible = NO;
+}
 
+
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
+        [self showSkyCastMapView];
+    }
+}
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    self.didUserStartTyping = YES;
 }
 
 @end

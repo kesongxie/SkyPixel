@@ -50,9 +50,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 - (void)removeHardLinkToVideoFile: (NSURL*)fileURL;
 
-
-
-
 @end
 
 @implementation SkyCastViewController
@@ -61,6 +58,8 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
         ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
         [containerVC bringExploreViewToFront];
+        NSNotification* notification = [[NSNotification alloc]initWithName:@"SearchIconTapped" object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotification:notification];
     }
 }
 
@@ -93,12 +92,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
    
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationDidSelected:) name:@"LocationSelected" object:nil];
-    
-    
-    CLGeocoder* geoCoder = [[CLGeocoder alloc] init];
-    [geoCoder geocodeAddressString:@"Central Park new york" completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
-        //NSLog(@"%@", placemarks.firstObject.location);
-    }];
 }
 
 
@@ -109,27 +102,30 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 
 -(void) locationDidSelected:(NSNotification*)notification{
-    CLLocation* location = (CLLocation*)notification.userInfo[@"LocationSelected"];
+    CLLocation* location = (CLLocation*)notification.userInfo[@"location"];
     if(location != nil){
         //update
         MKCoordinateRegion region = MKCoordinateRegionMake(location.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
         [self.mapView setRegion:region];
         NSLog(@"notification receievd");
     }else{
-        NSLog(@"location is not nil");
-
+        NSLog(@"location is nil");
     }
 }
 
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 
 
-
-- (BOOL)hidesBottomBarWhenPushed {
+-(BOOL)hidesBottomBarWhenPushed {
     return YES;
 }
 
 
-- (void) createEntries{
+
+//this is called to initilize the icloud storage with preset data
+-(void) createEntries{
     //create a user
     CKRecord* user = [[CKRecord alloc] initWithRecordType:@"user"];
     user[@"fullname"] = @"Kesong Xie";
@@ -141,16 +137,24 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
             CKRecord* user = record;
                 if(user){
                     //create a videostream record
-                    CKRecord* videoStreamRecord1 = [self getVideoStreamRecord: @"Eiffel Tower Paris" fromLocation:[[CLLocation alloc] initWithLatitude:48.857610 longitude: 2.294083] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip4" withExtension:@"mp4" inDirectory:@"clip"]];
-                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Paris Skyline View Of The City and Eiffel Tower From The Arc De Triomphe" fromLocation:[[CLLocation alloc] initWithLatitude:48.857697 longitude: 2.297494] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip5" withExtension:@"mp4" inDirectory:@"clip"]];
+                    //paris
+                    CKRecord* videoStreamRecord1 = [self getVideoStreamRecord: @"Eiffel Tower Paris" fromLocation:[[CLLocation alloc] initWithLatitude:48.857610 longitude: 2.294083] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip1" withExtension:@"mp4" inDirectory:@"clip"]];
+                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Paris Skyline View Of The City and Eiffel Tower From The Arc De Triomphe" fromLocation:[[CLLocation alloc] initWithLatitude:48.857697 longitude: 2.297494] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip2" withExtension:@"mp4" inDirectory:@"clip"]];
                     
-                    CKRecord* videoStreamRecord3 = [self getVideoStreamRecord: @"DJI - Phantom 4 China Launch" fromLocation:[[CLLocation alloc] initWithLatitude:22.543096 longitude: 114.057865] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip6" withExtension:@"mp4" inDirectory:@"clip"]];
+                    //shenzhen
+                    CKRecord* videoStreamRecord3 = [self getVideoStreamRecord: @"DJI - Phantom 4 China Launch" fromLocation:[[CLLocation alloc] initWithLatitude:22.543096 longitude: 114.057865] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip3" withExtension:@"mp4" inDirectory:@"clip"]];
+                    
+                    //ucsd
+                    CKRecord* videoStreamRecord4 = [self getVideoStreamRecord: @"UCSD, Torrey Pines, Sunset Cliffs From Above" fromLocation:[[CLLocation alloc] initWithLatitude:32.880334 longitude: -117.245793] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip4" withExtension:@"mp4" inDirectory:@"clip"]];
+                   
+                    
+                    CKRecord* videoStreamRecord5 = [self getVideoStreamRecord: @"Geisel Library Drone - UCSD - University of California San Diego" fromLocation:[[CLLocation alloc] initWithLatitude:32.881019 longitude: -117.237827] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip5" withExtension:@"mp4" inDirectory:@"clip"]];
                     
                     
+                    CKRecord* videoStreamRecord6 = [self getVideoStreamRecord: @"Winter at Stanford University recording with drone" fromLocation:[[CLLocation alloc] initWithLatitude:37.427517 longitude: -122.170233] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip6" withExtension:@"mp4" inDirectory:@"clip"]];
                     
                     
-                    
-                    NSArray<CKRecord*>* recordToBeSaved = @[videoStreamRecord1, videoStreamRecord2, videoStreamRecord3];
+                    NSArray<CKRecord*>* recordToBeSaved = @[videoStreamRecord1, videoStreamRecord2, videoStreamRecord3, videoStreamRecord4, videoStreamRecord5, videoStreamRecord6];
                     
                     //configure the CKModifyRecordsOperation and save multiple records
                     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
@@ -240,10 +244,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     [self.navigationController.navigationBar setBarTintColor: [UIColor blackColor]];
     UIFont* titleFont = [UIFont fontWithName: NavigationBarTitleFontName size: NavigationBarTitleFontSize];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
-}
-
-- (UIStatusBarStyle) preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
 }
 
 
@@ -348,7 +348,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 -(void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [manager startUpdatingLocation];
-        //[self createEntries];
+       // [self createEntries];
         [self fetchLive];
     }else{
         NSLog(@"Location not authorized");
@@ -373,28 +373,29 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     MKAnnotationView* annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier: MapViewReuseIdentifier];
     if(!annotationView){
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MapViewReuseIdentifier];
-        VideoStream* videoStream = (VideoStream*)annotation;
-        annotationView.image = [self generateThumbImage:[self videoURL:videoStream.url]];
-        annotationView.frame = CGRectMake(0, 0, 60, 60);
-        annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
-        annotationView.layer.borderWidth = 2.0;
-        annotationView.canShowCallout = YES;
-        
-        if([videoStream isLive]){
-            //add overlay
-            UIView* overlayView = [[UIView alloc]initWithFrame:annotationView.frame];
-            overlayView.backgroundColor = [UIColor blackColor];
-            overlayView.alpha = 0.1;
-            [annotationView addSubview:overlayView];
-            //add video icon
-            UIImage* liveIcon = [UIImage imageNamed:@"live-icon"];
-            UIImageView* liveIconImageView = [[UIImageView alloc] initWithImage:liveIcon];
-            liveIconImageView.frame = CGRectMake(36, 6, 18, 14);
-            [annotationView addSubview:liveIconImageView];
-        }
     }else{
         annotationView.annotation = annotation;
     }
+    VideoStream* videoStream = (VideoStream*)annotation;
+    annotationView.image = [self generateThumbImage:[self videoURL:videoStream.url]];
+    annotationView.frame = CGRectMake(0, 0, 60, 60);
+    annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    annotationView.layer.borderWidth = 2.0;
+    annotationView.canShowCallout = YES;
+    
+    if([videoStream isLive]){
+        //add overlay
+        UIView* overlayView = [[UIView alloc]initWithFrame:annotationView.frame];
+        overlayView.backgroundColor = [UIColor blackColor];
+        overlayView.alpha = 0.1;
+        [annotationView addSubview:overlayView];
+        //add video icon
+        UIImage* liveIcon = [UIImage imageNamed:@"live-icon"];
+        UIImageView* liveIconImageView = [[UIImageView alloc] initWithImage:liveIcon];
+        liveIconImageView.frame = CGRectMake(36, 6, 18, 14);
+        [annotationView addSubview:liveIconImageView];
+    }
+
     return annotationView;
 }
 
@@ -428,30 +429,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 -(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
     [self performSegueWithIdentifier:ShowCastingSegueIdentifier sender: view];
 }
-
-
-
-//MARK: - Search bar delegate
-
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
-}
-
--(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
-    // self.viewShouldExpand = YES;
-    //    NSNotification* mainViewShouldDisappear = [[NSNotification alloc]initWithName:@"mainViewShouldDisappear" object:self userInfo:nil];
-    //    [[NSNotificationCenter defaultCenter] postNotification:mainViewShouldDisappear];
-    //    [UIView animateWithDuration:0.3 animations:^{
-    //        self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, [[UIScreen mainScreen] bounds].size.width, self.view.frame.size.height);
-    //
-    //    }];
-    return YES;
-}
-
-
-
-
-
-
 
 @end
 

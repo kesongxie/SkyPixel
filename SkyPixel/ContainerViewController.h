@@ -6,6 +6,7 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 @interface ContainerViewController : UIViewController
 
