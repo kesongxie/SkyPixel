@@ -1,5 +1,7 @@
-# SkyPixel
-draft README.md, coming soon
+# SkyPixel (DJI)
+Follow and share nearby live stream drone footage at your finger tip. Edit (README.md, coming soon)
+
+
 <h1>Framworks Used</h1>
 <ul>
   <li>MapKit</li>
