@@ -2,7 +2,7 @@
 Follow and share nearby live stream drone footage at your finger tip. Edit (README.md, coming soon)
 
 
-<h1>Framworks Used</h1>
+<h1>Frameworks Used</h1>
 <ul>
   <li>MapKit</li>
   <li>CoreData</li>
