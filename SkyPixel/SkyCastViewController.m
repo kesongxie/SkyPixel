@@ -89,7 +89,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     [self.locationManager requestWhenInUseAuthorization];
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
-//        [self fetchLive];
       //  [self createEntries];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
@@ -227,7 +226,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
         if(error == nil){
             if(records){
-                NSLog(@"the record count is %i", records.count);
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
                 for(CKRecord* record in records){
                     //record user
@@ -372,8 +370,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
 -(void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [manager startUpdatingLocation];
-       // [self createEntries];
-//        [self fetchLive];
     }else{
         NSLog(@"Location not authorized");
     }

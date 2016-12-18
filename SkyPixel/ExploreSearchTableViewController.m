@@ -9,21 +9,21 @@
 #import "ExploreSearchTableViewController.h"
 #import "ExploreSearchTableViewCell.h"
 
+static NSString* const NoSearchEntryFoundHeaderMessage = @"No location found";
+static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
+
 @interface ExploreSearchTableViewController()
 
-@property (strong, nonatomic) UISearchController* searchController;
-
-@property (nonatomic) BOOL viewShouldExpand;
-
 @property (weak, nonatomic) IBOutlet UIView *headerView;
-
-@property (nonatomic) BOOL isKeyBoardVisible;
-
+@property (weak, nonatomic) IBOutlet UILabel *headerTextDescriptionLabel;
+@property (strong, nonatomic) UISearchController* searchController;
 @property (strong, nonatomic) NSArray<CLPlacemark *> * placeMarks;
-
 @property (nonatomic) BOOL didUserStartTyping;
+@property (nonatomic) BOOL isKeyBoardVisible;
+@property (nonatomic) BOOL viewShouldExpand;
+@property (nonatomic) BOOL searchBtnTapped;
 
--(void)expandHeaderView;
+-(void)expandHeaderViewWithOption: (HeaderExpandOpton)option;
 
 -(void)collapseHeaderView;
 
@@ -55,8 +55,14 @@
 
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    if(!self.isKeyBoardVisible){
-        [self expandHeaderView];
+    if(!self.isKeyBoardVisible && self.placeMarks.count == 0){
+        NSLog(@"called from layout subview");
+        HeaderExpandOpton option;
+        option = HeaderExpandDefaultOption;
+        if(self.searchBtnTapped){
+            option = HeaderExpandNoEntryFoundOption;
+        }
+        [self expandHeaderViewWithOption: option];
     }
 }
 
@@ -64,12 +70,21 @@
     return UIStatusBarStyleDefault;
 }
 
--(void)expandHeaderView{
+-(void)expandHeaderViewWithOption: (HeaderExpandOpton)option {
     [self.headerView setHidden:NO];
     CGSize size = self.view.frame.size;
     CGFloat headerViewWidth = size.width;
     CGFloat headerViewHeight = size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
     self.headerView.frame = CGRectMake(0, 0, headerViewWidth, headerViewHeight);
+    [self.tableView bringSubviewToFront:self.headerView];
+    switch (option) {
+        case HeaderExpandNoEntryFoundOption:
+            self.headerTextDescriptionLabel.text = NoSearchEntryFoundHeaderMessage;
+            break;
+        default:
+            self.headerTextDescriptionLabel.text = DefaultHeaderMessage;
+            break;
+    }
 }
 
 -(void) searchIconTapped: (NSNotification*) notification{
@@ -85,7 +100,9 @@
 -(void)showSkyCastMapView{
     ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
     [containerVC bringMainViewToFront];
-    [self expandHeaderView];
+    HeaderExpandOpton option;
+    option = HeaderExpandDefaultOption;
+    [self expandHeaderViewWithOption:option];
     [self.searchController.searchBar resignFirstResponder];
     self.searchController.searchBar.text = @"";
     self.placeMarks = nil;
@@ -144,6 +161,7 @@
 //MARK: - UISearchBarDelegate
 -(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     self.isKeyBoardVisible = YES;
+    self.searchBtnTapped = NO;
     CGPoint newPoint = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + 60);
     [UIView animateWithDuration:0.3f animations:^{
         self.tableView.contentOffset = newPoint;
@@ -156,6 +174,9 @@
     self.isKeyBoardVisible = NO;
 }
 
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    self.didUserStartTyping = YES;
+}
 
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
@@ -163,8 +184,13 @@
     }
 }
 
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    self.didUserStartTyping = YES;
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    self.searchBtnTapped = YES;
+    NSLog(@"Search btn was clicked");
 }
+
+
+
+
 
 @end

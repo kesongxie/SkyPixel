@@ -11,6 +11,8 @@
 #import "ContainerViewController.h"
 
 
+typedef enum ExpandHeaderOption {HeaderExpandDefaultOption, HeaderExpandNoEntryFoundOption} HeaderExpandOpton;
+
 @interface ExploreSearchTableViewController : UITableViewController<UISearchResultsUpdating, UISearchBarDelegate>
 
 @end

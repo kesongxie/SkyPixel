@@ -439,11 +439,11 @@
         <scene sceneID="95F-iH-H4u">
             <objects>
                 <tableViewController id="4ZH-G9-TJT" userLabel="Explore Scene" customClass="ExploreSearchTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="94" sectionHeaderHeight="28" sectionFooterHeight="28" id="HFR-Ll-BLq">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="94" sectionHeaderHeight="28" sectionFooterHeight="28" id="HFR-Ll-BLq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="1gN-lr-BHS" userLabel="Header View">
+                        <view key="tableHeaderView" clipsSubviews="YES" contentMode="scaleToFill" id="1gN-lr-BHS" userLabel="Header View">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="353"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -461,7 +461,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="cL6-Cb-1EA" firstAttribute="centerX" secondItem="1gN-lr-BHS" secondAttribute="centerX" id="AJN-eW-ohw"/>
                                 <constraint firstItem="hrE-YZ-bPJ" firstAttribute="leading" secondItem="1gN-lr-BHS" secondAttribute="leading" constant="20" symbolic="YES" id="AWv-gt-ReJ"/>
@@ -525,6 +525,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="S1r-s1-qLE"/>
                     <connections>
+                        <outlet property="headerTextDescriptionLabel" destination="hrE-YZ-bPJ" id="LnX-db-TQ6"/>
                         <outlet property="headerView" destination="1gN-lr-BHS" id="9JS-dh-Cd7"/>
                     </connections>
                 </tableViewController>
