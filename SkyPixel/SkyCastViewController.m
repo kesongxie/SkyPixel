@@ -19,7 +19,8 @@ static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
 static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
 static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
-static NSString const* email1 = @"kesongxie@skypixel.com";
+static NSString* const email1 = @"kesongxie@skypixel.com";
+static CGFloat const searchRadius = 10000; //load video within 10 km from the locationCenter
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -33,8 +34,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 @property (strong, nonatomic) PlayerView* playerView;
 @property (strong, nonatomic) NSString* payerItemContext;
 @property (strong, nonatomic) UISearchController* searchController;
-
-//static const NSString *playerItemContext;
+@property (strong, nonatomic) CLLocation* locationCenter; //the surrounding footage will be loaded
 
 //create a video stream record
 - (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset;
@@ -89,7 +89,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     [self.locationManager requestWhenInUseAuthorization];
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
-        [self fetchLive];
+//        [self fetchLive];
       //  [self createEntries];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
@@ -119,9 +119,12 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
                     spotAnnotation.subtitle = subTitle;
                 }
             }
+            self.locationCenter = location;
             [self.mapView addAnnotation:spotAnnotation];
             MKCoordinateRegion region = MKCoordinateRegionMake(location.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
             [self.mapView setRegion:region];
+            //fetch live
+            [self fetchLive];
         });
     }else{
         NSLog(@"location is nil");
@@ -214,14 +217,17 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 - (void) fetchLive {
     //start loading drone flying user
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
+//    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
 //    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"live = %i", 1];
 
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", self.locationCenter, searchRadius];
+    
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
     self.navigationItem.title = @"SEARCHING...";
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
         if(error == nil){
             if(records){
+                NSLog(@"the record count is %i", records.count);
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
                 for(CKRecord* record in records){
                     //record user
@@ -367,7 +373,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [manager startUpdatingLocation];
        // [self createEntries];
-        [self fetchLive];
+//        [self fetchLive];
     }else{
         NSLog(@"Location not authorized");
     }
@@ -376,8 +382,10 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 -(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
     if([locations count] > 0){
         CLLocation* currentLocation = locations.lastObject;
+        self.locationCenter = currentLocation;
         MKCoordinateRegion region = MKCoordinateRegionMake(currentLocation.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
         [self.mapView setRegion:region];
+        [self fetchLive];
         [manager stopUpdatingLocation];
     }
 }
