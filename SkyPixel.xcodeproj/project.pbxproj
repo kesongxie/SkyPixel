@@ -19,7 +19,6 @@
 		98621AB71DFD555500417978 /* PlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621AB61DFD555500417978 /* PlayView.m */; };
 		98621ABB1DFE94D800417978 /* CastingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621ABA1DFE94D800417978 /* CastingViewController.m */; };
 		988E69291E04F89A00A9D893 /* ExploreSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */; };
-		98AD1AA81DFB519E00679629 /* draft.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AD1AA71DFB519E00679629 /* draft.m */; };
 		98AEEB491E052B4000431481 /* ExploreSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AEEB481E052B4000431481 /* ExploreSearchViewController.m */; };
 		98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98AF06471DFA88AF0060D993 /* Assets.xcassets */; };
 		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
@@ -54,7 +53,6 @@
 		98621ABC1DFE94DF00417978 /* CastingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastingViewController.h; sourceTree = "<group>"; };
 		988E69271E04F86000A9D893 /* ExploreSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewCell.h; sourceTree = "<group>"; };
 		988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchTableViewCell.m; sourceTree = "<group>"; };
-		98AD1AA71DFB519E00679629 /* draft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = draft.m; sourceTree = "<group>"; };
 		98AEEB471E052B2C00431481 /* ExploreSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchViewController.h; sourceTree = "<group>"; };
 		98AEEB481E052B4000431481 /* ExploreSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchViewController.m; sourceTree = "<group>"; };
 		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -145,7 +143,6 @@
 			children = (
 				98621A851DFCA40500417978 /* avator */,
 				98621A831DFC9B7500417978 /* clip */,
-				98AD1AA71DFB519E00679629 /* draft.m */,
 				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
 				98C3DD541DF0F5CC00F6B49B /* Products */,
 				98DDFFF91DF600D300E2E762 /* Frameworks */,
@@ -325,7 +322,6 @@
 				980498841E02A72D0091A37C /* ContainerViewController.m in Sources */,
 				98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
-				98AD1AA81DFB519E00679629 /* draft.m in Sources */,
 				98621AB71DFD555500417978 /* PlayView.m in Sources */,
 				98AEEB491E052B4000431481 /* ExploreSearchViewController.m in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,

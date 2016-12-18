@@ -28,19 +28,23 @@
     }
 }
 
-
 -(void) updateUI{
-    NSDictionary* addr = self.placeMark.addressDictionary;
+    self.placeAddress.text = [ExploreSearchTableViewCell getAddressFromPlaceMark:self.placeMark];
+    self.placeMarkName.text = self.placeMark.name;
+}
+
+
++(NSString*)getAddressFromPlaceMark: (CLPlacemark*) placeMark{
+    NSDictionary* addr = placeMark.addressDictionary;
     NSString* street = addr[@"Street"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"Street"]] : @"";
     NSString* subLocality = addr[@"SubLocality"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"SubLocality"]] : @"";
     NSString* state = addr[@"State"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"State"]] : @"";
-
+    
     NSString* postCode = addr[@"ZIP"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"ZIP"]] : @"";
     
     NSString* country = addr[@"Country"] != nil ? [NSString stringWithFormat:@"%@", addr[@"Country"]] : @"";
-
-    self.placeAddress.text = [NSString stringWithFormat:@"%@%@%@%@%@", street,subLocality, state, postCode,country];
-    self.placeMarkName.text = self.placeMark.name;
+    
+    return [NSString stringWithFormat:@"%@%@%@%@%@", street,subLocality, state, postCode,country];
 }
 
 @end

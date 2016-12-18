@@ -46,7 +46,10 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 
 - (void) createEntries;
 
-- (void) prepareToPlayWithURL: (NSURL*)url;
+
+// Load video and play
+// **Make sure the asset and playerView of the view controller is set**
+- (void) prepareToPlay;
 
 - (void)removeHardLinkToVideoFile: (NSURL*)fileURL;
 
@@ -105,9 +108,21 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     CLLocation* location = (CLLocation*)notification.userInfo[@"location"];
     if(location != nil){
         //update
-        MKCoordinateRegion region = MKCoordinateRegionMake(location.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
-        [self.mapView setRegion:region];
-        NSLog(@"notification receievd");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            MKPointAnnotation* spotAnnotation = [[MKPointAnnotation alloc] init];
+            [spotAnnotation setCoordinate:location.coordinate];
+            NSString* title = (NSString*)notification.userInfo[@"title"];
+            if(title != nil){
+                spotAnnotation.title = title;
+                NSString* subTitle = (NSString*)notification.userInfo[@"subTitle"];
+                if(subTitle != nil){
+                    spotAnnotation.subtitle = subTitle;
+                }
+            }
+            [self.mapView addAnnotation:spotAnnotation];
+            MKCoordinateRegion region = MKCoordinateRegionMake(location.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
+            [self.mapView setRegion:region];
+        });
     }else{
         NSLog(@"location is nil");
     }
@@ -121,8 +136,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 -(BOOL)hidesBottomBarWhenPushed {
     return YES;
 }
-
-
 
 //this is called to initilize the icloud storage with preset data
 -(void) createEntries{
@@ -175,8 +188,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     }];
 }
 
-
-
 - (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset  {
     CKRecord* videoStreamRecord = [[CKRecord alloc] initWithRecordType:@"videostream"];
     videoStreamRecord[@"title"] = title;
@@ -204,6 +215,8 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     //start loading drone flying user
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
     NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
+//    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"live = %i", 1];
+
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
     self.navigationItem.title = @"SEARCHING...";
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
@@ -231,7 +244,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
                     }];
                 }
             }
-            
         }else{
             NSLog(@"%@", error.localizedDescription);
         }
@@ -246,25 +258,34 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
-
 //MARK: - Audio player
 -(UIImage *)generateThumbImage : (NSURL *)url
 {
     AVAsset *asset = [AVAsset assetWithURL:url];
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
     imageGenerator.appliesPreferredTrackTransform = YES;
-    CMTime time = [asset duration];
+    CMTime time = kCMTimeZero;
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
-    UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+    UIImage *originImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
-    return thumbnail;
+    UIImage* squareImage = [self cropSquareFromImage:originImage];
+    return squareImage;
 }
 
-- (void) prepareToPlayWithURL: (NSURL*)url {
-    // Create asset to be played
-    NSURL* viedoURL = [self videoURL:url];
-    AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-    self.asset = asset;
+-(UIImage *) cropSquareFromImage : (UIImage *)image{
+    CGFloat idealLengthOfSuqare = (image.size.width > image.size.height) ? image.size.height : image.size.width;
+    CGSize squareSize = CGSizeMake(idealLengthOfSuqare, idealLengthOfSuqare);
+    UIGraphicsBeginImageContextWithOptions(squareSize, YES, 1.0);
+    
+    CGRect drawRect = CGRectMake(0, 0, idealLengthOfSuqare, idealLengthOfSuqare);
+    [image drawInRect:drawRect];
+    UIImage* suqreImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return suqreImage;
+}
+
+
+- (void) prepareToPlay {
     // Create a new AVPlayerItem with the asset and an
     // array of asset keys to be automatically loaded
     NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
@@ -325,8 +346,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
     }
 }
 
-
-
 //MARK: - Prepare for segue
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     [self.player pause];
@@ -342,7 +361,6 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
         }
     }
 }
-
 
 //MARK: - CLLocationManagerDelegate
 -(void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
@@ -369,6 +387,8 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 -(MKAnnotationView*) mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
     if([annotation isKindOfClass:[ MKUserLocation class]]){
         return nil;
+    }else if([annotation isKindOfClass:[ MKPointAnnotation class]]){
+        return nil;
     }
     MKAnnotationView* annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier: MapViewReuseIdentifier];
     if(!annotationView){
@@ -377,6 +397,7 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
         annotationView.annotation = annotation;
     }
     VideoStream* videoStream = (VideoStream*)annotation;
+    
     annotationView.image = [self generateThumbImage:[self videoURL:videoStream.url]];
     annotationView.frame = CGRectMake(0, 0, 60, 60);
     annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
@@ -400,28 +421,31 @@ static NSString const* email1 = @"kesongxie@skypixel.com";
 }
 
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
-    if(![view.annotation isKindOfClass:[MKUserLocation class]]){
+    if([view.annotation isKindOfClass:[VideoStream class]]){
         //configure left callout accessory view
         VideoStream* videoStream = (VideoStream*)view.annotation;
-        CGRect frame = CGRectMake(0, 0, 81, 49);
+        NSURL* viedoURL = [self videoURL:videoStream.url];
+        AVAsset* asset = [AVAsset assetWithURL:viedoURL];
+        self.asset = asset;
+        CGSize footageSize = self.asset.tracks.firstObject.naturalSize;
+        CGRect frame = CGRectMake(0, 0, (49.0 * footageSize.width / footageSize.height), 49.0);
         self.playerView = [[PlayerView alloc] initWithFrame:frame];
         self.playerView.backgroundColor = [UIColor blackColor];
         view.leftCalloutAccessoryView = self.playerView;
         
-        //configure right callout accessory view
+        //configure right callout accessory view and btn
         UIImage* arrowIcon = [UIImage imageNamed:@"arrow-icon"];
-        
         UIButton* disclosureBtn = [[UIButton alloc]init];
         [disclosureBtn sizeToFit];
         [disclosureBtn setBackgroundImage:arrowIcon forState:UIControlStateNormal];
         view.rightCalloutAccessoryView = disclosureBtn;
         
-        [self prepareToPlayWithURL:videoStream.url];
+        [self prepareToPlay];
     }
 }
 
 -(void) mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
-     if(![view.annotation isKindOfClass:[MKUserLocation class]]){
+     if([view.annotation isKindOfClass:[VideoStream class]]){
          [self resetPlayer];
      }
 };

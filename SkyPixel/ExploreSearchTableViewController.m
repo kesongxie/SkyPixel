@@ -117,7 +117,8 @@
     //bring the bottom to the top
     CLLocation* location = placeMark.location;
     //post a notification back to the skycastvc and set the new location
-    NSDictionary* userInfo = @{@"location": location};
+    NSDictionary* userInfo = @{@"location": location, @"title": placeMark.name, @"subTitle": [ExploreSearchTableViewCell getAddressFromPlaceMark:placeMark]};
+    
     NSNotification* notification = [[NSNotification alloc] initWithName:@"LocationSelected" object:self userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     [self showSkyCastMapView];

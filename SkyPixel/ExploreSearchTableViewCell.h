@@ -18,4 +18,6 @@
 
 -(void)setPlaceMark:(CLPlacemark *)placeMark;
 
++(NSString*)getAddressFromPlaceMark: (CLPlacemark*) placeMark;
+
 @end
