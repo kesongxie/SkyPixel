@@ -9,13 +9,11 @@
 #import  <CoreLocation/CoreLocation.h>
 #import "CastingViewController.h"
 #import "PlayView.h"
+#import "AppDelegate.h"
 
 @interface CastingViewController()
 
-//@property (strong, nonatomic)  PlayerView *playerView;
-
 @property (weak, nonatomic) IBOutlet PlayerView *playerView;
-@property (weak, nonatomic) IBOutlet UIImageView *playIconImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *locationBtn;
@@ -25,18 +23,24 @@
 @property (weak, nonatomic) IBOutlet UIImageView *liveIcon;
 @property (weak, nonatomic) IBOutlet UILabel *viewStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewCountsLabel;
+@property (weak, nonatomic) IBOutlet UIView *pinFooterView;
+@property (weak, nonatomic) IBOutlet UIStackView *favorWrapperView;
+@property (weak, nonatomic) IBOutlet UIImageView *favorIconImageView;
+@property (weak, nonatomic) IBOutlet UILabel *favorCountLabel;
+@property (weak, nonatomic) IBOutlet UIStackView *commentWrapperView;
+@property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
+@property (weak, nonatomic) IBOutlet UIStackView *optionWrapperView;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
 
 //update the user information, such as fullname, avator
--(void) updateUI;
-
-////update video info, such as title
-//-(void) updateStreamInfo;
+-(void)updateUI;
 
 -(void)didPlayToEnd:(NSNotification*)notification;
 
+//this is function is responsible for updating the favor and comment count
+-(void)updatePinBottomViewUI;
 
 @end
 
@@ -68,9 +72,65 @@
                 [self.locationBtn setTitle: placeMark.name forState:UIControlStateNormal];
             }
         }];
+        
+        //add tap gesture for the icon
+        UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
+        [self.favorIconImageView addGestureRecognizer:favorTapped];
+        
+        //add tap gesture for the comment wrapper view
+        UITapGestureRecognizer* commentWrapperTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperTapped:)];
+        [self.commentWrapperView addGestureRecognizer:commentWrapperTapped];
+        
+        
+        //update pinFooterViewUI
+        
     }
 }
 
+
+-(void)updatePinBottomViewUI{
+    NSNumber* favorCount = [NSNumber numberWithInteger:self.videoStream.favorUserList.count];
+    self.favorCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:favorCount];
+    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
+    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
+    UIImage* heartIconImage;
+    
+    NSLog(@"the loggedin reference is %@", loggedInReference);
+    NSLog(@"the loggedin reference list is %@", self.videoStream.favorUserList);
+
+    if([self.videoStream.favorUserList containsObject:loggedInReference]){
+        heartIconImage = [UIImage imageNamed:@"favor-icon-red"];
+    }else{
+        heartIconImage =  [UIImage imageNamed:@"favor-icon"];
+        NSLog(@"NIL");
+    }
+    self.favorIconImageView.image = heartIconImage;
+}
+
+
+
+-(void)favorTapped: (UITapGestureRecognizer*)gesture{
+    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
+    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
+    UIImage* heartIconImage;
+    NSNumber* count = [[NSNumberFormatter alloc]numberFromString:self.favorCountLabel.text];
+    if([self.videoStream.favorUserList containsObject:loggedInReference]){
+        heartIconImage =  [UIImage imageNamed:@"favor-icon"];
+        count = [NSNumber numberWithInteger:[count integerValue] - 1];
+    }else{
+        heartIconImage = [UIImage imageNamed:@"favor-icon-red"];
+        count = [NSNumber numberWithInteger:[count integerValue] + 1];
+    }
+    self.favorIconImageView.image = heartIconImage;
+    self.favorCountLabel.text = [[NSNumberFormatter alloc] stringFromNumber:count];
+}
+
+-(void)commentWrapperTapped: (UITapGestureRecognizer*)gesture{
+    //show a new segue
+    
+}
 
 
 
@@ -84,6 +144,7 @@
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     [self adjustVideoFrame];
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, self.pinFooterView.frame.size.height, 0);
 }
 
 -(void) viewDidAppear:(BOOL)animated{
@@ -111,7 +172,8 @@
     self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.height / 2;
     self.avatorImageView.clipsToBounds = YES;
     self.videoTitleLabel.text = self.videoStream.title;
-
+    [self updatePinBottomViewUI];
+    
 }
 
 
@@ -127,7 +189,6 @@
         dispatch_async(dispatch_get_main_queue(),^{
             if ((self.player.currentItem != nil) &&
                 ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-                [self.playIconImageView setHidden:YES];
                 [self.player play];
             }
         });

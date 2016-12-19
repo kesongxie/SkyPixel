@@ -14,7 +14,7 @@
 
 @implementation VideoStream
 
-- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSInteger)live{
+- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSInteger)live favorUserList: (NSArray<CKReference*>*) favorUserList{
     self = [super init];
     if(self){
         self.title = title;
@@ -22,6 +22,7 @@
         self.url = url;
         self.location = location;
         self.live = live;
+        self.favorUserList = favorUserList;
     }
     return self;
 }

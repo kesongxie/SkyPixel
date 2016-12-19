@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <CloudKit/CloudKit.h>
 
 extern NSNotificationName const DocumentReadyNotificationName;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) CKRecord* loggedInRecord;
 
 @end
 

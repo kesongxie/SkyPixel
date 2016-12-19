@@ -19,6 +19,23 @@ NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotifica
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
+    //fetch a user and log in
+    CKDatabase* db = [[CKContainer defaultContainer] publicCloudDatabase];
+    NSString* email = @"kesongxie@skypixel.com";
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"email=%@", email];
+    CKQuery* fetchQuery = [[CKQuery alloc]initWithRecordType:@"User" predicate:predicate];
+    
+    [db performQuery:fetchQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable users, NSError * _Nullable error) {
+        if(error != nil){
+            NSLog(@"%@", error.localizedDescription);
+        }else{
+            if(users.count == 1){
+                self.loggedInRecord = users.firstObject;
+                NSLog(@"The logged in user is %@", self.loggedInRecord[@"fullname"]);
+            }
+        }
+    }];
     return YES;
 }
 

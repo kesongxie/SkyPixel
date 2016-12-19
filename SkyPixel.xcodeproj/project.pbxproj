@@ -171,8 +171,6 @@
 				98D965551DF5074400335CC6 /* Category */,
 				98D965511DF5043000335CC6 /* SkyCast */,
 				98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */,
-				98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */,
-				98C3DD671DF0F5CC00F6B49B /* Info.plist */,
 				98AF06471DFA88AF0060D993 /* Assets.xcassets */,
 				98C3DD561DF0F5CC00F6B49B /* Supporting Files */,
 			);
@@ -182,6 +180,7 @@
 		98C3DD561DF0F5CC00F6B49B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				98C3DD671DF0F5CC00F6B49B /* Info.plist */,
 				98C3DD571DF0F5CC00F6B49B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -217,6 +216,7 @@
 		98DDFFF81DF5F7B800E2E762 /* LaunchScreen */ = {
 			isa = PBXGroup;
 			children = (
+				98C3DD641DF0F5CC00F6B49B /* LaunchScreen.storyboard */,
 			);
 			name = LaunchScreen;
 			sourceTree = "<group>";

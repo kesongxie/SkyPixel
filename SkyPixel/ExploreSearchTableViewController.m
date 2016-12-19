@@ -23,6 +23,8 @@ static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
 @property (nonatomic) BOOL viewShouldExpand;
 @property (nonatomic) BOOL searchBtnTapped;
 
+
+
 -(void)expandHeaderViewWithOption: (HeaderExpandOpton)option;
 
 -(void)collapseHeaderView;
@@ -56,7 +58,6 @@ static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     if(!self.isKeyBoardVisible && self.placeMarks.count == 0){
-        NSLog(@"called from layout subview");
         HeaderExpandOpton option;
         option = HeaderExpandDefaultOption;
         if(self.searchBtnTapped){
@@ -186,7 +187,6 @@ static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     self.searchBtnTapped = YES;
-    NSLog(@"Search btn was clicked");
 }
 
 

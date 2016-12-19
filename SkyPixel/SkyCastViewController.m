@@ -228,7 +228,12 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
             if(records){
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
                 for(CKRecord* record in records){
-                    //record user
+                    CLLocation* location = record[@"location"];
+                    CKAsset* videoAsset = record[@"video"];
+                    NSNumber* live = record[@"live"];
+                    NSString* title = record[@"title"];
+                    NSArray<CKReference*>* favorUserList = record[@"favorUserList"];
+                    //record user and fetch
                     CKReference* userReference = record[@"user"];
                     CKRecordID* userRecordId = userReference.recordID;
                     [publicDB fetchRecordWithID:userRecordId completionHandler:^(CKRecord* userRecord, NSError* error) {
@@ -237,10 +242,7 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
                             NSString* fullname = userRecord[@"fullname"];
                             CKAsset* avator = userRecord[@"avator"];
                             User* user = [[User alloc]init:fullname emailAddress:email avatorUrl:avator.fileURL];
-                            CLLocation* location = record[@"location"];
-                            CKAsset* videoAsset = record[@"video"];
-                            NSNumber* live = record[@"live"];
-                            VideoStream* videoStream = [[VideoStream alloc] init:record[@"title"] broadcastUser:user videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: live.intValue];
+                            VideoStream* videoStream = [[VideoStream alloc] init:title broadcastUser:user videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: live.intValue favorUserList:favorUserList];
                             [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
                             [self.mapView addAnnotations: self.videoStreamAnnotations];
                             self.navigationItem.title = @"SKYCAST";
@@ -272,8 +274,8 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
     UIImage *originImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
-    UIImage* squareImage = [self cropSquareFromImage:originImage];
-    return squareImage;
+//    UIImage* squareImage = [self cropSquareFromImage:originImage];
+    return originImage;
 }
 
 -(UIImage *) cropSquareFromImage : (UIImage *)image{

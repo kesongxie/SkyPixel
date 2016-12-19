@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <CloudKit/CloudKit.h>
 #import "User.h"
 
 @interface VideoStream : NSObject
@@ -18,8 +19,8 @@
 @property (strong, nonatomic) CLLocation* location;
 @property (strong, nonatomic) NSURL* url;
 @property (nonatomic) NSInteger live;
+@property (strong, nonatomic) NSArray<CKReference*>* favorUserList;
 
-- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSInteger)live;
-
+- (id)init: (NSString*)title broadcastUser: (User*)user videoStreamUrl: (NSURL*)url streamLocation: (CLLocation*) location isLive: (NSInteger)live favorUserList: (NSArray<CKReference*>*) favorUserList;
 - (BOOL) isLive;
 @end
