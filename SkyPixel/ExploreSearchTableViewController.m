@@ -23,8 +23,6 @@ static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
 @property (nonatomic) BOOL viewShouldExpand;
 @property (nonatomic) BOOL searchBtnTapped;
 
-
-
 -(void)expandHeaderViewWithOption: (HeaderExpandOpton)option;
 
 -(void)collapseHeaderView;

@@ -28,6 +28,9 @@
 		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
 		98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */; };
 		98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DDFFFA1DF600D300E2E762 /* MapKit.framework */; };
+		98F8BD911E08B14200A9E3D2 /* CKReference+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */; };
+		98F8BD931E08C38C00A9E3D2 /* FavorUserListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD921E08C38C00A9E3D2 /* FavorUserListTableViewController.m */; };
+		98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +71,12 @@
 		98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyTabBarViewController.h; sourceTree = "<group>"; };
 		98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyTabBarViewController.m; sourceTree = "<group>"; };
 		98DDFFFA1DF600D300E2E762 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		98F8BD8F1E08B14200A9E3D2 /* CKReference+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CKReference+Comparison.h"; sourceTree = "<group>"; };
+		98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CKReference+Comparison.m"; sourceTree = "<group>"; };
+		98F8BD921E08C38C00A9E3D2 /* FavorUserListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorUserListTableViewController.m; sourceTree = "<group>"; };
+		98F8BD941E08C39400A9E3D2 /* FavorUserListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavorUserListTableViewController.h; sourceTree = "<group>"; };
+		98F8BD961E08C68F00A9E3D2 /* FavorTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavorTableViewCell.h; sourceTree = "<group>"; };
+		98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +99,8 @@
 				98621A891DFCBBE100417978 /* User.m */,
 				98621A901DFCCCCC00417978 /* VideoStream.h */,
 				98621A8E1DFCCCC300417978 /* VideoStream.m */,
+				98F8BD8F1E08B14200A9E3D2 /* CKReference+Comparison.h */,
+				98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -99,6 +110,7 @@
 			children = (
 				98621ABC1DFE94DF00417978 /* CastingViewController.h */,
 				98621ABA1DFE94D800417978 /* CastingViewController.m */,
+				98F8BD951E08C3F100A9E3D2 /* Favor User List */,
 			);
 			name = Casting;
 			sourceTree = "<group>";
@@ -230,6 +242,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		98F8BD951E08C3F100A9E3D2 /* Favor User List */ = {
+			isa = PBXGroup;
+			children = (
+				98F8BD941E08C39400A9E3D2 /* FavorUserListTableViewController.h */,
+				98F8BD921E08C38C00A9E3D2 /* FavorUserListTableViewController.m */,
+				98F8BD961E08C68F00A9E3D2 /* FavorTableViewCell.h */,
+				98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */,
+			);
+			name = "Favor User List";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -316,6 +339,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98F8BD911E08B14200A9E3D2 /* CKReference+Comparison.m in Sources */,
+				98F8BD931E08C38C00A9E3D2 /* FavorUserListTableViewController.m in Sources */,
 				98621ABB1DFE94D800417978 /* CastingViewController.m in Sources */,
 				988E69291E04F89A00A9D893 /* ExploreSearchTableViewCell.m in Sources */,
 				98621A8A1DFCBBE100417978 /* User.m in Sources */,
@@ -326,6 +351,7 @@
 				98AEEB491E052B4000431481 /* ExploreSearchViewController.m in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
+				98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
 				98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */,
 				9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */,

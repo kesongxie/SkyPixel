@@ -35,6 +35,7 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
 @property (strong, nonatomic) NSString* payerItemContext;
 @property (strong, nonatomic) UISearchController* searchController;
 @property (strong, nonatomic) CLLocation* locationCenter; //the surrounding footage will be loaded
+@property (nonatomic) BOOL isFetchingRecord;
 
 //create a video stream record
 - (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset;
@@ -90,6 +91,7 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
       //  [self createEntries];
+
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
    
@@ -214,38 +216,34 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
 }
 
 - (void) fetchLive {
+    if(self.isFetchingRecord){
+        return;
+    }
     //start loading drone flying user
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
 //    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
 //    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"live = %i", 1];
-
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", self.locationCenter, searchRadius];
-    
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
     self.navigationItem.title = @"SEARCHING...";
-    [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* records, NSError* error){
+    self.isFetchingRecord = YES;
+    [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* videoStreamRecords, NSError* error){
         if(error == nil){
-            if(records){
+            if(videoStreamRecords){
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
-                for(CKRecord* record in records){
-                    CLLocation* location = record[@"location"];
-                    CKAsset* videoAsset = record[@"video"];
-                    NSNumber* live = record[@"live"];
-                    NSString* title = record[@"title"];
-                    NSArray<CKReference*>* favorUserList = record[@"favorUserList"];
-                    //record user and fetch
-                    CKReference* userReference = record[@"user"];
-                    CKRecordID* userRecordId = userReference.recordID;
-                    [publicDB fetchRecordWithID:userRecordId completionHandler:^(CKRecord* userRecord, NSError* error) {
+                __block NSInteger userFetchedCompletedCount = 0;
+                for(CKRecord* streamRecord in videoStreamRecords){
+                    VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:streamRecord];
+                    [videoStream fetchUserForVideoStream:^(CKRecord *userRecord, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            NSString* email = userRecord[@"email"];
-                            NSString* fullname = userRecord[@"fullname"];
-                            CKAsset* avator = userRecord[@"avator"];
-                            User* user = [[User alloc]init:fullname emailAddress:email avatorUrl:avator.fileURL];
-                            VideoStream* videoStream = [[VideoStream alloc] init:title broadcastUser:user videoStreamUrl:videoAsset.fileURL streamLocation:location isLive: live.intValue favorUserList:favorUserList];
                             [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
                             [self.mapView addAnnotations: self.videoStreamAnnotations];
-                            self.navigationItem.title = @"SKYCAST";
+                            userFetchedCompletedCount = userFetchedCompletedCount + 1;
+                            if(userFetchedCompletedCount == videoStreamRecords.count){
+                                //The fetching for all the users are now completed
+                                self.navigationItem.title = @"SKYCAST";
+                                self.isFetchingRecord = NO;
+                            }
                         });
                     }];
                 }
@@ -274,8 +272,8 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
     UIImage *originImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
-//    UIImage* squareImage = [self cropSquareFromImage:originImage];
-    return originImage;
+    UIImage* squareImage = [self cropSquareFromImage:originImage];
+    return squareImage;
 }
 
 -(UIImage *) cropSquareFromImage : (UIImage *)image{
@@ -289,7 +287,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     UIGraphicsEndImageContext();
     return suqreImage;
 }
-
 
 - (void) prepareToPlay {
     // Create a new AVPlayerItem with the asset and an
@@ -403,7 +400,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
         annotationView.annotation = annotation;
     }
     VideoStream* videoStream = (VideoStream*)annotation;
-    
     annotationView.image = [self generateThumbImage:[self videoURL:videoStream.url]];
     annotationView.frame = CGRectMake(0, 0, 60, 60);
     annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];

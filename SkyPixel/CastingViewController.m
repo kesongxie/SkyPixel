@@ -7,9 +7,13 @@
 //
 
 #import  <CoreLocation/CoreLocation.h>
+#import "AppDelegate.h"
 #import "CastingViewController.h"
 #import "PlayView.h"
-#import "AppDelegate.h"
+#import "FavorUserListTableViewController.h"
+
+static NSString* const FavorIconWhite = @"favor-icon";
+static NSString* const FavorIconRed = @"favor-icon-red";
 
 @interface CastingViewController()
 
@@ -34,6 +38,9 @@
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
 
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+
+
 //update the user information, such as fullname, avator
 -(void)updateUI;
 
@@ -42,6 +49,15 @@
 //this is function is responsible for updating the favor and comment count
 -(void)updatePinBottomViewUI;
 
+
+-(void)favorTapped: (UITapGestureRecognizer*)gesture;
+
+
+//remove the given user reference form the userFavorList of referenList in video stream
+-(void)addFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
+
+//add the given user reference to the userFavorList of referenList in video stream
+-(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
 @end
 
 @implementation CastingViewController
@@ -78,68 +94,15 @@
         [self.favorIconImageView addGestureRecognizer:favorTapped];
         
         //add tap gesture for the comment wrapper view
-        UITapGestureRecognizer* commentWrapperTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperTapped:)];
-        [self.commentWrapperView addGestureRecognizer:commentWrapperTapped];
+        UITapGestureRecognizer* commentWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperViewTapped:)];
+        [self.commentWrapperView addGestureRecognizer:commentWrapperTapGesture];
         
-        
-        //update pinFooterViewUI
-        
+        //add tap gesture for favorWrapperView
+        UITapGestureRecognizer* favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
+        [self.favorWrapperView addGestureRecognizer:favorWrapperTapGesture];
+
     }
 }
-
-
--(void)updatePinBottomViewUI{
-    NSNumber* favorCount = [NSNumber numberWithInteger:self.videoStream.favorUserList.count];
-    self.favorCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:favorCount];
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
-    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
-    UIImage* heartIconImage;
-    
-    NSLog(@"the loggedin reference is %@", loggedInReference);
-    NSLog(@"the loggedin reference list is %@", self.videoStream.favorUserList);
-
-    if([self.videoStream.favorUserList containsObject:loggedInReference]){
-        heartIconImage = [UIImage imageNamed:@"favor-icon-red"];
-    }else{
-        heartIconImage =  [UIImage imageNamed:@"favor-icon"];
-        NSLog(@"NIL");
-    }
-    self.favorIconImageView.image = heartIconImage;
-}
-
-
-
--(void)favorTapped: (UITapGestureRecognizer*)gesture{
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
-    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
-    UIImage* heartIconImage;
-    NSNumber* count = [[NSNumberFormatter alloc]numberFromString:self.favorCountLabel.text];
-    if([self.videoStream.favorUserList containsObject:loggedInReference]){
-        heartIconImage =  [UIImage imageNamed:@"favor-icon"];
-        count = [NSNumber numberWithInteger:[count integerValue] - 1];
-    }else{
-        heartIconImage = [UIImage imageNamed:@"favor-icon-red"];
-        count = [NSNumber numberWithInteger:[count integerValue] + 1];
-    }
-    self.favorIconImageView.image = heartIconImage;
-    self.favorCountLabel.text = [[NSNumberFormatter alloc] stringFromNumber:count];
-}
-
--(void)commentWrapperTapped: (UITapGestureRecognizer*)gesture{
-    //show a new segue
-    
-}
-
-
-
-
--(void) didPlayToEnd:(NSNotification*)notification{
-    [self.player seekToTime:kCMTimeZero];
-    [self.player play];
-}
-
 
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
@@ -157,13 +120,11 @@
     self.viewCountsLabel.text = [NSString stringWithFormat: @"%ld", (long)newCount];
 }
 
-
 -(void) updateUI{
     if([self.videoStream isLive]){
         self.title = @"LIVE NOW";
         [self.liveIcon setHidden:NO];
         self.viewStatusLabel.text = @"PEOPLE VIEWING";
-        
     }
     self.fullnameLabel.text = self.user.fullname;
     NSData* imageData = [[NSData alloc]initWithContentsOfURL:self.user.avatorUrl];
@@ -172,11 +133,98 @@
     self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.height / 2;
     self.avatorImageView.clipsToBounds = YES;
     self.videoTitleLabel.text = self.videoStream.title;
+    NSLog(@"length is %i", self.videoStream.description.length);
+    
+    self.descriptionLabel.text = self.videoStream.description;
+    if(self.descriptionLabel.text.length == 0){
+        self.descriptionLabel.text = @"No description available";
+        self.descriptionLabel.textColor = [UIColor colorWithRed:90/255.0 green:90/255.0 blue:90/255.0 alpha:1]; //lighter gray
+    }
     [self updatePinBottomViewUI];
+}
+
+-(void)updatePinBottomViewUI{
+    NSNumber* favorCount = [NSNumber numberWithInteger:self.videoStream.favorUserList.count];
+    self.favorCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:favorCount];
+    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
+    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionNone];
+    UIImage* heartIconImage;
+    if([self.videoStream.favorUserList containsObject:loggedInReference]){
+        heartIconImage = [UIImage imageNamed: FavorIconRed];
+    }else{
+        heartIconImage =  [UIImage imageNamed: FavorIconWhite];
+    }
+    self.favorIconImageView.image = heartIconImage;
+}
+
+-(void)favorTapped: (UITapGestureRecognizer*)gesture{
+    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
+    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
+    __block UIImage* heartIconImage;
+    __block NSNumber* count = [[NSNumberFormatter alloc]numberFromString:self.favorCountLabel.text];
+    if([self.videoStream.favorUserList containsObject:loggedInReference]){
+       //delete favor
+        [self deleteFavorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
+            heartIconImage = [UIImage imageNamed: FavorIconWhite];
+            count = [NSNumber numberWithInteger:[count integerValue] - 1];
+            self.favorIconImageView.image = heartIconImage;
+            self.favorCountLabel.text = [[NSNumberFormatter alloc] stringFromNumber:count];
+        }];
+    }else{
+        //add favor
+        [self addFavorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
+            heartIconImage = [UIImage imageNamed: FavorIconRed];
+            count = [NSNumber numberWithInteger:[count integerValue] + 1];
+            self.favorIconImageView.image = heartIconImage;
+            self.favorCountLabel.text = [[NSNumberFormatter alloc] stringFromNumber:count];
+        }];
+
+    }
+}
+
+-(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
+    [videoStream deleteFavorUser:userReference completionHandler:^(CKRecord *videoRecord, NSError *error) {
+        //update UI
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callBack();
+        });
+    }];
+}
+
+
+
+-(void)addFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
+    [videoStream addFavorUser:userReference completionHandler:^(CKRecord *videoRecord, NSError *error) {
+        //update UI
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callBack();
+        });
+    }];
+}
+
+-(void)favorWrapperViewTapped: (UITapGestureRecognizer*)gesture{
+    //segue to the favor list view controller
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    FavorUserListTableViewController* favorListTVC = (FavorUserListTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FavorUserListTableViewController"];
+    if(favorListTVC){
+        favorListTVC.favorUserList = self.videoStream.favorUserList;
+        [self.navigationController pushViewController:favorListTVC animated:YES];
+    }
+}
+
+
+-(void)commentWrapperViewTapped: (UITapGestureRecognizer*)gesture{
+    //show a new segue
     
 }
 
 
+-(void) didPlayToEnd:(NSNotification*)notification{
+    [self.player seekToTime:kCMTimeZero];
+    [self.player play];
+}
 
 
 -(void) adjustVideoFrame{

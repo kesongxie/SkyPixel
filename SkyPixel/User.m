@@ -14,14 +14,24 @@
 
 @implementation User
 
-- (id)init: (NSString*)fullname emailAddress: (NSString*)email avatorUrl: (NSURL*)url{
+- (id)initWithRecord: (CKRecord*) record{
     self = [super init];
     if(self){
-        self.fullname = fullname;
-        self.email = email;
-        self.avatorUrl = url;
-        
+        self.record = record;
     }
     return self;
 }
+
+-(NSString*) fullname{
+    return self.record[@"fullname"];
+}
+
+-(NSString*) email{
+    return self.record[@"email"];
+}
+
+-(NSURL*) avatorUrl{
+    return ((CKAsset*)self.record[@"avator"]).fileURL;
+}
+
 @end
