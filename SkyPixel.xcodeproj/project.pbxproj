@@ -31,6 +31,9 @@
 		98F8BD911E08B14200A9E3D2 /* CKReference+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */; };
 		98F8BD931E08C38C00A9E3D2 /* FavorUserListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD921E08C38C00A9E3D2 /* FavorUserListTableViewController.m */; };
 		98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */; };
+		98F8BD9A1E08F7F300A9E3D2 /* CommnentListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD991E08F7F300A9E3D2 /* CommnentListTableViewController.m */; };
+		98F8BD9D1E08F80B00A9E3D2 /* CommnentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD9C1E08F80B00A9E3D2 /* CommnentTableViewCell.m */; };
+		98F8BDA11E08FB8F00A9E3D2 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BDA01E08FB8F00A9E3D2 /* Comment.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +80,12 @@
 		98F8BD941E08C39400A9E3D2 /* FavorUserListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavorUserListTableViewController.h; sourceTree = "<group>"; };
 		98F8BD961E08C68F00A9E3D2 /* FavorTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavorTableViewCell.h; sourceTree = "<group>"; };
 		98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorTableViewCell.m; sourceTree = "<group>"; };
+		98F8BD991E08F7F300A9E3D2 /* CommnentListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommnentListTableViewController.m; sourceTree = "<group>"; };
+		98F8BD9B1E08F7FA00A9E3D2 /* CommentListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommentListTableViewController.h; sourceTree = "<group>"; };
+		98F8BD9C1E08F80B00A9E3D2 /* CommnentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommnentTableViewCell.m; sourceTree = "<group>"; };
+		98F8BD9E1E08F81300A9E3D2 /* CommentTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
+		98F8BD9F1E08FB8400A9E3D2 /* Comment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
+		98F8BDA01E08FB8F00A9E3D2 /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Comment.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +108,8 @@
 				98621A891DFCBBE100417978 /* User.m */,
 				98621A901DFCCCCC00417978 /* VideoStream.h */,
 				98621A8E1DFCCCC300417978 /* VideoStream.m */,
+				98F8BD9F1E08FB8400A9E3D2 /* Comment.h */,
+				98F8BDA01E08FB8F00A9E3D2 /* Comment.m */,
 				98F8BD8F1E08B14200A9E3D2 /* CKReference+Comparison.h */,
 				98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */,
 			);
@@ -249,6 +260,10 @@
 				98F8BD921E08C38C00A9E3D2 /* FavorUserListTableViewController.m */,
 				98F8BD961E08C68F00A9E3D2 /* FavorTableViewCell.h */,
 				98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */,
+				98F8BD9B1E08F7FA00A9E3D2 /* CommentListTableViewController.h */,
+				98F8BD991E08F7F300A9E3D2 /* CommnentListTableViewController.m */,
+				98F8BD9E1E08F81300A9E3D2 /* CommentTableViewCell.h */,
+				98F8BD9C1E08F80B00A9E3D2 /* CommnentTableViewCell.m */,
 			);
 			name = "Favor User List";
 			sourceTree = "<group>";
@@ -342,9 +357,12 @@
 				98F8BD911E08B14200A9E3D2 /* CKReference+Comparison.m in Sources */,
 				98F8BD931E08C38C00A9E3D2 /* FavorUserListTableViewController.m in Sources */,
 				98621ABB1DFE94D800417978 /* CastingViewController.m in Sources */,
+				98F8BDA11E08FB8F00A9E3D2 /* Comment.m in Sources */,
 				988E69291E04F89A00A9D893 /* ExploreSearchTableViewCell.m in Sources */,
 				98621A8A1DFCBBE100417978 /* User.m in Sources */,
 				980498841E02A72D0091A37C /* ContainerViewController.m in Sources */,
+				98F8BD9D1E08F80B00A9E3D2 /* CommnentTableViewCell.m in Sources */,
+				98F8BD9A1E08F7F300A9E3D2 /* CommnentListTableViewController.m in Sources */,
 				98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
 				98621AB71DFD555500417978 /* PlayView.m in Sources */,

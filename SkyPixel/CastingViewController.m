@@ -11,6 +11,7 @@
 #import "CastingViewController.h"
 #import "PlayView.h"
 #import "FavorUserListTableViewController.h"
+#import "CommentListTableViewController.h"
 
 static NSString* const FavorIconWhite = @"favor-icon";
 static NSString* const FavorIconRed = @"favor-icon-red";
@@ -100,6 +101,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         //add tap gesture for favorWrapperView
         UITapGestureRecognizer* favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
         [self.favorWrapperView addGestureRecognizer:favorWrapperTapGesture];
+        
 
     }
 }
@@ -133,8 +135,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.height / 2;
     self.avatorImageView.clipsToBounds = YES;
     self.videoTitleLabel.text = self.videoStream.title;
-    NSLog(@"length is %i", self.videoStream.description.length);
-    
     self.descriptionLabel.text = self.videoStream.description;
     if(self.descriptionLabel.text.length == 0){
         self.descriptionLabel.text = @"No description available";
@@ -144,11 +144,10 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 -(void)updatePinBottomViewUI{
-    NSNumber* favorCount = [NSNumber numberWithInteger:self.videoStream.favorUserList.count];
-    self.favorCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:favorCount];
     AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
     CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionNone];
+    //update the favor icon wrapper view
     UIImage* heartIconImage;
     if([self.videoStream.favorUserList containsObject:loggedInReference]){
         heartIconImage = [UIImage imageNamed: FavorIconRed];
@@ -156,6 +155,15 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         heartIconImage =  [UIImage imageNamed: FavorIconWhite];
     }
     self.favorIconImageView.image = heartIconImage;
+    NSNumber* favorCount = [NSNumber numberWithInteger:self.videoStream.favorUserList.count];
+    self.favorCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:favorCount];
+    
+    //update the commnet wrapper view
+    NSLog(@"COMMENT list %@", self.videoStream.commentList);
+    NSNumber* commentCount = [NSNumber numberWithInteger:self.videoStream.commentList.count];
+    self.commentCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:commentCount];
+
+    
 }
 
 -(void)favorTapped: (UITapGestureRecognizer*)gesture{
@@ -183,6 +191,10 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
     }
 }
+
+
+
+
 
 -(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
     [videoStream deleteFavorUser:userReference completionHandler:^(CKRecord *videoRecord, NSError *error) {
@@ -217,8 +229,14 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 -(void)commentWrapperViewTapped: (UITapGestureRecognizer*)gesture{
     //show a new segue
-    
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    CommentListTableViewController* commentListTVC = (CommentListTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"CommentListTableViewController"];
+    if(commentListTVC){
+        commentListTVC.commentReferenceList = self.videoStream.commentList;
+        [self.navigationController pushViewController:commentListTVC animated:YES];
+    }
 }
+
 
 
 -(void) didPlayToEnd:(NSNotification*)notification{

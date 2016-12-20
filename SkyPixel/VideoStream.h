@@ -25,6 +25,8 @@
 @property (strong, readonly, nonatomic) CLLocation* location;
 @property (strong, readonly, nonatomic) NSURL* url;
 @property (strong, readonly, nonatomic) NSArray<CKReference*>* favorUserList;
+@property (strong, readonly, nonatomic) NSArray<CKReference*>* commentList;
+
 @property (readonly, nonatomic) NSInteger live;
 
 - (id)initWithCKRecord: (CKRecord*)record;

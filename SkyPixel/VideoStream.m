@@ -14,7 +14,9 @@ static NSString* const LocationKey = @"location";
 static NSString* const VideoKey = @"video";
 static NSString* const LiveKey = @"live";
 static NSString* const DescriptionKey = @"description";
-static NSString* const FavorUserList = @"favorUserList";
+static NSString* const FavorUserListKey = @"favorUserList";
+static NSString* const CommentListKey = @"commentList";
+
 
 @interface VideoStream()
 
@@ -40,7 +42,6 @@ static NSString* const FavorUserList = @"favorUserList";
     }];
 }
 
-
 -(NSString*)title{
     return self.record[TitleKey];
 }
@@ -58,28 +59,31 @@ static NSString* const FavorUserList = @"favorUserList";
 }
 
 -(NSArray<CKReference*>*) favorUserList{
-    return self.record[FavorUserList];
+    return self.record[FavorUserListKey];
+}
+
+
+-(NSArray<CKReference*>*) commentList{
+    return self.record[CommentListKey];
 }
 
 -(BOOL) isLive{
     return ((NSNumber*)self.record[LiveKey]).integerValue == 1;
 }
 
-
 //add a user to the user favor list
 -(void)deleteFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack{
     //refetch the record
     NSMutableArray<CKReference*>* favorUserList = [NSMutableArray arrayWithArray:self.favorUserList];
     [favorUserList removeObject:userReference];
-    [self.record setObject:favorUserList forKey:FavorUserList];
+    [self.record setObject:favorUserList forKey:FavorUserListKey];
     [self updateRecord:callBack];
-    
 }
 
 -(void)addFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack{
     NSMutableArray<CKReference*>* favorUserList = [NSMutableArray arrayWithArray:self.favorUserList];
     [favorUserList insertObject:userReference atIndex:0];
-    [self.record setObject:favorUserList forKey:FavorUserList];
+    [self.record setObject:favorUserList forKey:FavorUserListKey];
     [self updateRecord:callBack];
 }
 
@@ -91,7 +95,6 @@ static NSString* const FavorUserList = @"favorUserList";
     updateOperation.recordsToSave = @[self.record];
     [updateOperation setModifyRecordsCompletionBlock:^(NSArray<CKRecord *> * _Nullable records, NSArray<CKRecordID *> * _Nullable modfiyRecordIDs, NSError * _Nullable error) {
         if(error == nil){
-            NSLog(@"record saved %@", records);
             callBack(records.firstObject, error);
         }else{
             callBack(nil, error);
@@ -102,7 +105,5 @@ static NSString* const FavorUserList = @"favorUserList";
     //update record
     [operationQueue addOperation:updateOperation];
 }
-
-
 
 @end

@@ -410,7 +410,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="99a-Ga-rh0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2856.8000000000002" y="-233.43328335832086"/>
+            <point key="canvasLocation" x="2921" y="-233"/>
         </scene>
         <!--Sky Cast Navigation View Controller-->
         <scene sceneID="IdH-eY-lW8">
@@ -703,6 +703,108 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="25b-XA-jIs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1662" y="866"/>
+        </scene>
+        <!--Comment List Table View Controller-->
+        <scene sceneID="kYl-B9-BaM">
+            <objects>
+                <tableViewController storyboardIdentifier="CommentListTableViewController" id="55Q-OJ-bNE" customClass="CommentListTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="87" sectionHeaderHeight="28" sectionFooterHeight="28" id="ckA-D0-2g1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" clipsSubviews="YES" contentMode="scaleToFill" id="zvL-YL-Rnd">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="494"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="favor-icon-big" translatesAutoresizingMaskIntoConstraints="NO" id="eDf-5f-TV8">
+                                    <rect key="frame" x="157" y="157" width="60" height="60"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="60" id="wck-Ke-pdT"/>
+                                        <constraint firstAttribute="width" constant="60" id="yhC-Is-hpC"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Be the first one to comment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qHu-Zf-Mlj">
+                                    <rect key="frame" x="62" y="225" width="250" height="24"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                    <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="eDf-5f-TV8" firstAttribute="centerY" secondItem="zvL-YL-Rnd" secondAttribute="centerY" constant="-60" id="CJq-E9-mtt"/>
+                                <constraint firstItem="qHu-Zf-Mlj" firstAttribute="centerX" secondItem="eDf-5f-TV8" secondAttribute="centerX" id="RdD-BT-mAS"/>
+                                <constraint firstItem="eDf-5f-TV8" firstAttribute="centerX" secondItem="zvL-YL-Rnd" secondAttribute="centerX" id="kgg-j4-Qyo"/>
+                                <constraint firstItem="qHu-Zf-Mlj" firstAttribute="top" secondItem="eDf-5f-TV8" secondAttribute="bottom" constant="8" symbolic="YES" id="mVe-Bo-BwA"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="87" id="qI0-rm-RQI" customClass="CommentTableViewCell">
+                                <rect key="frame" x="0.0" y="522" width="375" height="87"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qI0-rm-RQI" id="4fT-r8-WzT">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="86"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nRq-Sj-5PW">
+                                            <rect key="frame" x="16" y="16" width="48" height="48"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="48" id="6fj-Fj-ORs"/>
+                                                <constraint firstAttribute="width" constant="48" id="DEU-Cc-zzy"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Fullname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WR-mN-TFG">
+                                            <rect key="frame" x="72" y="16" width="236" height="21"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qwm-AE-wbb">
+                                            <rect key="frame" x="72" y="45" width="287" height="21"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyB-qM-esi">
+                                            <rect key="frame" x="316" y="17.5" width="43" height="19.5"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                            <color key="textColor" red="0.62745098040000002" green="0.62745098040000002" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="nRq-Sj-5PW" secondAttribute="bottom" priority="250" constant="16" id="7X2-3X-rv8"/>
+                                        <constraint firstItem="nRq-Sj-5PW" firstAttribute="top" secondItem="4fT-r8-WzT" secondAttribute="top" constant="16" id="8ZI-XB-yRi"/>
+                                        <constraint firstItem="pyB-qM-esi" firstAttribute="baseline" secondItem="5WR-mN-TFG" secondAttribute="baseline" id="Fbn-lk-x6s"/>
+                                        <constraint firstItem="nRq-Sj-5PW" firstAttribute="leading" secondItem="4fT-r8-WzT" secondAttribute="leading" constant="16" id="IsF-ba-S2t"/>
+                                        <constraint firstItem="qwm-AE-wbb" firstAttribute="trailing" secondItem="pyB-qM-esi" secondAttribute="trailing" id="UCt-kl-wUY"/>
+                                        <constraint firstItem="5WR-mN-TFG" firstAttribute="leading" secondItem="nRq-Sj-5PW" secondAttribute="trailing" constant="8" id="W4Y-T5-y5p"/>
+                                        <constraint firstAttribute="trailing" secondItem="pyB-qM-esi" secondAttribute="trailing" constant="16" id="Xhn-0S-4mt"/>
+                                        <constraint firstItem="5WR-mN-TFG" firstAttribute="top" secondItem="nRq-Sj-5PW" secondAttribute="top" id="fvh-3r-kiw"/>
+                                        <constraint firstItem="pyB-qM-esi" firstAttribute="leading" secondItem="5WR-mN-TFG" secondAttribute="trailing" constant="8" symbolic="YES" id="hUW-qA-opR"/>
+                                        <constraint firstItem="qwm-AE-wbb" firstAttribute="top" secondItem="5WR-mN-TFG" secondAttribute="bottom" constant="8" id="hWq-MB-MkJ"/>
+                                        <constraint firstItem="qwm-AE-wbb" firstAttribute="leading" secondItem="5WR-mN-TFG" secondAttribute="leading" id="rQC-Pe-TIQ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="avatorImageView" destination="nRq-Sj-5PW" id="YuF-cy-ALc"/>
+                                    <outlet property="fullnameLabel" destination="5WR-mN-TFG" id="w4B-jg-1q3"/>
+                                    <outlet property="textLabel" destination="qwm-AE-wbb" id="5SY-dn-vcz"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="55Q-OJ-bNE" id="vnA-AP-pVG"/>
+                            <outlet property="delegate" destination="55Q-OJ-bNE" id="vVs-2n-QGY"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="headerView" destination="zvL-YL-Rnd" id="LaD-NY-aKJ"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TGM-Mq-lf7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3764" y="-233.43328335832086"/>
         </scene>
     </scenes>
     <resources>
