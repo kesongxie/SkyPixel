@@ -23,15 +23,24 @@
 }
 
 -(NSString*) fullname{
-    return self.record[@"fullname"];
+    return self.record[FullNameKey];
 }
 
 -(NSString*) email{
-    return self.record[@"email"];
+    return self.record[EmailKey];
 }
 
 -(NSURL*) avatorUrl{
-    return ((CKAsset*)self.record[@"avator"]).fileURL;
+    return ((CKAsset*)self.record[AvatorKey]).fileURL;
 }
+
++(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord* userRecord, NSError* error)) callback{
+    CKRecordID* recordID = reference.recordID;
+    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
+    [db fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        callback(record, error);
+    }];
+}
+
 
 @end

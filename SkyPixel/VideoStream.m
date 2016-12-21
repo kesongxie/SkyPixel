@@ -8,14 +8,6 @@
 
 #import "VideoStream.h"
 
-//keys for columns in the CloudKit database
-static NSString* const TitleKey = @"title";
-static NSString* const LocationKey = @"location";
-static NSString* const VideoKey = @"video";
-static NSString* const LiveKey = @"live";
-static NSString* const DescriptionKey = @"description";
-static NSString* const FavorUserListKey = @"favorUserList";
-static NSString* const CommentListKey = @"commentList";
 
 
 @interface VideoStream()
@@ -23,6 +15,8 @@ static NSString* const CommentListKey = @"commentList";
 @end
 
 @implementation VideoStream
+
+@synthesize commentReferenceList = _commentReferenceList;
 
 - (id)initWithCKRecord: (CKRecord*)record{
     self = [super init];
@@ -58,14 +52,26 @@ static NSString* const CommentListKey = @"commentList";
     return ((CKAsset*)self.record[VideoKey]).fileURL;
 }
 
--(NSArray<CKReference*>*) favorUserList{
+-(NSMutableArray<CKReference*>*) favorUserList{
     return self.record[FavorUserListKey];
 }
 
 
--(NSArray<CKReference*>*) commentList{
+-(NSMutableArray<CKReference*>*) commentReferenceList{
     return self.record[CommentListKey];
 }
+
+-(void)setCommentReferenceList:(NSMutableArray<CKReference *> *)commentReferenceList{
+    self.record[CommentListKey] = commentReferenceList;
+}
+
+
+-(CKReference *)reference{
+    return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionNone];
+}
+
+
+
 
 -(BOOL) isLive{
     return ((NSNumber*)self.record[LiveKey]).integerValue == 1;
@@ -105,5 +111,36 @@ static NSString* const CommentListKey = @"commentList";
     //update record
     [operationQueue addOperation:updateOperation];
 }
+
+
+//this function adds a new comment reference to the commentList ckreference list
+-(void)addCommentReference: (CKReference*)commentReference completionHandler: (void(^)(NSArray<CKRecord*>* records, NSArray<CKRecordID*>* recordIDs, NSError* error)) callback{
+    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
+    if(self.commentReferenceList == nil){
+        NSMutableArray<CKReference*>* newReferenceArray = [[NSMutableArray alloc]init];
+        [newReferenceArray insertObject:commentReference atIndex:0];
+        self.record[CommentListKey] = newReferenceArray;
+    }else{
+        [self.commentReferenceList insertObject:commentReference atIndex:0];
+    }
+    
+    [self.record setObject:self.commentReferenceList forKey: CommentListKey];
+    CKModifyRecordsOperation* addCommentOperation = [[CKModifyRecordsOperation alloc]init];
+    addCommentOperation.database = db;
+    addCommentOperation.atomic = YES;
+    addCommentOperation.recordsToSave = @[self.record];
+    [addCommentOperation setModifyRecordsCompletionBlock:^(NSArray<CKRecord *> * _Nullable records, NSArray<CKRecordID *> * _Nullable recordIDs, NSError * _Nullable error) {
+        if(error == nil){
+            if(callback){
+                callback(records, recordIDs, error);
+            }
+        }else{
+            NSLog(@"%@", error.localizedDescription);
+        }
+    }];
+    NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
+    [operationQueue addOperation:addCommentOperation];
+}
+
 
 @end

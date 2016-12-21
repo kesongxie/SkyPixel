@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CloudKit/CloudKit.h>
+#import "VideoStream.h"
 #import "User.h"
 
 @interface Comment : NSObject
@@ -22,7 +23,15 @@
 @property (strong, readonly, nonatomic) NSURL* avatorURL;
 
 
-- (id)initWithRecord: (CKRecord*) record WithUserRecord: (CKRecord*) userRecord;
+-(id)initWithRecord: (CKRecord*) record WithUserRecord: (CKRecord*) userRecord;
+
+//add a comment to a video stream
++(void)sendComment: (NSString*)text inVideo: (VideoStream*)videostream completionHandler: (void (^)(Comment* comment, NSError* error)) callBack;
+
+//fetch all the comments given a reference to a video stream
++(void) fetchCommentForVideoStreamReference: (CKReference*) videoStreamReference completionHandler: (void (^)(NSArray<Comment*>* comments, NSError* error))callback;
+
++(void)fetchUserRecordByCommentRecord:(CKRecord*)commentRecord completionHandler: (void (^)(CKRecord *userRecord, NSError *error)) callback;
 
 @end
 

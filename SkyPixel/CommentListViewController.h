@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
 #import <Foundation/Foundation.h>
+#import "VideoStream.h"
 
-@interface CommentListTableViewController: UITableViewController
+@interface CommentListViewController: UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
-@property (strong, nonatomic) NSArray<CKReference*>* commentReferenceList;
+@property (strong, nonatomic) VideoStream* videoStream;
 
 @end

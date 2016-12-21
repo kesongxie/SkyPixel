@@ -221,8 +221,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     }
     //start loading drone flying user
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-//    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
-//    NSPredicate* predicate = [NSPredicate predicateWithFormat: @"live = %i", 1];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", self.locationCenter, searchRadius];
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
     self.navigationItem.title = @"SEARCHING...";

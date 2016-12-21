@@ -11,7 +11,7 @@
 #import "CastingViewController.h"
 #import "PlayView.h"
 #import "FavorUserListTableViewController.h"
-#import "CommentListTableViewController.h"
+#import "CommentListViewController.h"
 
 static NSString* const FavorIconWhite = @"favor-icon";
 static NSString* const FavorIconRed = @"favor-icon-red";
@@ -120,6 +120,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     NSNumber *myNumber = [formatter numberFromString:count];
     NSInteger newCount = myNumber.intValue + 1;
     self.viewCountsLabel.text = [NSString stringWithFormat: @"%ld", (long)newCount];
+    [self updatePinBottomViewUI];
 }
 
 -(void) updateUI{
@@ -159,8 +160,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.favorCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:favorCount];
     
     //update the commnet wrapper view
-    NSLog(@"COMMENT list %@", self.videoStream.commentList);
-    NSNumber* commentCount = [NSNumber numberWithInteger:self.videoStream.commentList.count];
+    NSNumber* commentCount = [NSNumber numberWithInteger:self.videoStream.commentReferenceList.count];
     self.commentCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:commentCount];
 
     
@@ -230,10 +230,11 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 -(void)commentWrapperViewTapped: (UITapGestureRecognizer*)gesture{
     //show a new segue
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    CommentListTableViewController* commentListTVC = (CommentListTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"CommentListTableViewController"];
-    if(commentListTVC){
-        commentListTVC.commentReferenceList = self.videoStream.commentList;
-        [self.navigationController pushViewController:commentListTVC animated:YES];
+    CommentListViewController* commentListVC = (CommentListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"CommentListViewController"];
+    if(commentListVC){
+        commentListVC.videoStream = self.videoStream;
+//        commentListVC.commentReferenceList = self.videoStream.commentReferenceList;
+        [self.navigationController pushViewController:commentListVC animated:YES];
     }
 }
 

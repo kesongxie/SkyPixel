@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CloudKit/CloudKit.h>
 
+
+static NSString* const FullNameKey = @"fullname";
+static NSString* const EmailKey = @"email";
+static NSString* const AvatorKey = @"avator";
+
 @interface User : NSObject
 
 @property (strong, nonatomic) CKRecord* record;
@@ -17,6 +22,7 @@
 @property (strong, readonly, nonatomic) NSString* email;
 @property (strong, readonly, nonatomic) NSURL* avatorUrl;
 
-- (id)initWithRecord: (CKRecord*) record;
+-(id)initWithRecord: (CKRecord*) record;
 
++(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord* userRecord, NSError* error)) callback;
 @end
