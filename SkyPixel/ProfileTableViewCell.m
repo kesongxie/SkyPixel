@@ -23,16 +23,9 @@
 
 -(void)setVideoStream:(VideoStream *)videoStream{
     _videoStream = videoStream;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSData* imageData = [[NSData alloc]initWithContentsOfURL:self.videoStream.thumbnail];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImage* image = [[UIImage alloc]initWithData:imageData];
-            self.previewImageView.image = image;
-            self.previewThumbNailHeightConstraint.constant = [UIScreen mainScreen].bounds.size.width * image.size.height / image.size.width;
-            self.titleLabel.text = self.videoStream.title;
-
-        });
-    });
+    self.previewImageView.image = self.videoStream.thumbImage;
+    self.previewThumbNailHeightConstraint.constant = [UIScreen mainScreen].bounds.size.width * self.videoStream.height / self.videoStream.width;
+    self.titleLabel.text = self.videoStream.title;
 }
 
 

@@ -46,6 +46,10 @@
     return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionNone];
 }
 
-
+-(UIImage *)thumbImage{
+    NSURL* thumbnailURL = self.avatorUrl;
+    NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
+    return [[UIImage alloc]initWithData:imageData];
+}
 
 @end

@@ -15,7 +15,7 @@
 
 
 //keys for columns in the CloudKit database
-static NSString* const RecordType = @"VideoStream";
+static NSString* const VideoStreamRecordType = @"VideoStream";
 static NSString* const TitleKey = @"title";
 static NSString* const LocationKey = @"location";
 static NSString* const LiveKey = @"live";

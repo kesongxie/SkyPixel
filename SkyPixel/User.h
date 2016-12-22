@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CloudKit/CloudKit.h>
+#import <UIKit/UIKit.h>
 
 
 static NSString* const FullNameKey = @"fullname";
@@ -17,11 +18,14 @@ static NSString* const AvatorKey = @"avator";
 @interface User : NSObject
 
 @property (strong, nonatomic) CKRecord* record;
+@property (strong, nonatomic) NSArray<CKRecord*>* videoStreamRecord;
 //compute from the record class
 @property (strong, readonly, nonatomic) CKReference* reference;
 @property (strong, readonly, nonatomic) NSString* fullname;
 @property (strong, readonly, nonatomic) NSString* email;
 @property (strong, readonly, nonatomic) NSURL* avatorUrl;
+@property (strong, readonly, nonatomic) UIImage * thumbImage;
+
 
 -(id)initWithRecord: (CKRecord*) record;
 

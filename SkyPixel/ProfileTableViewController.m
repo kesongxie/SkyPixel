@@ -33,16 +33,26 @@ static CGFloat const NavigationBarTitleFontSize = 17;
 
 @implementation ProfileTableViewController
 
+
+- (IBAction)backBtnTapped:(UIBarButtonItem *)sender {
+    [self performSegueWithIdentifier:@"backFromProfileTableViewController" sender:self];
+}
+
+
 -(void)viewDidLoad{
     [super viewDidLoad];
+    //TableView set up
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.estimatedRowHeight = self.tableView.rowHeight;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
     [self.navigationController.navigationBar setBarTintColor: [UIColor blackColor]];
     UIFont* titleFont = [UIFont fontWithName: NavigationBarTitleFontName size: NavigationBarTitleFontSize];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
 
-    if(self.avatorImage != nil){
-        self.avatorImageView.image = self.avatorImage;
-    }
     if(self.user != nil){
+        self.avatorImageView.image = self.user.thumbImage;
         self.fullnameLabel.text = self.user.fullname;
     }
 }
@@ -58,23 +68,11 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     [self updateUI];
     _user = user;
     self.videoStreamList = [[NSMutableArray alloc]init];
-    //start fetching the videos for the user
-    [VideoStream fetchVideoStreamForUser:self.user.reference completionHandler:^(NSArray<CKRecord *> *videoStreamRecords, NSError *error) {
-        if(error == nil){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                for(CKRecord* videoStreamRecord in videoStreamRecords){
-                    VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:videoStreamRecord];
-                    [self.videoStreamList addObject:videoStream];
-                    [self.tableView reloadData];
-                }
-            });
-        }
-    }];
-}
-
-
--(void)avatorImage:(UIImage *)avatorImage{
-    _avatorImage = avatorImage;
+    for(CKRecord* record in self.user.videoStreamRecord){
+        VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:record];
+        [self.videoStreamList insertObject:videoStream atIndex:0];
+    }
+    [self.tableView reloadData];
 }
 
 -(void)updateUI{
@@ -84,10 +82,6 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     self.navigationItem.leftBarButtonItem = self.backBtn;
 }
 
-//MARK: - backBtnTapped
--(void)backBtnTapped:(UIBarButtonItem*)backBtn{
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

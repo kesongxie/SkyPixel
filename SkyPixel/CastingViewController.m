@@ -41,8 +41,11 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
-
+@property (strong, nonatomic) CKAsset* videoAsset;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (nonatomic) BOOL resetting;
+@property (nonatomic) BOOL needsResumeSettingVideo;
+
 
 
 //update the user information, such as fullname, avator
@@ -69,9 +72,19 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @implementation CastingViewController
 
 - (IBAction)backBtnTapped:(UIBarButtonItem *)sender {
-    [self.player pause];
+    self.resetting = YES;
     [self resetPlayer];
     [self performSegueWithIdentifier:@"backFromCastingViewController" sender:self];
+}
+
+
+- (IBAction)backFromProfileTableViewController:(UIStoryboardSegue *)segue {
+    self.resetting = NO;
+    if(self.needsResumeSettingVideo && self.videoAsset != nil){
+        [self readyLoadingVideo:self.videoAsset];
+    }else{
+        [self.player play];
+    }
 }
 
 
@@ -92,19 +105,31 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     [self.activityIndicator startAnimating];
     [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
-            AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-            NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-            self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
-            [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
-            // Associate the player item with the player
-            self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
-            self.playerView.player = self.player;
+            if(!self.resetting){
+                [self readyLoadingVideo: videoAsset];
+            }else{
+                //need to resume setting video
+                self.needsResumeSettingVideo = YES;
+                self.videoAsset = videoAsset;
+            }
         });
     }];
     [self addTapGesture];
 }
+
+
+-(void)readyLoadingVideo: (CKAsset*)videoAsset{
+    NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
+    AVAsset* asset = [AVAsset assetWithURL:viedoURL];
+    NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
+    self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
+    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
+    // Associate the player item with the player
+    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+    self.playerView.player = self.player;
+}
+
 
 -(void)addTapGesture{
     //add tap gesture for the icon
@@ -140,6 +165,8 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.viewCountsLabel.text = [NSString stringWithFormat: @"%ld", (long)newCount];
     [self updatePinBottomViewUI];
 }
+
+
 
 -(void) updateUI{
     if([self.videoStream isLive]){
@@ -184,8 +211,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     //update the commnet wrapper view
     NSNumber* commentCount = [NSNumber numberWithInteger:self.videoStream.commentReferenceList.count];
     self.commentCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:commentCount];
-
-    
 }
 
 -(void)favorTapped: (UITapGestureRecognizer*)gesture{
@@ -265,8 +290,9 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ProfileTableViewController* profileTVC = (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
     if(profileTVC){
+        self.resetting = YES;
+        [self.player pause];
         profileTVC.user = self.videoStream.user;
-        profileTVC.avatorImage = self.avatorImageView.image;
         [self.navigationController pushViewController:profileTVC animated:YES];
     }
 }

@@ -13,10 +13,6 @@
 
 @interface CastingViewController : UIViewController
 
-////@property (strong, nonatomic) AVAsset* asset;
-//
-//@property (strong, nonatomic) User* user;
-
 @property (strong, nonatomic) VideoStream* videoStream;
 
 @end

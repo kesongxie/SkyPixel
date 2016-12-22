@@ -27,11 +27,22 @@
 
 -(void)fetchUserForVideoStream: (void (^)(CKRecord* userRecord, NSError* error)) callBack{
     CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
-    CKRecordID* userRecordId = ((CKReference*)self.record[@"user"]).recordID;
+    CKReference* userReference = ((CKReference*)self.record[UserReferenceKey]);
+    CKRecordID* userRecordId = userReference.recordID;
     [db fetchRecordWithID:userRecordId completionHandler:^(CKRecord * _Nullable userRecord, NSError * _Nullable error) {
         User* user = [[User alloc]initWithRecord:userRecord];
         self.user = user;
-        callBack(userRecord, error);
+        //fetch some video stream for the user
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@", UserReferenceKey, userReference];
+        CKQuery* query = [[CKQuery alloc]initWithRecordType:VideoStreamRecordType predicate:predicate];
+        [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
+            if(error == nil){
+                callBack(userRecord, error);
+                self.user.videoStreamRecord = results;
+            }else{
+                callBack(nil, error);
+            }
+        }];
     }];
 }
 
@@ -185,13 +196,12 @@
     CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
     NSString* userColumn = UserReferenceKey;
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@", userColumn,userReference];
-    CKQuery* query = [[CKQuery alloc]initWithRecordType:RecordType predicate:predicate];
+    CKQuery* query = [[CKQuery alloc]initWithRecordType:VideoStreamRecordType predicate:predicate];
     [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
         if(error == nil){
             callback(results, nil);
         }else{
-            //try again
-            [VideoStream fetchVideoStreamForUser:userReference completionHandler:callback];
+            NSLog(@"Error %@", error.localizedDescription);
         }
     }];
 }
