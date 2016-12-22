@@ -17,6 +17,7 @@
 @property (strong, nonatomic) CKRecord* record;
 @property (strong, nonatomic) CKRecord* userRecord;
 //compute from the record class
+@property (strong, readonly, nonatomic) CKReference* reference;
 @property (strong, readonly, nonatomic) NSString* createdDate;
 @property (strong, readonly, nonatomic) NSString* text;
 @property (strong, readonly, nonatomic) NSString* fullname;
@@ -32,6 +33,8 @@
 +(void) fetchCommentForVideoStreamReference: (CKReference*) videoStreamReference completionHandler: (void (^)(NSArray<Comment*>* comments, NSError* error))callback;
 
 +(void)fetchUserRecordByCommentRecord:(CKRecord*)commentRecord completionHandler: (void (^)(CKRecord *userRecord, NSError *error)) callback;
+
++(void)deleteCommentInVideoStream:(Comment*) comment inVideoStream:(VideoStream*) videoStream completionHandler: (void (^)(CKRecordID *recordID, NSError *error)) callback;
 
 @end
 

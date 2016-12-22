@@ -6,11 +6,11 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
-#import "FavorUserListTableViewController.h"
+#import "FavorUserListViewController.h"
 #import "User.h"
 #import "FavorTableViewCell.h"
 
-@interface FavorUserListTableViewController()
+@interface FavorUserListViewController()
 
 @property (strong, nonatomic) UIBarButtonItem* backBtn;
 
@@ -18,13 +18,23 @@
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+
 @end
 
 
-@implementation FavorUserListTableViewController
+@implementation FavorUserListViewController
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    //TableView set up
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.estimatedRowHeight = self.tableView.rowHeight;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
     self.navigationItem.title = @"FAVORS";
     UIImage* backBtnImage = [UIImage imageNamed:@"back-icon"];
     self.backBtn = [[UIBarButtonItem alloc]initWithImage:backBtnImage style:UIBarButtonItemStylePlain target:self action:@selector(backBtnTapped:)];
@@ -60,6 +70,7 @@
 
 -(void)setFavorUserList:(NSArray<CKReference *> *)favorUserList{
     _favorUserList = favorUserList;
+    [self.activityIndicatorView startAnimating];
     CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
     self.userList = [[NSMutableArray alloc]init];
     __block NSInteger fetchUserCounter = 0;
@@ -77,6 +88,7 @@
                 fetchUserCounter += 1;
                 if(fetchUserCounter == self.favorUserList.count){
                     //done with fetching
+                    [self.activityIndicatorView stopAnimating];
                     [self.tableView reloadData];
                 }
             });

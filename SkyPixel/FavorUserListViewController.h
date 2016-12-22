@@ -10,7 +10,7 @@
 #import <CloudKit/CloudKit.h>
 #import <Foundation/Foundation.h>
 
-@interface FavorUserListTableViewController : UITableViewController
+@interface FavorUserListViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSArray<CKReference*>* favorUserList;
 

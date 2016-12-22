@@ -8,11 +8,15 @@
 
 #import "CommentListViewController.h"
 #import "CommentTableViewCell.h"
+#import "AppDelegate.h"
 #import "User.h"
 #import "Comment.h"
+#import "CKReference+Comparison.h"
 
 static NSString* const Title = @"COMMENTS";
 static NSString* const SendingCommentStatusTitle = @"SENDING...";
+static NSString* const DeletingingCommentStatusTitle = @"DELETING...";
+
 
 @interface CommentListViewController()
 
@@ -25,6 +29,7 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
 @property (strong, nonatomic) NSArray<CKReference*>* commentReferenceList;
 @property (strong, nonatomic) UIBarButtonItem* backBtn;
 @property (strong, nonatomic) NSMutableArray<Comment*>* commentList;
+@property (nonatomic) BOOL isSendingComment;
 
 //update the user interface
 -(void)updateUI;
@@ -37,6 +42,9 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
 
 //hide the header view
 -(void)hideHeaderView;
+
+//send comment
+-(void)sendComment;
 
 //action when back button is tapped, this will segue back to the previous ViewController
 -(void)backBtnTapped:(UIBarButtonItem*)backBtn;
@@ -53,21 +61,7 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
 @implementation CommentListViewController
 
 - (IBAction)commentBtnTapped:(id)sender {
-    self.navigationItem.title = SendingCommentStatusTitle;
-    NSString* text = self.commentTextField.text;
-    if(text.length != 0){
-        [self resetUIAfterCommentBtnTapped];
-        [Comment sendComment:text inVideo:self.videoStream completionHandler:^(Comment *comment, NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.navigationItem.title = Title;
-                [self hideHeaderView];
-                //update the datasource and insert the comment
-                [self.commentList insertObject:comment atIndex:0];
-                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            });
-        }];
-    }
+    [self sendComment];
 }
 
 -(void)viewDidLoad{
@@ -78,6 +72,7 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
     self.tableView.dataSource = self;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.allowsMultipleSelectionDuringEditing = YES;
     
     //keyboard events
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -92,12 +87,13 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    //reload data will trigger viewDidLayoutSubviews
-    if(self.commentReferenceList.count == 0){
-        //no one favored yet
-        [self showHeaderView];
-    }else{
-        [self hideHeaderView];
+    if(!self.isSendingComment){
+        if(self.commentReferenceList.count == 0){
+            //no one favored yet
+            [self showHeaderView];
+        }else{
+            [self hideHeaderView];
+        }
     }
 }
 
@@ -158,6 +154,27 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
     self.headerView.hidden = YES;
     self.headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 0);
 }
+//Mark: - send coment
+-(void)sendComment{
+    self.isSendingComment = YES;
+    self.navigationItem.title = SendingCommentStatusTitle;
+    NSString* text = self.commentTextField.text;
+    if(text.length != 0){
+        [self resetUIAfterCommentBtnTapped];
+        [Comment sendComment:text inVideo:self.videoStream completionHandler:^(Comment *comment, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.isSendingComment = NO;
+                self.navigationItem.title = Title;
+                [self hideHeaderView];
+                //update the datasource and insert the comment
+                [self.commentList insertObject:comment atIndex:0];
+                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            });
+        }];
+    }
+    
+}
 
 
 
@@ -203,7 +220,6 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
 }
 
 //MARK: - UITableViewDelegate, UITableViewDataSource
-
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
@@ -218,13 +234,41 @@ static NSString* const SendingCommentStatusTitle = @"SENDING...";
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    self.navigationItem.title = DeletingingCommentStatusTitle;
+    [Comment deleteCommentInVideoStream:self.commentList[indexPath.row] inVideoStream:self.videoStream completionHandler:^(CKRecordID *recordID, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(error == nil){
+                [self.commentList removeObjectAtIndex:indexPath.row];
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                self.navigationItem.title = Title;
+            }
+        });
+    }];
+    
+    
+    
+}
 
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate* deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKReference* loggedinReference = [[CKReference alloc]initWithRecord:deleagte.loggedInRecord action:CKReferenceActionNone];
+    CKReference* commentOwnerReference = [[CKReference alloc]initWithRecord:self.commentList[indexPath.row].userRecord action:CKReferenceActionNone];
+    if([loggedinReference isEqual:self.videoStream.userReference] || [loggedinReference isEqual:commentOwnerReference]){
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
+
+//MARK: - UITextFieldDelegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     textField.textAlignment = NSTextAlignmentLeft;
 }
 
-
-
-
-
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self sendComment];
+    return YES;
+}
 @end

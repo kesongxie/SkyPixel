@@ -49,6 +49,10 @@ static NSString* const VideoStreamKey = @"videostream";
     return ((CKAsset*)self.userRecord[AvatorKey]).fileURL;
 }
 
+-(CKReference *)reference{
+    return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionNone];
+}
+
 +(void)sendComment: (NSString*)text inVideo: (VideoStream*)videostream completionHandler: (void (^)(Comment* comment, NSError* error)) callBack{
     //get the current loggedin credential
     AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
@@ -112,5 +116,24 @@ static NSString* const VideoStreamKey = @"videostream";
     }];
 }
 
+
++(void)deleteCommentInVideoStream:(Comment*) comment inVideoStream:(VideoStream*) videoStream completionHandler: (void (^)(CKRecordID *recordID, NSError *error)) callback{
+    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
+    [db deleteRecordWithID:comment.record.recordID completionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
+        if(error == nil){
+            [videoStream deleteComment:comment.reference completionHandler:^(CKRecord *videoRecord, NSError *error) {
+                if(error == nil){
+                    callback(recordID, nil);
+                }else{
+                    callback(nil, error);
+                }
+            }];
+        }else{
+            //try again
+            NSLog(@"error %@", error.localizedDescription);
+            [Comment deleteCommentInVideoStream:comment inVideoStream:videoStream completionHandler:callback];
+        }
+    }];
+}
 
 @end

@@ -14,6 +14,10 @@
 #import "CastingViewController.h"
 #import "ContainerViewController.h"
 
+
+static NSString* const Title = @"SKYCAST";
+static NSString* const SearchingStatusTitle = @"SEARCHING...";
+
 static double const LocationDegree = 0.05;
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
@@ -223,11 +227,12 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", self.locationCenter, searchRadius];
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
-    self.navigationItem.title = @"SEARCHING...";
+    self.navigationItem.title = SearchingStatusTitle;
     self.isFetchingRecord = YES;
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* videoStreamRecords, NSError* error){
         if(error == nil){
             if(videoStreamRecords){
+                NSLog(@"record is ready %@", videoStreamRecords);
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
                 __block NSInteger userFetchedCompletedCount = 0;
                 for(CKRecord* streamRecord in videoStreamRecords){
@@ -239,7 +244,7 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
                             userFetchedCompletedCount = userFetchedCompletedCount + 1;
                             if(userFetchedCompletedCount == videoStreamRecords.count){
                                 //The fetching for all the users are now completed
-                                self.navigationItem.title = @"SKYCAST";
+                                self.navigationItem.title = Title;
                                 self.isFetchingRecord = NO;
                             }
                         });
@@ -278,7 +283,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     CGFloat idealLengthOfSuqare = (image.size.width > image.size.height) ? image.size.height : image.size.width;
     CGSize squareSize = CGSizeMake(idealLengthOfSuqare, idealLengthOfSuqare);
     UIGraphicsBeginImageContextWithOptions(squareSize, YES, 1.0);
-    
     CGRect drawRect = CGRectMake(0, 0, idealLengthOfSuqare, idealLengthOfSuqare);
     [image drawInRect:drawRect];
     UIImage* suqreImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -439,7 +443,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
         [disclosureBtn sizeToFit];
         [disclosureBtn setBackgroundImage:arrowIcon forState:UIControlStateNormal];
         view.rightCalloutAccessoryView = disclosureBtn;
-        
         [self prepareToPlay];
     }
 }

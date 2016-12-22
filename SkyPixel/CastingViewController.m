@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "CastingViewController.h"
 #import "PlayView.h"
-#import "FavorUserListTableViewController.h"
+#import "FavorUserListViewController.h"
 #import "CommentListViewController.h"
 
 static NSString* const FavorIconWhite = @"favor-icon";
@@ -219,10 +219,10 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 -(void)favorWrapperViewTapped: (UITapGestureRecognizer*)gesture{
     //segue to the favor list view controller
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    FavorUserListTableViewController* favorListTVC = (FavorUserListTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FavorUserListTableViewController"];
-    if(favorListTVC){
-        favorListTVC.favorUserList = self.videoStream.favorUserList;
-        [self.navigationController pushViewController:favorListTVC animated:YES];
+    FavorUserListViewController* favorUserListVC= (FavorUserListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FavorUserListViewController"];
+    if(favorUserListVC){
+        favorUserListVC.favorUserList = self.videoStream.favorUserList;
+        [self.navigationController pushViewController:favorUserListVC animated:YES];
     }
 }
 

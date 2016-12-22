@@ -70,8 +70,9 @@
     return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionNone];
 }
 
-
-
+-(CKReference *)userReference{
+    return self.record[UserReferenceKey];
+}
 
 -(BOOL) isLive{
     return ((NSNumber*)self.record[LiveKey]).integerValue == 1;
@@ -103,8 +104,9 @@
         if(error == nil){
             callBack(records.firstObject, error);
         }else{
-            callBack(nil, error);
             NSLog(@"the error is %@", error.localizedDescription);
+            //try again
+            [self updateRecord:callBack];
         }
     }];
     NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
@@ -141,6 +143,19 @@
     NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
     [operationQueue addOperation:addCommentOperation];
 }
+
+
+
+//add a user to the user favor list
+-(void)deleteComment: (CKReference*)commentReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack{
+    //refetch the record
+    NSMutableArray<CKReference*>* commentReferenceList = [NSMutableArray arrayWithArray:self.commentReferenceList];
+    [commentReferenceList removeObject:commentReference];
+    [self.record setObject:commentReferenceList forKey:CommentListKey];
+    [self updateRecord:callBack];
+}
+
+
 
 
 @end
