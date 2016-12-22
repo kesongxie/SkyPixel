@@ -19,18 +19,20 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 @interface CastingViewController()
 
-@property (weak, nonatomic) IBOutlet PlayerView *playerView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-@property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
-@property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
-@property (weak, nonatomic) IBOutlet UIButton *locationBtn;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoHeightConstraint;
-@property (weak, nonatomic) IBOutlet UILabel *videoTitleLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *liveIcon;
+@property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *videoTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewStatusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewCountsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *locationBtn;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoHeightConstraint;
+
+
+//pinFooterView properties
 @property (weak, nonatomic) IBOutlet UIView *pinFooterView;
 @property (weak, nonatomic) IBOutlet UIStackView *favorWrapperView;
 @property (weak, nonatomic) IBOutlet UIImageView *favorIconImageView;
@@ -38,13 +40,17 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (weak, nonatomic) IBOutlet UIStackView *commentWrapperView;
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *optionWrapperView;
+
+//video player properties
+@property (weak, nonatomic) IBOutlet PlayerView *playerView;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
 @property (strong, nonatomic) CKAsset* videoAsset;
-@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (nonatomic) BOOL resetting;
 @property (nonatomic) BOOL needsResumeSettingVideo;
+@property (nonatomic) BOOL isViewVisible;
+
 
 
 
@@ -87,7 +93,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     }
 }
 
-
 -(void) viewDidLoad{
     [super viewDidLoad];
     if(self.videoStream != nil){
@@ -117,20 +122,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     [self addTapGesture];
 }
 
-
--(void)readyLoadingVideo: (CKAsset*)videoAsset{
-    NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
-    AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-    NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-    self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
-    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
-    // Associate the player item with the player
-    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
-    self.playerView.player = self.player;
-}
-
-
 -(void)addTapGesture{
     //add tap gesture for the icon
     UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
@@ -155,7 +146,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, self.pinFooterView.frame.size.height, 0);
 }
 
--(void) viewDidAppear:(BOOL)animated{
+-(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     NSString* count = self.viewCountsLabel.text;
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -164,9 +155,14 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     NSInteger newCount = myNumber.intValue + 1;
     self.viewCountsLabel.text = [NSString stringWithFormat: @"%ld", (long)newCount];
     [self updatePinBottomViewUI];
+    self.isViewVisible = YES;
+
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.isViewVisible = NO;
+}
 
 -(void) updateUI{
     if([self.videoStream isLive]){
@@ -318,7 +314,9 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 -(void) didPlayToEnd:(NSNotification*)notification{
     [self.player seekToTime:kCMTimeZero];
-    [self.player play];
+    if(self.isViewVisible){
+        [self.player play];
+    }
 }
 
 
@@ -331,8 +329,10 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         dispatch_async(dispatch_get_main_queue(),^{
             if ((self.player.currentItem != nil) &&
                 ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-                [self.activityIndicator stopAnimating];
-                [self.player play];
+                if(self.isViewVisible){
+                    [self.activityIndicator stopAnimating];
+                    [self.player play];
+                }
             }
         });
         return;
@@ -340,6 +340,20 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     return;
 }
+
+
+-(void)readyLoadingVideo: (CKAsset*)videoAsset{
+    NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
+    AVAsset* asset = [AVAsset assetWithURL:viedoURL];
+    NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
+    self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
+    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
+    // Associate the player item with the player
+    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+    self.playerView.player = self.player;
+}
+
 
 
 -(void)resetPlayer{

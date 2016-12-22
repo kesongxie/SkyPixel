@@ -70,6 +70,7 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     self.videoStreamList = [[NSMutableArray alloc]init];
     for(CKRecord* record in self.user.videoStreamRecord){
         VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:record];
+        videoStream.user = self.user;
         [self.videoStreamList insertObject:videoStream atIndex:0];
     }
     [self.tableView reloadData];

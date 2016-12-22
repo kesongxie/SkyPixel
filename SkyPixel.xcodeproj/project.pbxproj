@@ -14,6 +14,7 @@
 		983046C61E0B6EDB00F0557A /* ProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C51E0B6EDB00F0557A /* ProfileTableViewController.m */; };
 		983046CA1E0B6FE000F0557A /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C91E0B6FE000F0557A /* ProfileTableViewCell.m */; };
 		983046CC1E0BC52A00F0557A /* VideoAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046CB1E0BC52A00F0557A /* VideoAsset.m */; };
+		983046D01E0C7C3900F0557A /* UIImageView+ProfileAvator.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046CF1E0C7C3900F0557A /* UIImageView+ProfileAvator.m */; };
 		98621A7E1DFBE48A00417978 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98621A7D1DFBE48A00417978 /* CloudKit.framework */; };
 		98621A841DFC9B7500417978 /* clip in Resources */ = {isa = PBXBuildFile; fileRef = 98621A831DFC9B7500417978 /* clip */; };
 		98621A861DFCA40500417978 /* avator in Resources */ = {isa = PBXBuildFile; fileRef = 98621A851DFCA40500417978 /* avator */; };
@@ -55,6 +56,8 @@
 		983046C91E0B6FE000F0557A /* ProfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewCell.m; sourceTree = "<group>"; };
 		983046CB1E0BC52A00F0557A /* VideoAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoAsset.m; sourceTree = "<group>"; };
 		983046CD1E0BC53600F0557A /* VideoAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoAsset.h; sourceTree = "<group>"; };
+		983046CE1E0C7C3900F0557A /* UIImageView+ProfileAvator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ProfileAvator.h"; sourceTree = "<group>"; };
+		983046CF1E0C7C3900F0557A /* UIImageView+ProfileAvator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ProfileAvator.m"; sourceTree = "<group>"; };
 		98621A7C1DFBE48500417978 /* SkyPixel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SkyPixel.entitlements; sourceTree = "<group>"; };
 		98621A7D1DFBE48A00417978 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		98621A831DFC9B7500417978 /* clip */ = {isa = PBXFileReference; lastKnownFileType = folder; name = clip; path = SkyPixel/clip; sourceTree = "<group>"; };
@@ -252,6 +255,8 @@
 			children = (
 				98621A911DFCCF1400417978 /* VideoStream+Annotation.h */,
 				98621A921DFCCF1400417978 /* VideoStream+Annotation.m */,
+				983046CE1E0C7C3900F0557A /* UIImageView+ProfileAvator.h */,
+				983046CF1E0C7C3900F0557A /* UIImageView+ProfileAvator.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -399,6 +404,7 @@
 				983046CC1E0BC52A00F0557A /* VideoAsset.m in Sources */,
 				98621A8A1DFCBBE100417978 /* User.m in Sources */,
 				980498841E02A72D0091A37C /* ContainerViewController.m in Sources */,
+				983046D01E0C7C3900F0557A /* UIImageView+ProfileAvator.m in Sources */,
 				98F8BD9D1E08F80B00A9E3D2 /* CommnentTableViewCell.m in Sources */,
 				98F8BD9A1E08F7F300A9E3D2 /* CommentListViewController.m in Sources */,
 				98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */,
