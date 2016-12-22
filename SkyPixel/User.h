@@ -18,6 +18,7 @@ static NSString* const AvatorKey = @"avator";
 
 @property (strong, nonatomic) CKRecord* record;
 //compute from the record class
+@property (strong, readonly, nonatomic) CKReference* reference;
 @property (strong, readonly, nonatomic) NSString* fullname;
 @property (strong, readonly, nonatomic) NSString* email;
 @property (strong, readonly, nonatomic) NSURL* avatorUrl;

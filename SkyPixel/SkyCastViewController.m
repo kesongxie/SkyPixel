@@ -13,6 +13,7 @@
 #import "PlayView.h"
 #import "CastingViewController.h"
 #import "ContainerViewController.h"
+#import "Utility.h"
 
 
 static NSString* const Title = @"SKYCAST";
@@ -25,6 +26,8 @@ static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
 static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 static NSString* const email1 = @"kesongxie@skypixel.com";
 static CGFloat const searchRadius = 10000; //load video within 10 km from the locationCenter
+static CGFloat const CalloutViewHeight = 50;
+
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -51,13 +54,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
 
 - (void) createEntries;
 
-
-// Load video and play
-// **Make sure the asset and playerView of the view controller is set**
-- (void) prepareToPlay;
-
-- (void)removeHardLinkToVideoFile: (NSURL*)fileURL;
-
 @end
 
 @implementation SkyCastViewController
@@ -83,7 +79,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
 }
 
 
-
 - (void) viewDidLoad{
     [super viewDidLoad];
     [self updateUI];
@@ -101,7 +96,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
    
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationDidSelected:) name:@"LocationSelected" object:nil];
 }
-
 
 -(void) didPlayToEnd:(NSNotification*)notification{
     [self.player seekToTime:kCMTimeZero];
@@ -265,91 +259,6 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
 }
 
-//MARK: - Audio player
--(UIImage *)generateThumbImage : (NSURL *)url
-{
-    AVAsset *asset = [AVAsset assetWithURL:url];
-    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
-    imageGenerator.appliesPreferredTrackTransform = YES;
-    CMTime time = kCMTimeZero;
-    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
-    UIImage *originImage = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);  // CGImageRef won't be released by ARC
-    UIImage* squareImage = [self cropSquareFromImage:originImage];
-    return squareImage;
-}
-
--(UIImage *) cropSquareFromImage : (UIImage *)image{
-    CGFloat idealLengthOfSuqare = (image.size.width > image.size.height) ? image.size.height : image.size.width;
-    CGSize squareSize = CGSizeMake(idealLengthOfSuqare, idealLengthOfSuqare);
-    UIGraphicsBeginImageContextWithOptions(squareSize, YES, 1.0);
-    CGRect drawRect = CGRectMake(0, 0, idealLengthOfSuqare, idealLengthOfSuqare);
-    [image drawInRect:drawRect];
-    UIImage* suqreImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return suqreImage;
-}
-
-- (void) prepareToPlay {
-    // Create a new AVPlayerItem with the asset and an
-    // array of asset keys to be automatically loaded
-    NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
-    self.playerItem = [[AVPlayerItem alloc] initWithAsset:self.asset automaticallyLoadedAssetKeys:assetKeys];
-    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
-    // Associate the player item with the player
-    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
-    [self.player setMuted:YES];
-    self.playerView.player = self.player;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == &_payerItemContext) {
-        dispatch_async(dispatch_get_main_queue(),^{
-            if ((self.player.currentItem != nil) &&
-                ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-                [self.player play];
-            }
-        });
-        return;
-    }
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    return;
-    
-}
-
-
--(void)resetPlayer{
-    [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];
-    [self.player pause];
-}
-
-//get the valid videoURL for asisgning to the AVAsset, the icound fileURL is not a valid url
-//because it does not contain a extension
-- (NSURL *)videoURL: (NSURL*)fileURL {
-    return [self createHardLinkToVideoFile: fileURL];
-}
-
-//returns a hard link, so as not to maintain another copy of the video file on the disk
-- (NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
-    NSError *err;
-    NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
-    if (![hardURL checkResourceIsReachableAndReturnError:nil]) {
-        if (![[NSFileManager defaultManager] linkItemAtURL: fileURL toURL: hardURL error:&err]) {
-            // if creating hard link failed it is still possible to create a copy of self.asset.fileURL and return the URL of the copy
-        }
-    }
-    return hardURL;
-}
-
-//The paramter fileURL is the CKAsset fileURL
-- (void)removeHardLinkToVideoFile: (NSURL*)fileURL {
-    NSError *err;
-    NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"MP4"];
-    if ([hardURL checkResourceIsReachableAndReturnError:nil]) {
-        if (![[NSFileManager defaultManager] removeItemAtURL:hardURL error:&err]) {
-        }
-    }
-}
 
 //MARK: - Prepare for segue
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -358,10 +267,9 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
         if([segue.identifier isEqualToString:ShowCastingSegueIdentifier]){
             if([segue.destinationViewController isKindOfClass:[CastingViewController class]]){
                 CastingViewController* destinationVC = segue.destinationViewController;
-                destinationVC.asset = self.asset;
                 VideoStream* videoStream = ((MKAnnotationView*)sender).annotation;
                 destinationVC.videoStream = videoStream;
-                destinationVC.user = videoStream.user;
+
             }
         }
     }
@@ -402,12 +310,11 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
         annotationView.annotation = annotation;
     }
     VideoStream* videoStream = (VideoStream*)annotation;
-    annotationView.image = [self generateThumbImage:[self videoURL:videoStream.url]];
+    annotationView.image = videoStream.thumbImage;
     annotationView.frame = CGRectMake(0, 0, 60, 60);
     annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
     annotationView.layer.borderWidth = 2.0;
     annotationView.canShowCallout = YES;
-    
     if([videoStream isLive]){
         //add overlay
         UIView* overlayView = [[UIView alloc]initWithFrame:annotationView.frame];
@@ -428,30 +335,22 @@ static CGFloat const searchRadius = 10000; //load video within 10 km from the lo
     if([view.annotation isKindOfClass:[VideoStream class]]){
         //configure left callout accessory view
         VideoStream* videoStream = (VideoStream*)view.annotation;
-        NSURL* viedoURL = [self videoURL:videoStream.url];
-        AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-        self.asset = asset;
-        CGSize footageSize = self.asset.tracks.firstObject.naturalSize;
-        CGRect frame = CGRectMake(0, 0, (49.0 * footageSize.width / footageSize.height), 49.0);
-        self.playerView = [[PlayerView alloc] initWithFrame:frame];
-        self.playerView.backgroundColor = [UIColor blackColor];
-        view.leftCalloutAccessoryView = self.playerView;
-        
+        CGRect rect = CGRectMake(0, 0, CalloutViewHeight * videoStream.width / videoStream.height, CalloutViewHeight);
+        UIImageView* imageView = [[UIImageView alloc]initWithFrame:rect];
+        imageView.image = videoStream.thumbImage;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
+        view.leftCalloutAccessoryView = imageView;
+
         //configure right callout accessory view and btn
         UIImage* arrowIcon = [UIImage imageNamed:@"arrow-icon"];
         UIButton* disclosureBtn = [[UIButton alloc]init];
         [disclosureBtn sizeToFit];
         [disclosureBtn setBackgroundImage:arrowIcon forState:UIControlStateNormal];
         view.rightCalloutAccessoryView = disclosureBtn;
-        [self prepareToPlay];
     }
 }
 
--(void) mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
-     if([view.annotation isKindOfClass:[VideoStream class]]){
-         [self resetPlayer];
-     }
-};
 
 -(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
     [self performSegueWithIdentifier:ShowCastingSegueIdentifier sender: view];

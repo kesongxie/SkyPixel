@@ -42,5 +42,10 @@
     }];
 }
 
+-(CKReference *)reference{
+    return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionNone];
+}
+
+
 
 @end

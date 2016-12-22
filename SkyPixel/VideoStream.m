@@ -7,8 +7,7 @@
 //
 
 #import "VideoStream.h"
-
-
+#import "VideoAsset.h"
 
 @interface VideoStream()
 
@@ -48,10 +47,6 @@
     return self.record[DescriptionKey];
 }
 
--(NSURL*) url{
-    return ((CKAsset*)self.record[VideoKey]).fileURL;
-}
-
 -(NSMutableArray<CKReference*>*) favorUserList{
     return self.record[FavorUserListKey];
 }
@@ -74,9 +69,40 @@
     return self.record[UserReferenceKey];
 }
 
+-(NSURL *)thumbnail{
+    CKAsset* asset = self.record[ThumbnailListKey];
+    return asset.fileURL;
+}
+
 -(BOOL) isLive{
     return ((NSNumber*)self.record[LiveKey]).integerValue == 1;
 }
+
+-(CGFloat)width{
+     return ((NSNumber*)self.record[WidthKey]).floatValue;
+}
+
+-(CGFloat)height{
+    return ((NSNumber*)self.record[HeightKey]).floatValue;
+}
+
+-(UIImage *)thumbImage{
+    NSURL* thumbnailURL = self.thumbnail;
+    NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
+    return [[UIImage alloc]initWithData:imageData];
+}
+
+-(void)loadVideoAsset: (void(^)(CKAsset* videoAsset, NSError *error)) callback{
+        [VideoAsset loadAssetForVideoStreamReference:self.reference completionHandler:^(NSArray<CKRecord *> *results, NSError *error) {
+        if(error == nil){
+            CKRecord* assetRecord = results.firstObject;
+            callback(assetRecord[AssetKey], nil);
+        }else{
+            callback(nil, error);
+        }
+    }];
+}
+
 
 //add a user to the user favor list
 -(void)deleteFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack{
@@ -153,6 +179,21 @@
     [commentReferenceList removeObject:commentReference];
     [self.record setObject:commentReferenceList forKey:CommentListKey];
     [self updateRecord:callBack];
+}
+
++(void)fetchVideoStreamForUser:(CKReference*)userReference completionHandler:(void(^)(NSArray<CKRecord*>* results, NSError* error)) callback{
+    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
+    NSString* userColumn = UserReferenceKey;
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@", userColumn,userReference];
+    CKQuery* query = [[CKQuery alloc]initWithRecordType:RecordType predicate:predicate];
+    [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
+        if(error == nil){
+            callback(results, nil);
+        }else{
+            //try again
+            [VideoStream fetchVideoStreamForUser:userReference completionHandler:callback];
+        }
+    }];
 }
 
 

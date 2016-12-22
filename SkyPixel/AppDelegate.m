@@ -21,7 +21,10 @@ NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotifica
 
     //fetch a user and log in
     CKDatabase* db = [[CKContainer defaultContainer] publicCloudDatabase];
-    NSString* email = @"john@skypixel.com";
+//    NSString* email = @"john@skypixel.com";
+    NSString* email = @"kesongxie@skypixel.com";
+
+    
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"email=%@", email];
     CKQuery* fetchQuery = [[CKQuery alloc]initWithRecordType:@"User" predicate:predicate];

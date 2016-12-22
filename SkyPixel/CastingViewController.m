@@ -12,6 +12,7 @@
 #import "PlayView.h"
 #import "FavorUserListViewController.h"
 #import "CommentListViewController.h"
+#import "ProfileTableViewController.h"
 
 static NSString* const FavorIconWhite = @"favor-icon";
 static NSString* const FavorIconRed = @"favor-icon-red";
@@ -19,6 +20,8 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @interface CastingViewController()
 
 @property (weak, nonatomic) IBOutlet PlayerView *playerView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *locationBtn;
@@ -50,6 +53,8 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 //this is function is responsible for updating the favor and comment count
 -(void)updatePinBottomViewUI;
 
+-(void)addTapGesture;
+
 
 -(void)favorTapped: (UITapGestureRecognizer*)gesture;
 
@@ -72,16 +77,9 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 -(void) viewDidLoad{
     [super viewDidLoad];
-    if(self.asset){
-        self.scrollView.alwaysBounceVertical = YES;
-        NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-        self.playerItem = [[AVPlayerItem alloc] initWithAsset:self.asset automaticallyLoadedAssetKeys:assetKeys];
-        [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
-        // Associate the player item with the player
-        self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
-        self.playerView.player = self.player;
+    if(self.videoStream != nil){
         [self updateUI];
+        //convert latitude and longitude to human-readable string
         CLGeocoder* geoCoder = [[CLGeocoder alloc]init];
         [geoCoder reverseGeocodeLocation:self.videoStream.location completionHandler:^(NSArray* placemarks, NSError* error){
             if(error == nil){
@@ -89,21 +87,41 @@ static NSString* const FavorIconRed = @"favor-icon-red";
                 [self.locationBtn setTitle: placeMark.name forState:UIControlStateNormal];
             }
         }];
-        
-        //add tap gesture for the icon
-        UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
-        [self.favorIconImageView addGestureRecognizer:favorTapped];
-        
-        //add tap gesture for the comment wrapper view
-        UITapGestureRecognizer* commentWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperViewTapped:)];
-        [self.commentWrapperView addGestureRecognizer:commentWrapperTapGesture];
-        
-        //add tap gesture for favorWrapperView
-        UITapGestureRecognizer* favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
-        [self.favorWrapperView addGestureRecognizer:favorWrapperTapGesture];
-        
-
     }
+    //load asset
+    [self.activityIndicator startAnimating];
+    [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
+            AVAsset* asset = [AVAsset assetWithURL:viedoURL];
+            NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
+            self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
+            [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
+            // Associate the player item with the player
+            self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+            self.playerView.player = self.player;
+        });
+    }];
+    [self addTapGesture];
+}
+
+-(void)addTapGesture{
+    //add tap gesture for the icon
+    UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
+    [self.favorIconImageView addGestureRecognizer:favorTapped];
+    
+    //add tap gesture for the comment wrapper view
+    UITapGestureRecognizer* commentWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperViewTapped:)];
+    [self.commentWrapperView addGestureRecognizer:commentWrapperTapGesture];
+    
+    //add tap gesture for favorWrapperView
+    UITapGestureRecognizer* favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
+    [self.favorWrapperView addGestureRecognizer:favorWrapperTapGesture];
+    
+    //add tap gesture for avator image view
+    UITapGestureRecognizer* avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
+    [self.avatorImageView addGestureRecognizer:avatorTapGesture];
 }
 
 -(void) viewDidLayoutSubviews{
@@ -129,10 +147,14 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         [self.liveIcon setHidden:NO];
         self.viewStatusLabel.text = @"PEOPLE VIEWING";
     }
-    self.fullnameLabel.text = self.user.fullname;
-    NSData* imageData = [[NSData alloc]initWithContentsOfURL:self.user.avatorUrl];
-    UIImage* avator = [[UIImage alloc]initWithData:imageData];
-    self.avatorImageView.image = avator;
+    self.fullnameLabel.text = self.videoStream.user.fullname;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSData* imageData = [[NSData alloc]initWithContentsOfURL:self.videoStream.user.avatorUrl];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImage* avator = [[UIImage alloc]initWithData:imageData];
+            self.avatorImageView.image = avator;
+        });
+    });
     self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.height / 2;
     self.avatorImageView.clipsToBounds = YES;
     self.videoTitleLabel.text = self.videoStream.title;
@@ -233,12 +255,40 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     CommentListViewController* commentListVC = (CommentListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"CommentListViewController"];
     if(commentListVC){
         commentListVC.videoStream = self.videoStream;
-//        commentListVC.commentReferenceList = self.videoStream.commentReferenceList;
         [self.navigationController pushViewController:commentListVC animated:YES];
     }
 }
 
 
+
+-(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ProfileTableViewController* profileTVC = (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
+    if(profileTVC){
+        profileTVC.user = self.videoStream.user;
+        profileTVC.avatorImage = self.avatorImageView.image;
+        [self.navigationController pushViewController:profileTVC animated:YES];
+    }
+}
+
+
+//MARK: player
+
+- (NSURL *)videoURL: (NSURL*)fileURL {
+    return [self createHardLinkToVideoFile: fileURL];
+}
+
+//returns a hard link, so as not to maintain another copy of the video file on the disk
+- (NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
+    NSError *err;
+    NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
+    if (![hardURL checkResourceIsReachableAndReturnError:nil]) {
+        if (![[NSFileManager defaultManager] linkItemAtURL: fileURL toURL: hardURL error:&err]) {
+            // if creating hard link failed it is still possible to create a copy of self.asset.fileURL and return the URL of the copy
+        }
+    }
+    return hardURL;
+}
 
 -(void) didPlayToEnd:(NSNotification*)notification{
     [self.player seekToTime:kCMTimeZero];
@@ -247,15 +297,15 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 
 -(void) adjustVideoFrame{
-    self.videoHeightConstraint.constant = self.view.frame.size.width * self.asset.tracks.firstObject.naturalSize.height / self.asset.tracks.firstObject.naturalSize.width;
+    self.videoHeightConstraint.constant = self.view.frame.size.width * self.videoStream.height / self.videoStream.width;
 }
-
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == &_payerItemContext) {
         dispatch_async(dispatch_get_main_queue(),^{
             if ((self.player.currentItem != nil) &&
                 ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
+                [self.activityIndicator stopAnimating];
                 [self.player play];
             }
         });

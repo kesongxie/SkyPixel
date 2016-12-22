@@ -245,9 +245,6 @@ static NSString* const DeletingingCommentStatusTitle = @"DELETING...";
             }
         });
     }];
-    
-    
-    
 }
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{

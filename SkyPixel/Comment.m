@@ -8,7 +8,7 @@
 
 #import "Comment.h"
 #import "AppDelegate.h"
-#import "PrettyDateFormatter.h"
+#import "Utility.h"
 
 static NSString* const TextKey = @"text";
 static NSString* const CreatedDateKey = @"createdDate";
@@ -34,7 +34,7 @@ static NSString* const VideoStreamKey = @"videostream";
 
 -(NSString*) createdDate{
     NSDate* date = self.record[CreatedDateKey];
-    NSString* agoString = [PrettyDateFormatter agoFormatterFromDate:date];
+    NSString* agoString = [Utility agoFormatterFromDate:date];
     return agoString;
 }
 -(NSString*) text{

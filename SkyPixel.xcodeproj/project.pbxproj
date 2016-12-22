@@ -10,7 +10,10 @@
 		980498841E02A72D0091A37C /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498831E02A72D0091A37C /* ContainerViewController.m */; };
 		9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498891E03729E0091A37C /* ExploreSearchTableViewController.m */; };
 		9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */; };
-		983046C31E0A0F4500F0557A /* PrettyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C21E0A0F4500F0557A /* PrettyDateFormatter.m */; };
+		983046C31E0A0F4500F0557A /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C21E0A0F4500F0557A /* Utility.m */; };
+		983046C61E0B6EDB00F0557A /* ProfileTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C51E0B6EDB00F0557A /* ProfileTableViewController.m */; };
+		983046CA1E0B6FE000F0557A /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C91E0B6FE000F0557A /* ProfileTableViewCell.m */; };
+		983046CC1E0BC52A00F0557A /* VideoAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046CB1E0BC52A00F0557A /* VideoAsset.m */; };
 		98621A7E1DFBE48A00417978 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98621A7D1DFBE48A00417978 /* CloudKit.framework */; };
 		98621A841DFC9B7500417978 /* clip in Resources */ = {isa = PBXBuildFile; fileRef = 98621A831DFC9B7500417978 /* clip */; };
 		98621A861DFCA40500417978 /* avator in Resources */ = {isa = PBXBuildFile; fileRef = 98621A851DFCA40500417978 /* avator */; };
@@ -44,8 +47,14 @@
 		9804988B1E0372A70091A37C /* ExploreSearchTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewController.h; sourceTree = "<group>"; };
 		9826C9C91DF6ABC10025F58F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		983046C11E0A0F3D00F0557A /* PrettyDateFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrettyDateFormatter.h; sourceTree = "<group>"; };
-		983046C21E0A0F4500F0557A /* PrettyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyDateFormatter.m; sourceTree = "<group>"; };
+		983046C11E0A0F3D00F0557A /* Utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		983046C21E0A0F4500F0557A /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
+		983046C41E0B6ED300F0557A /* ProfileTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewController.h; sourceTree = "<group>"; };
+		983046C51E0B6EDB00F0557A /* ProfileTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewController.m; sourceTree = "<group>"; };
+		983046C81E0B6FD900F0557A /* ProfileTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewCell.h; sourceTree = "<group>"; };
+		983046C91E0B6FE000F0557A /* ProfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewCell.m; sourceTree = "<group>"; };
+		983046CB1E0BC52A00F0557A /* VideoAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoAsset.m; sourceTree = "<group>"; };
+		983046CD1E0BC53600F0557A /* VideoAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoAsset.h; sourceTree = "<group>"; };
 		98621A7C1DFBE48500417978 /* SkyPixel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SkyPixel.entitlements; sourceTree = "<group>"; };
 		98621A7D1DFBE48A00417978 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		98621A831DFC9B7500417978 /* clip */ = {isa = PBXFileReference; lastKnownFileType = folder; name = clip; path = SkyPixel/clip; sourceTree = "<group>"; };
@@ -104,11 +113,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		983046C71E0B6F9200F0557A /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				983046C41E0B6ED300F0557A /* ProfileTableViewController.h */,
+				983046C51E0B6EDB00F0557A /* ProfileTableViewController.m */,
+				983046C81E0B6FD900F0557A /* ProfileTableViewCell.h */,
+				983046C91E0B6FE000F0557A /* ProfileTableViewCell.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 		98621A871DFCBBB500417978 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				98621A881DFCBBD600417978 /* User.h */,
 				98621A891DFCBBE100417978 /* User.m */,
+				983046CD1E0BC53600F0557A /* VideoAsset.h */,
+				983046CB1E0BC52A00F0557A /* VideoAsset.m */,
 				98621A901DFCCCCC00417978 /* VideoStream.h */,
 				98621A8E1DFCCCC300417978 /* VideoStream.m */,
 				98F8BD9F1E08FB8400A9E3D2 /* Comment.h */,
@@ -197,6 +219,7 @@
 				98D965561DF5074C00335CC6 /* Ultility */,
 				98D965551DF5074400335CC6 /* Category */,
 				98D965511DF5043000335CC6 /* SkyCast */,
+				983046C71E0B6F9200F0557A /* Profile */,
 				98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */,
 				98AF06471DFA88AF0060D993 /* Assets.xcassets */,
 				98C3DD561DF0F5CC00F6B49B /* Supporting Files */,
@@ -236,8 +259,8 @@
 		98D965561DF5074C00335CC6 /* Ultility */ = {
 			isa = PBXGroup;
 			children = (
-				983046C11E0A0F3D00F0557A /* PrettyDateFormatter.h */,
-				983046C21E0A0F4500F0557A /* PrettyDateFormatter.m */,
+				983046C11E0A0F3D00F0557A /* Utility.h */,
+				983046C21E0A0F4500F0557A /* Utility.m */,
 			);
 			name = Ultility;
 			sourceTree = "<group>";
@@ -372,6 +395,8 @@
 				98621ABB1DFE94D800417978 /* CastingViewController.m in Sources */,
 				98F8BDA11E08FB8F00A9E3D2 /* Comment.m in Sources */,
 				988E69291E04F89A00A9D893 /* ExploreSearchTableViewCell.m in Sources */,
+				983046C61E0B6EDB00F0557A /* ProfileTableViewController.m in Sources */,
+				983046CC1E0BC52A00F0557A /* VideoAsset.m in Sources */,
 				98621A8A1DFCBBE100417978 /* User.m in Sources */,
 				980498841E02A72D0091A37C /* ContainerViewController.m in Sources */,
 				98F8BD9D1E08F80B00A9E3D2 /* CommnentTableViewCell.m in Sources */,
@@ -385,9 +410,10 @@
 				98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
 				98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */,
-				983046C31E0A0F4500F0557A /* PrettyDateFormatter.m in Sources */,
+				983046C31E0A0F4500F0557A /* Utility.m in Sources */,
 				9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */,
 				98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */,
+				983046CA1E0B6FE000F0557A /* ProfileTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

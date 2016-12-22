@@ -36,6 +36,5 @@
     self.createdDataLabel.text = self.comment.createdDate;
 }
 
-
 @end
 

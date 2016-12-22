@@ -6,23 +6,26 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
-
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
 #import "CKReference+Comparison.h"
 #import "User.h"
 
 
 //keys for columns in the CloudKit database
+static NSString* const RecordType = @"VideoStream";
 static NSString* const TitleKey = @"title";
 static NSString* const LocationKey = @"location";
-static NSString* const VideoKey = @"video";
 static NSString* const LiveKey = @"live";
 static NSString* const UserReferenceKey = @"user";
 static NSString* const DescriptionKey = @"description";
 static NSString* const FavorUserListKey = @"favorUserList";
 static NSString* const CommentListKey = @"commentList";
+static NSString* const ThumbnailListKey = @"thumbnail";
+static NSString* const WidthKey = @"width";
+static NSString* const HeightKey = @"height";
 
 @interface VideoStream : NSObject
 
@@ -31,15 +34,17 @@ static NSString* const CommentListKey = @"commentList";
 @property (strong, nonatomic) User* user;
 
 //compute from record property
+@property (nonatomic) CGFloat width;
+@property (nonatomic) CGFloat height;
 @property (strong, readonly, nonatomic) NSString* title;
 @property (strong, readonly, nonatomic) NSString* description;
 @property (strong, readonly, nonatomic) CLLocation* location;
-@property (strong, readonly, nonatomic) NSURL* url;
 @property (strong, readonly, nonatomic) CKReference* reference;
 @property (strong, readonly, nonatomic) CKReference* userReference;
+@property (strong, readonly, nonatomic) NSURL* thumbnail;
+@property (strong, readonly, nonatomic) UIImage* thumbImage;
 @property (strong, nonatomic) NSMutableArray<CKReference*>* favorUserList;
 @property (strong, nonatomic) NSMutableArray<CKReference*>* commentReferenceList;
-
 @property (readonly, nonatomic) NSInteger live;
 
 - (id)initWithCKRecord: (CKRecord*)record;
@@ -49,6 +54,8 @@ static NSString* const CommentListKey = @"commentList";
 
 -(BOOL) isLive;
 
+-(void)loadVideoAsset: (void(^)(CKAsset* videoAsset, NSError *error)) callback;
+
 -(void)deleteFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack;
 
 -(void)addFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack;
@@ -56,4 +63,9 @@ static NSString* const CommentListKey = @"commentList";
 -(void)addCommentReference: (CKReference*)commentReference completionHandler: (void(^)(NSArray<CKRecord*>* records, NSArray<CKRecordID*>* recordIDs, NSError* error)) callback;
 
 -(void)deleteComment: (CKReference*)commentReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack;
+
++(void)fetchVideoStreamForUser:(CKReference*)userReference completionHandler:(void(^)(NSArray<CKRecord*>* results, NSError* error)) callback;
+
+
+
 @end
