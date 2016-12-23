@@ -9,8 +9,6 @@
 #import "ExploreSearchTableViewController.h"
 #import "ExploreSearchTableViewCell.h"
 
-static NSString* const NoSearchEntryFoundHeaderMessage = @"No location found";
-static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
 
 @interface ExploreSearchTableViewController()
 
@@ -41,7 +39,7 @@ static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
     self.searchController.searchResultsUpdater = self;
     [self.searchController.searchBar sizeToFit];
     self.searchController.hidesNavigationBarDuringPresentation = false;
-    self.searchController.searchBar.placeholder = @"Enter a spot";
+    self.searchController.searchBar.placeholder = NSLocalizedString(@"Enter a spot", @"enter a spot" );
     self.searchController.searchBar.delegate = self;
     self.searchController.searchBar.keyboardAppearance = UIKeyboardAppearanceLight;
     self.searchController.dimsBackgroundDuringPresentation = NO;
@@ -78,10 +76,10 @@ static NSString* const DefaultHeaderMessage = @"Explore the spots you love";
     [self.tableView bringSubviewToFront:self.headerView];
     switch (option) {
         case HeaderExpandNoEntryFoundOption:
-            self.headerTextDescriptionLabel.text = NoSearchEntryFoundHeaderMessage;
+            self.headerTextDescriptionLabel.text = NSLocalizedString(@"No location found", @"input not found");
             break;
         default:
-            self.headerTextDescriptionLabel.text = DefaultHeaderMessage;
+            self.headerTextDescriptionLabel.text = NSLocalizedString(@"Explore the spots you love",@"");
             break;
     }
 }

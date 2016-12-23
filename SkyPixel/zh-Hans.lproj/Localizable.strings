@@ -1,0 +1,33 @@
+/* title */
+"COMMENTS" = "评论";
+
+/* comment deleting */
+"DELETING..." = "正在删除";
+
+/* enter a spot */
+"Enter a spot" = "输入一个景点";
+
+/* No comment provided by engineer. */
+"Explore the spots you love" = "探索你喜欢的地方";
+
+/* live video */
+"LIVE NOW" = "直播";
+
+/* default message */
+"No description available" = "没有相关描述";
+
+/* input not found */
+"No location found" = "没有搜索到对应的地方";
+
+/* viewing count */
+"PEOPLE VIEWING" = "人正在看";
+
+/* searching status */
+"SEARCHING..." = "正在搜索";
+
+/* comment sending */
+"SENDING..." = "发送中";
+
+/* title for map */
+"SKYCAST" = "空中放映";
+

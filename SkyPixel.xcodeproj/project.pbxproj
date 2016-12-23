@@ -33,6 +33,8 @@
 		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
 		98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */; };
 		98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DDFFFA1DF600D300E2E762 /* MapKit.framework */; };
+		98E711091E0CF17F00241C12 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98E7110B1E0CF17F00241C12 /* InfoPlist.strings */; };
+		98E7110E1E0CF64000241C12 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98E711101E0CF64000241C12 /* Localizable.strings */; };
 		98F8BD911E08B14200A9E3D2 /* CKReference+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */; };
 		98F8BD931E08C38C00A9E3D2 /* FavorUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD921E08C38C00A9E3D2 /* FavorUserListViewController.m */; };
 		98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */; };
@@ -89,6 +91,10 @@
 		98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyTabBarViewController.h; sourceTree = "<group>"; };
 		98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyTabBarViewController.m; sourceTree = "<group>"; };
 		98DDFFFA1DF600D300E2E762 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		98E711051E0CF02800241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		98E711061E0CF02800241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		98E7110A1E0CF17F00241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		98E7110F1E0CF64000241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		98F8BD8F1E08B14200A9E3D2 /* CKReference+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CKReference+Comparison.h"; sourceTree = "<group>"; };
 		98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CKReference+Comparison.m"; sourceTree = "<group>"; };
 		98F8BD921E08C38C00A9E3D2 /* FavorUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorUserListViewController.m; sourceTree = "<group>"; };
@@ -233,6 +239,8 @@
 		98C3DD561DF0F5CC00F6B49B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				98E711101E0CF64000241C12 /* Localizable.strings */,
+				98E7110B1E0CF17F00241C12 /* InfoPlist.strings */,
 				98C3DD671DF0F5CC00F6B49B /* Info.plist */,
 				98C3DD571DF0F5CC00F6B49B /* main.m */,
 			);
@@ -381,7 +389,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				98621A861DFCA40500417978 /* avator in Resources */,
+				98E711091E0CF17F00241C12 /* InfoPlist.strings in Resources */,
 				98621A841DFC9B7500417978 /* clip in Resources */,
+				98E7110E1E0CF64000241C12 /* Localizable.strings in Resources */,
 				98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */,
 				98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */,
 				98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */,
@@ -430,6 +440,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				98C3DD601DF0F5CC00F6B49B /* Base */,
+				98E711061E0CF02800241C12 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -438,8 +449,25 @@
 			isa = PBXVariantGroup;
 			children = (
 				98C3DD651DF0F5CC00F6B49B /* Base */,
+				98E711051E0CF02800241C12 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		98E7110B1E0CF17F00241C12 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				98E7110A1E0CF17F00241C12 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		98E711101E0CF64000241C12 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				98E7110F1E0CF64000241C12 /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -449,6 +477,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -497,6 +526,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

@@ -16,9 +16,6 @@
 #import "Utility.h"
 
 
-static NSString* const Title = @"SKYCAST";
-static NSString* const SearchingStatusTitle = @"SEARCHING...";
-
 static double const LocationDegree = 0.05;
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
@@ -67,9 +64,9 @@ static CGFloat const CalloutViewHeight = 50;
     }
 }
 
-- (IBAction)backFromCastingViewController:(UIStoryboardSegue *)segue {
-    [self.player play];
-}
+//- (IBAction)backFromCastingViewController:(UIStoryboardSegue *)segue {
+//    [self.player play];
+//}
 
 - (IBAction)searchBtnTapped:(UIBarButtonItem *)sender {
     if([self.parentViewController.parentViewController isKindOfClass: [ContainerViewController class]]){
@@ -221,7 +218,7 @@ static CGFloat const CalloutViewHeight = 50;
     CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", self.locationCenter, searchRadius];
     CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
-    self.navigationItem.title = SearchingStatusTitle;
+    self.navigationItem.title = NSLocalizedString(@"SEARCHING...", @"searching status");;
     self.isFetchingRecord = YES;
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* videoStreamRecords, NSError* error){
         if(error == nil){
@@ -238,7 +235,7 @@ static CGFloat const CalloutViewHeight = 50;
                             userFetchedCompletedCount = userFetchedCompletedCount + 1;
                             if(userFetchedCompletedCount == videoStreamRecords.count){
                                 //The fetching for all the users are now completed
-                                self.navigationItem.title = Title;
+                                self.navigationItem.title =  NSLocalizedString(@"SKYCAST", @"title for map");
                                 self.isFetchingRecord = NO;
                             }
                         });

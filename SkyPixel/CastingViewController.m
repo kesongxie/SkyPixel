@@ -80,7 +80,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 - (IBAction)backBtnTapped:(UIBarButtonItem *)sender {
     self.resetting = YES;
     [self resetPlayer];
-    [self performSegueWithIdentifier:@"backFromCastingViewController" sender:self];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -166,9 +166,9 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 -(void) updateUI{
     if([self.videoStream isLive]){
-        self.title = @"LIVE NOW";
+        self.title = NSLocalizedString(@"LIVE NOW", @"live video");
         [self.liveIcon setHidden:NO];
-        self.viewStatusLabel.text = @"PEOPLE VIEWING";
+        self.viewStatusLabel.text = NSLocalizedString(@"PEOPLE VIEWING", @"viewing count");
     }
     self.fullnameLabel.text = self.videoStream.user.fullname;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -183,7 +183,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.videoTitleLabel.text = self.videoStream.title;
     self.descriptionLabel.text = self.videoStream.description;
     if(self.descriptionLabel.text.length == 0){
-        self.descriptionLabel.text = @"No description available";
+        self.descriptionLabel.text = NSLocalizedString(@"No description available", @"default message");
         self.descriptionLabel.textColor = [UIColor colorWithRed:90/255.0 green:90/255.0 blue:90/255.0 alpha:1]; //lighter gray
     }
     [self updatePinBottomViewUI];

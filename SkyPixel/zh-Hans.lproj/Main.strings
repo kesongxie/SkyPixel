@@ -1,0 +1,105 @@
+/* Class = "UILabel"; text = "Followers"; ObjectID = "2GP-Qa-wHx"; */
+"2GP-Qa-wHx.text" = "关注";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "5Em-Ab-Txa"; */
+"5Em-Ab-Txa.text" = "0";
+
+/* Class = "UILabel"; text = "DESCRIPTION"; ObjectID = "5hM-4E-J5e"; */
+"5hM-4E-J5e.text" = "描述";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "7dQ-4G-RHg"; */
+"7dQ-4G-RHg.text" = "0";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "8ip-aU-YZR"; */
+"8ip-aU-YZR.text" = "0";
+
+/* Class = "UILabel"; text = "Place Mark Name"; ObjectID = "9J8-Dr-0Rp"; */
+"9J8-Dr-0Rp.text" = "Place Mark Name";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "C88-mv-IyG"; */
+"C88-mv-IyG.text" = "Title";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "CpI-l8-z6K"; */
+"CpI-l8-z6K.text" = "Title";
+
+/* Class = "UILabel"; text = "9k"; ObjectID = "IG4-yW-3Y7"; */
+"IG4-yW-3Y7.text" = "9k";
+
+/* Class = "UILabel"; text = "VIEWS"; ObjectID = "Jga-Gw-7FA"; */
+"Jga-Gw-7FA.text" = "浏览";
+
+/* Class = "UILabel"; text = "Fullname"; ObjectID = "K6a-57-PIE"; */
+"K6a-57-PIE.text" = "Fullname";
+
+/* Class = "UITextField"; placeholder = "Comment here"; ObjectID = "NuL-Ay-FU8"; */
+"NuL-Ay-FU8.placeholder" = "在此评论";
+
+/* Class = "UILabel"; text = "Address"; ObjectID = "RNO-Ze-7rj"; */
+"RNO-Ze-7rj.text" = "Address";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "RSD-CY-AWW"; */
+"RSD-CY-AWW.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "A programming nerd loves exploring the world, a ucsd computer science major"; ObjectID = "TVm-Hf-JPv"; */
+"TVm-Hf-JPv.text" = "A programming nerd loves exploring the world, a ucsd computer science major";
+
+/* Class = "UILabel"; text = "Be the first one to favor"; ObjectID = "Ttd-Lt-dSp"; */
+"Ttd-Lt-dSp.text" = "Be the first one to favor";
+
+/* Class = "UILabel"; text = "Views"; ObjectID = "Ug7-Vc-FHe"; */
+"Ug7-Vc-FHe.text" = "浏览";
+
+/* Class = "UILabel"; text = "Fullname"; ObjectID = "VRM-qa-xE4"; */
+"VRM-qa-xE4.text" = "Fullname";
+
+/* Class = "UILabel"; text = "643"; ObjectID = "ZHP-B6-gFT"; */
+"ZHP-B6-gFT.text" = "643";
+
+/* Class = "UILabel"; text = "Un jour, un événement jusqu'à 2017... Déc 18 Il a échoué à 18 reprises mais cette année, @Leander a soulevé le trophée du double mixte !"; ObjectID = "ZWW-Ly-rnG"; */
+"ZWW-Ly-rnG.text" = "Un jour, un événement jusqu'à 2017... Déc 18 Il a échoué à 18 reprises mais cette année, @Leander a soulevé le trophée du double mixte !";
+
+/* Class = "UINavigationItem"; title = "SKYCAST"; ObjectID = "aH6-0s-tL4"; */
+"aH6-0s-tL4.title" = "空中放映";
+
+/* Class = "UILabel"; text = "3w"; ObjectID = "bW0-ed-QXG"; */
+"bW0-ed-QXG.text" = "3w";
+
+/* Class = "UILabel"; text = "Posts"; ObjectID = "ckO-Fd-aKA"; */
+"ckO-Fd-aKA.text" = "帖子";
+
+/* Class = "UILabel"; text = "16"; ObjectID = "d6P-aI-ntU"; */
+"d6P-aI-ntU.text" = "16";
+
+/* Class = "UINavigationItem"; title = "SHOTS"; ObjectID = "fNh-XM-bQV"; */
+"fNh-XM-bQV.title" = "视频";
+
+/* Class = "UILabel"; text = "Explore the spots you love"; ObjectID = "hrE-YZ-bPJ"; */
+"hrE-YZ-bPJ.text" = "探索你喜欢的地方";
+
+/* Class = "UILabel"; text = "Fullname"; ObjectID = "p4Q-yY-7zJ"; */
+"p4Q-yY-7zJ.text" = "Fullname";
+
+/* Class = "UILabel"; text = "Be the first one to comment"; ObjectID = "qHu-Zf-Mlj"; */
+"qHu-Zf-Mlj.text" = "第一个评论";
+
+/* Class = "UILabel"; text = "Text"; ObjectID = "r14-s8-VdK"; */
+"r14-s8-VdK.text" = "Text";
+
+/* Class = "UIButton"; normalTitle = "Locating..."; ObjectID = "rCR-eK-7ew"; */
+"rCR-eK-7ew.normalTitle" = "加载中...";
+
+/* Class = "UILabel"; text = "Fullname"; ObjectID = "rw7-js-GgK"; */
+"rw7-js-GgK.text" = "Fullname";
+
+/* Class = "UINavigationItem"; title = "PROFILE"; ObjectID = "sSO-DF-bBP"; */
+"sSO-DF-bBP.title" = "主页";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "vFB-6Y-mP7"; */
+"vFB-6Y-mP7.text" = "0";
+
+/* Class = "UILabel"; text = "3"; ObjectID = "vja-bT-BJq"; */
+"vja-bT-BJq.text" = "3";
+
+/* Class = "UILabel"; text = "EXPLORE SKYPIXEL"; ObjectID = "yrK-HH-32m"; */
+"yrK-HH-32m.text" = "探索“像素天空”";
+

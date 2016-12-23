@@ -13,11 +13,6 @@
 #import "Comment.h"
 #import "CKReference+Comparison.h"
 
-static NSString* const Title = @"COMMENTS";
-static NSString* const SendingCommentStatusTitle = @"SENDING...";
-static NSString* const DeletingingCommentStatusTitle = @"DELETING...";
-
-
 @interface CommentListViewController()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -120,7 +115,7 @@ static NSString* const DeletingingCommentStatusTitle = @"DELETING...";
 
 //MARK: - Update UI
 -(void)updateUI{
-    self.navigationItem.title = Title;
+    self.navigationItem.title = NSLocalizedString(@"COMMENTS", @"title");
     UIImage* backBtnImage = [UIImage imageNamed:@"back-icon"];
     self.backBtn = [[UIBarButtonItem alloc]initWithImage:backBtnImage style:UIBarButtonItemStylePlain target:self action:@selector(backBtnTapped:)];
     [self.backBtn setTintColor:[UIColor whiteColor]];
@@ -157,14 +152,14 @@ static NSString* const DeletingingCommentStatusTitle = @"DELETING...";
 //Mark: - send coment
 -(void)sendComment{
     self.isSendingComment = YES;
-    self.navigationItem.title = SendingCommentStatusTitle;
+    self.navigationItem.title = NSLocalizedString( @"SENDING...", @"comment sending");
     NSString* text = self.commentTextField.text;
     if(text.length != 0){
         [self resetUIAfterCommentBtnTapped];
         [Comment sendComment:text inVideo:self.videoStream completionHandler:^(Comment *comment, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.isSendingComment = NO;
-                self.navigationItem.title = Title;
+                self.navigationItem.title = NSLocalizedString(@"COMMENTS", title);
                 [self hideHeaderView];
                 //update the datasource and insert the comment
                 [self.commentList insertObject:comment atIndex:0];
@@ -235,13 +230,13 @@ static NSString* const DeletingingCommentStatusTitle = @"DELETING...";
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    self.navigationItem.title = DeletingingCommentStatusTitle;
+    self.navigationItem.title = NSLocalizedString(@"DELETING...", @"comment deleting");
     [Comment deleteCommentInVideoStream:self.commentList[indexPath.row] inVideoStream:self.videoStream completionHandler:^(CKRecordID *recordID, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if(error == nil){
                 [self.commentList removeObjectAtIndex:indexPath.row];
                 [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                self.navigationItem.title = Title;
+                self.navigationItem.title = NSLocalizedString(@"COMMENTS", @"title");
             }
         });
     }];

@@ -10,9 +10,10 @@
 #import <Foundation/Foundation.h>
 #import "VideoStream.h"
 #import "ProfileTableViewCell.h"
+#import "CastingViewController.h"
 
-
-
+static NSString* MainStoryboardName = @"Main";
+static NSString* CastingViewControllerIdentifier = @"CastingViewController";
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
 static CGFloat const NavigationBarTitleFontSize = 17;
 
@@ -22,7 +23,6 @@ static CGFloat const NavigationBarTitleFontSize = 17;
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
 @property (strong, nonatomic) UIBarButtonItem* backBtn;
-
 @property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamList;
 
 
@@ -50,7 +50,11 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     [self.navigationController.navigationBar setBarTintColor: [UIColor blackColor]];
     UIFont* titleFont = [UIFont fontWithName: NavigationBarTitleFontName size: NavigationBarTitleFontSize];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentFavorListViewController:) name:PresentFavorListNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentCommentListViewController:) name:PresentCommentListNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentCastingViewController:) name:PresentVideoDetailNotificationName object:nil];
+    
     if(self.user != nil){
         self.avatorImageView.image = self.user.thumbImage;
         self.fullnameLabel.text = self.user.fullname;
@@ -61,6 +65,11 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     [super viewDidLayoutSubviews];
     self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.width / 2;
     self.avatorImageView.clipsToBounds = YES;
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
 }
 
 
@@ -84,7 +93,37 @@ static CGFloat const NavigationBarTitleFontSize = 17;
 }
 
 
+//present view controller for cell
+-(void)presentFavorListViewController:(NSNotification*)notification {
+    FavorUserListViewController* favorListVC = (FavorUserListViewController*)notification.userInfo[FavorUserListVCKey];
+    if(favorListVC != nil){
+        [self.navigationController pushViewController:favorListVC animated:YES];
+    }
+}
 
+-(void)presentCommentListViewController:(NSNotification*)notification {
+    CommentListViewController* commentListVC = (CommentListViewController*)notification.userInfo[CommentUserListVCKey];
+    if(commentListVC != nil){
+        [self.navigationController pushViewController:commentListVC animated:YES];
+    }
+}
+
+
+-(void)presentCastingViewController:(NSNotification*)notification {
+    VideoStream* videoStream = (VideoStream*)notification.userInfo[VideoDetailKey];
+    if(videoStream != nil){
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
+        CastingViewController* castingVC = (CastingViewController*)[storyboard instantiateViewControllerWithIdentifier:CastingViewControllerIdentifier];
+        castingVC.videoStream = videoStream;
+        [self.navigationController pushViewController:castingVC animated:YES];
+    }
+}
+
+
+
+
+
+//MARK: - TableViewDelegate, TableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }

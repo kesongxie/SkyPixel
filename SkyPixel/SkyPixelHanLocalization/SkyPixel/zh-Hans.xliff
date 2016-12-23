@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="SkyPixel/Base.lproj/LaunchScreen.storyboard" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.2" build-num="8C30a"/>
+    </header>
+    <body/>
+  </file>
+  <file original="SkyPixel/Base.lproj/Main.storyboard" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.2" build-num="8C30a"/>
+    </header>
+    <body>
+      <trans-unit id="2GP-Qa-wHx.text">
+        <source>Followers</source>
+        <target>关注</target>
+        <note>Class = "UILabel"; text = "Followers"; ObjectID = "2GP-Qa-wHx";</note>
+      </trans-unit>
+      <trans-unit id="5Em-Ab-Txa.text">
+        <source>0</source>
+        <target>0</target>
+        <note>Class = "UILabel"; text = "0"; ObjectID = "5Em-Ab-Txa";</note>
+      </trans-unit>
+      <trans-unit id="5hM-4E-J5e.text">
+        <source>DESCRIPTION</source>
+        <target>描述</target>
+        <note>Class = "UILabel"; text = "DESCRIPTION"; ObjectID = "5hM-4E-J5e";</note>
+      </trans-unit>
+      <trans-unit id="7dQ-4G-RHg.text">
+        <source>0</source>
+        <target>0</target>
+        <note>Class = "UILabel"; text = "0"; ObjectID = "7dQ-4G-RHg";</note>
+      </trans-unit>
+      <trans-unit id="8ip-aU-YZR.text">
+        <source>0</source>
+        <target>0</target>
+        <note>Class = "UILabel"; text = "0"; ObjectID = "8ip-aU-YZR";</note>
+      </trans-unit>
+      <trans-unit id="9J8-Dr-0Rp.text">
+        <source>Place Mark Name</source>
+        <target>Place Mark Name</target>
+        <note>Class = "UILabel"; text = "Place Mark Name"; ObjectID = "9J8-Dr-0Rp";</note>
+      </trans-unit>
+      <trans-unit id="C88-mv-IyG.text">
+        <source>Title</source>
+        <target>Title</target>
+        <note>Class = "UILabel"; text = "Title"; ObjectID = "C88-mv-IyG";</note>
+      </trans-unit>
+      <trans-unit id="CpI-l8-z6K.text">
+        <source>Title</source>
+        <target>Title</target>
+        <note>Class = "UILabel"; text = "Title"; ObjectID = "CpI-l8-z6K";</note>
+      </trans-unit>
+      <trans-unit id="IG4-yW-3Y7.text">
+        <source>9k</source>
+        <target>9k</target>
+        <note>Class = "UILabel"; text = "9k"; ObjectID = "IG4-yW-3Y7";</note>
+      </trans-unit>
+      <trans-unit id="Jga-Gw-7FA.text">
+        <source>VIEWS</source>
+        <target>浏览</target>
+        <note>Class = "UILabel"; text = "VIEWS"; ObjectID = "Jga-Gw-7FA";</note>
+      </trans-unit>
+      <trans-unit id="K6a-57-PIE.text">
+        <source>Fullname</source>
+        <target>Fullname</target>
+        <note>Class = "UILabel"; text = "Fullname"; ObjectID = "K6a-57-PIE";</note>
+      </trans-unit>
+      <trans-unit id="NuL-Ay-FU8.placeholder">
+        <source>Comment here</source>
+        <target>在此评论</target>
+        <note>Class = "UITextField"; placeholder = "Comment here"; ObjectID = "NuL-Ay-FU8";</note>
+      </trans-unit>
+      <trans-unit id="RNO-Ze-7rj.text">
+        <source>Address</source>
+        <target>Address</target>
+        <note>Class = "UILabel"; text = "Address"; ObjectID = "RNO-Ze-7rj";</note>
+      </trans-unit>
+      <trans-unit id="RSD-CY-AWW.normalTitle">
+        <source>Button</source>
+        <target>Button</target>
+        <note>Class = "UIButton"; normalTitle = "Button"; ObjectID = "RSD-CY-AWW";</note>
+      </trans-unit>
+      <trans-unit id="TVm-Hf-JPv.text">
+        <source>A programming nerd loves exploring the world, a ucsd computer science major</source>
+        <target>A programming nerd loves exploring the world, a ucsd computer science major</target>
+        <note>Class = "UILabel"; text = "A programming nerd loves exploring the world, a ucsd computer science major"; ObjectID = "TVm-Hf-JPv";</note>
+      </trans-unit>
+      <trans-unit id="Ttd-Lt-dSp.text">
+        <source>Be the first one to favor</source>
+        <target>Be the first one to favor</target>
+        <note>Class = "UILabel"; text = "Be the first one to favor"; ObjectID = "Ttd-Lt-dSp";</note>
+      </trans-unit>
+      <trans-unit id="Ug7-Vc-FHe.text">
+        <source>Views</source>
+        <target>浏览</target>
+        <note>Class = "UILabel"; text = "Views"; ObjectID = "Ug7-Vc-FHe";</note>
+      </trans-unit>
+      <trans-unit id="VRM-qa-xE4.text">
+        <source>Fullname</source>
+        <target>Fullname</target>
+        <note>Class = "UILabel"; text = "Fullname"; ObjectID = "VRM-qa-xE4";</note>
+      </trans-unit>
+      <trans-unit id="ZHP-B6-gFT.text">
+        <source>643</source>
+        <target>643</target>
+        <note>Class = "UILabel"; text = "643"; ObjectID = "ZHP-B6-gFT";</note>
+      </trans-unit>
+      <trans-unit id="ZWW-Ly-rnG.text">
+        <source>Un jour, un événement jusqu'à 2017... Déc 18 Il a échoué à 18 reprises mais cette année, @Leander a soulevé le trophée du double mixte !</source>
+        <target>Un jour, un événement jusqu'à 2017... Déc 18 Il a échoué à 18 reprises mais cette année, @Leander a soulevé le trophée du double mixte !</target>
+        <note>Class = "UILabel"; text = "Un jour, un événement jusqu'à 2017... Déc 18 Il a échoué à 18 reprises mais cette année, @Leander a soulevé le trophée du double mixte !"; ObjectID = "ZWW-Ly-rnG";</note>
+      </trans-unit>
+      <trans-unit id="aH6-0s-tL4.title">
+        <source>SKYCAST</source>
+        <target>空中放映</target>
+        <note>Class = "UINavigationItem"; title = "SKYCAST"; ObjectID = "aH6-0s-tL4";</note>
+      </trans-unit>
+      <trans-unit id="bW0-ed-QXG.text">
+        <source>3w</source>
+        <target>3w</target>
+        <note>Class = "UILabel"; text = "3w"; ObjectID = "bW0-ed-QXG";</note>
+      </trans-unit>
+      <trans-unit id="ckO-Fd-aKA.text">
+        <source>Posts</source>
+        <target>帖子</target>
+        <note>Class = "UILabel"; text = "Posts"; ObjectID = "ckO-Fd-aKA";</note>
+      </trans-unit>
+      <trans-unit id="d6P-aI-ntU.text">
+        <source>16</source>
+        <target>16</target>
+        <note>Class = "UILabel"; text = "16"; ObjectID = "d6P-aI-ntU";</note>
+      </trans-unit>
+      <trans-unit id="fNh-XM-bQV.title">
+        <source>SHOTS</source>
+        <target>视频</target>
+        <note>Class = "UINavigationItem"; title = "SHOTS"; ObjectID = "fNh-XM-bQV";</note>
+      </trans-unit>
+      <trans-unit id="hrE-YZ-bPJ.text">
+        <source>Explore the spots you love</source>
+        <target>探索你喜欢的地方</target>
+        <note>Class = "UILabel"; text = "Explore the spots you love"; ObjectID = "hrE-YZ-bPJ";</note>
+      </trans-unit>
+      <trans-unit id="p4Q-yY-7zJ.text">
+        <source>Fullname</source>
+        <target>Fullname</target>
+        <note>Class = "UILabel"; text = "Fullname"; ObjectID = "p4Q-yY-7zJ";</note>
+      </trans-unit>
+      <trans-unit id="qHu-Zf-Mlj.text">
+        <source>Be the first one to comment</source>
+        <target>第一个评论</target>
+        <note>Class = "UILabel"; text = "Be the first one to comment"; ObjectID = "qHu-Zf-Mlj";</note>
+      </trans-unit>
+      <trans-unit id="r14-s8-VdK.text">
+        <source>Text</source>
+        <target>Text</target>
+        <note>Class = "UILabel"; text = "Text"; ObjectID = "r14-s8-VdK";</note>
+      </trans-unit>
+      <trans-unit id="rCR-eK-7ew.normalTitle">
+        <source>Locating...</source>
+        <target>加载中...</target>
+        <note>Class = "UIButton"; normalTitle = "Locating..."; ObjectID = "rCR-eK-7ew";</note>
+      </trans-unit>
+      <trans-unit id="rw7-js-GgK.text">
+        <source>Fullname</source>
+        <target>Fullname</target>
+        <note>Class = "UILabel"; text = "Fullname"; ObjectID = "rw7-js-GgK";</note>
+      </trans-unit>
+      <trans-unit id="sSO-DF-bBP.title">
+        <source>PROFILE</source>
+        <target>主页</target>
+        <note>Class = "UINavigationItem"; title = "PROFILE"; ObjectID = "sSO-DF-bBP";</note>
+      </trans-unit>
+      <trans-unit id="vFB-6Y-mP7.text">
+        <source>0</source>
+        <target>0</target>
+        <note>Class = "UILabel"; text = "0"; ObjectID = "vFB-6Y-mP7";</note>
+      </trans-unit>
+      <trans-unit id="vja-bT-BJq.text">
+        <source>3</source>
+        <target>3</target>
+        <note>Class = "UILabel"; text = "3"; ObjectID = "vja-bT-BJq";</note>
+      </trans-unit>
+      <trans-unit id="yrK-HH-32m.text">
+        <source>EXPLORE SKYPIXEL</source>
+        <target>探索“像素天空”</target>
+        <note>Class = "UILabel"; text = "EXPLORE SKYPIXEL"; ObjectID = "yrK-HH-32m";</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="SkyPixel/Info.plist" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.2" build-num="8C30a"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="SkyPixel/Localizable.strings" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.2" build-num="8C30a"/>
+    </header>
+    <body>
+      <trans-unit id="COMMENTS">
+        <source>COMMENTS</source>
+        <target>评论</target>
+      </trans-unit>
+      <trans-unit id="DELETING...">
+        <source>DELETING...</source>
+        <target>正在删除</target>
+      </trans-unit>
+      <trans-unit id="Enter a spot">
+        <source>Enter a spot</source>
+        <target>输入一个景点</target>
+      </trans-unit>
+      <trans-unit id="Explore the spots you love">
+        <source>Explore the spots you love</source>
+        <target>探索你喜欢的地方</target>
+      </trans-unit>
+      <trans-unit id="LIVE NOW">
+        <source>LIVE NOW</source>
+        <target>直播</target>
+      </trans-unit>
+      <trans-unit id="No description available">
+        <source>No description available</source>
+        <target>没有相关描述</target>
+      </trans-unit>
+      <trans-unit id="No location found">
+        <source>No location found</source>
+        <target>没有搜索到对应的地方</target>
+      </trans-unit>
+      <trans-unit id="PEOPLE VIEWING">
+        <source>PEOPLE VIEWING</source>
+        <target>人正在看</target>
+      </trans-unit>
+      <trans-unit id="SEARCHING...">
+        <source>SEARCHING...</source>
+        <target>正在搜索</target>
+      </trans-unit>
+      <trans-unit id="SENDING...">
+        <source>SENDING...</source>
+        <target>发送中</target>
+      </trans-unit>
+      <trans-unit id="SKYCAST">
+        <source>SKYCAST</source>
+        <target>空中放映</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
