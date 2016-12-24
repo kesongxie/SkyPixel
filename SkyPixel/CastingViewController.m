@@ -47,12 +47,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
 @property (strong, nonatomic) CKAsset* videoAsset;
-@property (nonatomic) BOOL resetting;
-@property (nonatomic) BOOL needsResumeSettingVideo;
 @property (nonatomic) BOOL isViewVisible;
-
-
-
 
 //update the user information, such as fullname, avator
 -(void)updateUI;
@@ -78,19 +73,11 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @implementation CastingViewController
 
 - (IBAction)backBtnTapped:(UIBarButtonItem *)sender {
-    self.resetting = YES;
     [self resetPlayer];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
 - (IBAction)backFromProfileTableViewController:(UIStoryboardSegue *)segue {
-    self.resetting = NO;
-    if(self.needsResumeSettingVideo && self.videoAsset != nil){
-        [self readyLoadingVideo:self.videoAsset];
-    }else{
-        [self.player play];
-    }
 }
 
 -(void) viewDidLoad{
@@ -110,13 +97,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     [self.activityIndicator startAnimating];
     [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if(!self.resetting){
-                [self readyLoadingVideo: videoAsset];
-            }else{
-                //need to resume setting video
-                self.needsResumeSettingVideo = YES;
-                self.videoAsset = videoAsset;
-            }
+            [self readyLoadingVideo: videoAsset];
         });
     }];
     [self addTapGesture];
@@ -156,12 +137,19 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.viewCountsLabel.text = [NSString stringWithFormat: @"%ld", (long)newCount];
     [self updatePinBottomViewUI];
     self.isViewVisible = YES;
+}
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.player play];
+    [self.player setMuted:NO];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.isViewVisible = NO;
+    [self.player setMuted:YES];
+
 }
 
 -(void) updateUI{
@@ -286,8 +274,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ProfileTableViewController* profileTVC = (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
     if(profileTVC){
-        self.resetting = YES;
-        [self.player pause];
         profileTVC.user = self.videoStream.user;
         [self.navigationController pushViewController:profileTVC animated:YES];
     }
@@ -329,10 +315,11 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         dispatch_async(dispatch_get_main_queue(),^{
             if ((self.player.currentItem != nil) &&
                 ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-                if(self.isViewVisible){
+                    if(!self.isViewVisible){
+                        [self.player setMuted:YES];
+                    }
                     [self.activityIndicator stopAnimating];
                     [self.player play];
-                }
             }
         });
         return;

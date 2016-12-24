@@ -34,12 +34,14 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (weak, nonatomic) IBOutlet PlayerView *playerView;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) AVPlayer* player;
-@property (strong, nonatomic) NSString* payerItemContext;
+@property (strong, nonatomic) NSString* playerItemContext;
 @property (strong, nonatomic) CKAsset* videoAsset;
 @property (nonatomic) BOOL resetting;
 @property (nonatomic) BOOL needsResumeSettingVideo;
 @property (nonatomic) BOOL isVideoPlaying;
 @property (nonatomic) BOOL isVideoFinisedDownloading;
+@property (nonatomic) BOOL isVideoDownloading;
+
 
 
 
@@ -51,10 +53,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (weak, nonatomic) IBOutlet UIStackView *commentWrapperView;
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *optionWrapperView;
-
-
-
-
 
 -(void)previewImageViewTapped: (UITapGestureRecognizer*)tap;
 
@@ -120,7 +118,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     
     //add tap gesture to the cell
     UITapGestureRecognizer* cellTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(cellTapped:)];
-    [self addGestureRecognizer:cellTapGesture];
+    [self.titleLabel addGestureRecognizer:cellTapGesture];
 
 }
 
@@ -128,11 +126,13 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 -(void)previewImageViewTapped: (UITapGestureRecognizer*)tap{
     if(!self.isVideoPlaying){
         [self.overlayView setHidden:YES];
-        if(!self.isVideoFinisedDownloading){
+        if(!self.isVideoFinisedDownloading && !self.isVideoDownloading){
+            self.isVideoDownloading = YES;
             [self.playIconImageView setHidden:YES];
             self.playerView.image = [[UIImage alloc]init];
             [self.activityIndicator startAnimating];
             //load the video
+            [self resetPlayer];
             [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
                 self.isVideoFinisedDownloading = YES;
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -182,7 +182,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == &_payerItemContext) {
+    if (context == &_playerItemContext) {
         dispatch_async(dispatch_get_main_queue(),^{
             if ((self.player.currentItem != nil) &&
                 ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
@@ -204,14 +204,14 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
     self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
-    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
+    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_playerItemContext];
     // Associate the player item with the player
     self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
     self.playerView.player = self.player;
 }
 
 -(void)resetPlayer{
-    [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];
+    [self.playerItem removeObserver:self forKeyPath:@"status" context:&_playerItemContext];
     [self.player pause];
 }
 
@@ -240,6 +240,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
             self.favorIconImageView.image = heartIconImage;
             self.favorCountLabel.text = [[NSNumberFormatter alloc] stringFromNumber:count];
         }];
+        
     }else{
         //add favor
         [self addFavorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
@@ -248,7 +249,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
             self.favorIconImageView.image = heartIconImage;
             self.favorCountLabel.text = [[NSNumberFormatter alloc] stringFromNumber:count];
         }];
-        
     }
 }
 

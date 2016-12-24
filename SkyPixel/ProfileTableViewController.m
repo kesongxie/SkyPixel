@@ -24,6 +24,10 @@ static CGFloat const NavigationBarTitleFontSize = 17;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
 @property (strong, nonatomic) UIBarButtonItem* backBtn;
 @property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamList;
+@property (weak, nonatomic) IBOutlet UILabel *postCountLabel;
+
+
+@property (weak, nonatomic) IBOutlet UIButton *profileActionBtn;
 
 
 -(void)updateUI;
@@ -58,7 +62,12 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     if(self.user != nil){
         self.avatorImageView.image = self.user.thumbImage;
         self.fullnameLabel.text = self.user.fullname;
+        self.postCountLabel.text = [NSString stringWithFormat:@"%i", self.user.videoStreamRecord.count];
     }
+    
+    self.profileActionBtn.layer.cornerRadius = 6.0;
+    self.profileActionBtn.layer.borderColor = [UIColor colorWithRed:11/255.0 green:37/255.0 blue:84/255.0 alpha:1].CGColor;
+    self.profileActionBtn.layer.borderWidth = 1.0;
 }
 
 -(void)viewDidLayoutSubviews{
@@ -118,10 +127,6 @@ static CGFloat const NavigationBarTitleFontSize = 17;
         [self.navigationController pushViewController:castingVC animated:YES];
     }
 }
-
-
-
-
 
 //MARK: - TableViewDelegate, TableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

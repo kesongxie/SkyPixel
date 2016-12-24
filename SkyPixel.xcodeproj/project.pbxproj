@@ -17,7 +17,6 @@
 		983046D01E0C7C3900F0557A /* UIImageView+ProfileAvator.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046CF1E0C7C3900F0557A /* UIImageView+ProfileAvator.m */; };
 		98621A7E1DFBE48A00417978 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98621A7D1DFBE48A00417978 /* CloudKit.framework */; };
 		98621A841DFC9B7500417978 /* clip in Resources */ = {isa = PBXBuildFile; fileRef = 98621A831DFC9B7500417978 /* clip */; };
-		98621A861DFCA40500417978 /* avator in Resources */ = {isa = PBXBuildFile; fileRef = 98621A851DFCA40500417978 /* avator */; };
 		98621A8A1DFCBBE100417978 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A891DFCBBE100417978 /* User.m */; };
 		98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A8E1DFCCCC300417978 /* VideoStream.m */; };
 		98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A921DFCCF1400417978 /* VideoStream+Annotation.m */; };
@@ -63,7 +62,6 @@
 		98621A7C1DFBE48500417978 /* SkyPixel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SkyPixel.entitlements; sourceTree = "<group>"; };
 		98621A7D1DFBE48A00417978 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		98621A831DFC9B7500417978 /* clip */ = {isa = PBXFileReference; lastKnownFileType = folder; name = clip; path = SkyPixel/clip; sourceTree = "<group>"; };
-		98621A851DFCA40500417978 /* avator */ = {isa = PBXFileReference; lastKnownFileType = folder; name = avator; path = SkyPixel/avator; sourceTree = "<group>"; };
 		98621A881DFCBBD600417978 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		98621A891DFCBBE100417978 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		98621A8E1DFCCCC300417978 /* VideoStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoStream.m; sourceTree = "<group>"; };
@@ -199,7 +197,6 @@
 		98C3DD4A1DF0F5CC00F6B49B = {
 			isa = PBXGroup;
 			children = (
-				98621A851DFCA40500417978 /* avator */,
 				98621A831DFC9B7500417978 /* clip */,
 				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
 				98C3DD541DF0F5CC00F6B49B /* Products */,
@@ -388,7 +385,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98621A861DFCA40500417978 /* avator in Resources */,
 				98E711091E0CF17F00241C12 /* InfoPlist.strings in Resources */,
 				98621A841DFC9B7500417978 /* clip in Resources */,
 				98E7110E1E0CF64000241C12 /* Localizable.strings in Resources */,
