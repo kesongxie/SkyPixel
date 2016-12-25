@@ -56,11 +56,7 @@ static CGFloat const CalloutViewHeight = 50;
     }
 }
 
-//- (IBAction)backFromCastingViewController:(UIStoryboardSegue *)segue {
-//    [self.player play];
-//}
-
-- (IBAction)searchBtnTapped:(UIBarButtonItem *)sender {
+- (IBAction)dotBtnTapped:(UIBarButtonItem *)sender {
     if([self.parentViewController.parentViewController isKindOfClass: [ContainerViewController class]]){
         ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
         [containerVC toggleLeftMainView];

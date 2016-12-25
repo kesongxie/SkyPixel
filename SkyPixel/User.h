@@ -15,6 +15,7 @@ static NSString* const FullNameKey = @"fullname";
 static NSString* const BioKey = @"bio";
 static NSString* const EmailKey = @"email";
 static NSString* const AvatorKey = @"avator";
+static NSString* const CoverKey = @"cover";
 
 @interface User : NSObject
 
@@ -26,7 +27,9 @@ static NSString* const AvatorKey = @"avator";
 @property (strong, readonly, nonatomic) NSString* bio;
 @property (strong, readonly, nonatomic) NSString* email;
 @property (strong, readonly, nonatomic) NSURL* avatorUrl;
+@property (strong, readonly, nonatomic) NSURL* coverUrl;
 @property (strong, readonly, nonatomic) UIImage * thumbImage;
+@property (strong, readonly, nonatomic) UIImage * coverThumbImage;
 
 
 -(id)initWithRecord: (CKRecord*) record;

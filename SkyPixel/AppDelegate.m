@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 
-NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotification";
 
 @interface AppDelegate ()
 
@@ -25,8 +24,8 @@ NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotifica
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //fetch a user and log in
     CKDatabase* db = [[CKContainer defaultContainer] publicCloudDatabase];
-    NSString* email = @"john@skypixel.com";
-//    NSString* email = @"kesongxie@skypixel.com";
+ //   NSString* email = @"john@skypixel.com";
+    NSString* email = @"kesongxie@skypixel.com";
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"email=%@", email];
     CKQuery* fetchQuery = [[CKQuery alloc]initWithRecordType:@"User" predicate:predicate];
@@ -37,6 +36,9 @@ NSNotificationName const DocumentReadyNotificationName = @"DocumentReadyNotifica
             if(users.count == 1){
                 self.loggedInRecord = users.firstObject;
                 NSLog(@"The logged in user is %@", self.loggedInRecord[@"fullname"]);
+                NSDictionary* userInfo = @{UserRecordKey: self.loggedInRecord};
+                NSNotification* notification = [[NSNotification alloc]initWithName:FinishedLoggedInNotificationName object:self userInfo:userInfo];
+                [[NSNotificationCenter defaultCenter]postNotification:notification];
             }
         }
     }];

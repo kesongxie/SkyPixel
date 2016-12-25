@@ -31,6 +31,7 @@
 		98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D9654D1DF5024500335CC6 /* SkyCastViewController.m */; };
 		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
 		98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */; };
+		98DC2D911E0F89730040890F /* PrepareLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98DC2D901E0F89730040890F /* PrepareLoginViewController.m */; };
 		98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DDFFFA1DF600D300E2E762 /* MapKit.framework */; };
 		98E711091E0CF17F00241C12 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98E7110B1E0CF17F00241C12 /* InfoPlist.strings */; };
 		98E7110E1E0CF64000241C12 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98E711101E0CF64000241C12 /* Localizable.strings */; };
@@ -74,7 +75,7 @@
 		98621ABC1DFE94DF00417978 /* CastingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastingViewController.h; sourceTree = "<group>"; };
 		988E69271E04F86000A9D893 /* ExploreSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewCell.h; sourceTree = "<group>"; };
 		988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchTableViewCell.m; sourceTree = "<group>"; };
-		98AEEB471E052B2C00431481 /* ExploreSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchViewController.h; sourceTree = "<group>"; };
+		98AEEB471E052B2C00431481 /* ProfileLeftPanelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileLeftPanelViewController.h; sourceTree = "<group>"; };
 		98AEEB481E052B4000431481 /* ExploreSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchViewController.m; sourceTree = "<group>"; };
 		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +89,8 @@
 		98D965541DF5046800335CC6 /* SkyCastNavigationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyCastNavigationViewController.h; sourceTree = "<group>"; };
 		98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyTabBarViewController.h; sourceTree = "<group>"; };
 		98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyTabBarViewController.m; sourceTree = "<group>"; };
+		98DC2D901E0F89730040890F /* PrepareLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrepareLoginViewController.m; sourceTree = "<group>"; };
+		98DC2D921E0F897B0040890F /* PrepareLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrepareLoginViewController.h; sourceTree = "<group>"; };
 		98DDFFFA1DF600D300E2E762 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		98E711051E0CF02800241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		98E711061E0CF02800241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
@@ -175,6 +178,7 @@
 			children = (
 				980498851E02A7380091A37C /* ContainerViewController.h */,
 				980498831E02A72D0091A37C /* ContainerViewController.m */,
+				98DC2D8E1E0F6AA50040890F /* Profile Left Panel */,
 				98AEEB4C1E052BC600431481 /* SkyCast Map */,
 				98AEEB4A1E052B8C00431481 /* Explore Search */,
 			);
@@ -220,6 +224,7 @@
 				9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */,
 				98D965581DF50E0800335CC6 /* SkyTabBarViewController.h */,
 				98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */,
+				98DC2D8F1E0F89560040890F /* PrepareLoginViewController */,
 				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
 				98621A871DFCBBB500417978 /* Model */,
 				98D965561DF5074C00335CC6 /* Ultility */,
@@ -247,8 +252,6 @@
 		98D965511DF5043000335CC6 /* SkyCast */ = {
 			isa = PBXGroup;
 			children = (
-				98AEEB471E052B2C00431481 /* ExploreSearchViewController.h */,
-				98AEEB481E052B4000431481 /* ExploreSearchViewController.m */,
 				98AEEB4B1E052BA900431481 /* Container */,
 				98621AB91DFE94BC00417978 /* Casting */,
 			);
@@ -273,6 +276,24 @@
 				983046C21E0A0F4500F0557A /* Utility.m */,
 			);
 			name = Ultility;
+			sourceTree = "<group>";
+		};
+		98DC2D8E1E0F6AA50040890F /* Profile Left Panel */ = {
+			isa = PBXGroup;
+			children = (
+				98AEEB471E052B2C00431481 /* ProfileLeftPanelViewController.h */,
+				98AEEB481E052B4000431481 /* ExploreSearchViewController.m */,
+			);
+			name = "Profile Left Panel";
+			sourceTree = "<group>";
+		};
+		98DC2D8F1E0F89560040890F /* PrepareLoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				98DC2D921E0F897B0040890F /* PrepareLoginViewController.h */,
+				98DC2D901E0F89730040890F /* PrepareLoginViewController.m */,
+			);
+			name = PrepareLoginViewController;
 			sourceTree = "<group>";
 		};
 		98DDFFF81DF5F7B800E2E762 /* LaunchScreen */ = {
@@ -421,6 +442,7 @@
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
 				98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
+				98DC2D911E0F89730040890F /* PrepareLoginViewController.m in Sources */,
 				98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */,
 				983046C31E0A0F4500F0557A /* Utility.m in Sources */,
 				9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */,

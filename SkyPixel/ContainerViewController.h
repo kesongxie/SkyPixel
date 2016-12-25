@@ -18,4 +18,7 @@
 //this brings search main view to the fornt
 -(void) bringMainViewToFront;
 
+//this brings search view to the back
+-(void) bringSearchViewToBack;
+
 @end

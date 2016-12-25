@@ -13,6 +13,9 @@
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet UIView *exploreSearchView;
+@property (weak, nonatomic) IBOutlet UIView *leftView;
+
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewTrailingConstraint;
 @property (strong, nonatomic) UIView* overlayView;
@@ -70,6 +73,10 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
+-(void) bringSearchViewToBack{
+    [self.view sendSubviewToBack:self.exploreSearchView];
+}
+
 
 -(void) toggleLeftMainView{
     CGFloat adjustConstraint = 0;
@@ -102,8 +109,6 @@
 - (UIStatusBarStyle) preferredStatusBarStyle{
     return (self.isStatusBarStyleSet) ? self.statusBarStyle: UIStatusBarStyleLightContent;
 }
-
-
 
 -(UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
     return UIStatusBarAnimationSlide;

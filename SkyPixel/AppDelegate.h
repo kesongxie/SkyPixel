@@ -10,7 +10,9 @@
 #import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
 
-extern NSNotificationName const DocumentReadyNotificationName;
+static NSNotificationName const FinishedLoggedInNotificationName = @"FinishedLoggedInNotificationName";
+static NSString* const UserRecordKey = @"UserRecord";
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

@@ -38,6 +38,11 @@
     return ((CKAsset*)self.record[AvatorKey]).fileURL;
 }
 
+
+-(NSURL*) coverUrl{
+    return ((CKAsset*)self.record[CoverKey]).fileURL;
+}
+
 +(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord* userRecord, NSError* error)) callback{
     CKRecordID* recordID = reference.recordID;
     CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
@@ -55,5 +60,13 @@
     NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
     return [[UIImage alloc]initWithData:imageData];
 }
+
+
+-(UIImage *)coverThumbImage{
+    NSURL* thumbnailURL = self.coverUrl;
+    NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
+    return [[UIImage alloc]initWithData:imageData];
+}
+
 
 @end

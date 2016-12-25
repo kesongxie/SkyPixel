@@ -1,5 +1,5 @@
 //
-//  ExploreSearchViewController.h
+//  ProfileLeftPanelViewController.h
 //  SkyPixel
 //
 //  Created by Xie kesong on 12/15/16.
@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ExploreSearchViewController : UIViewController
+@interface ProfileLeftPanelViewController : UIViewController<UIScrollViewDelegate>
 
 
 @end

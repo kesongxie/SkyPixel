@@ -370,7 +370,9 @@ static NSString* const FavorIconRed = @"favor-icon-red";
                     }
                     [self.activityIndicator stopAnimating];
                     self.isVideoFinishedLoading = YES;
-                    [self.player play];
+                    if(!self.isVideoPaused){
+                        [self.player play];
+                    }
             }
         });
         return;

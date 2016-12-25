@@ -97,6 +97,7 @@
 -(void)showSkyCastMapView{
     ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
     [containerVC bringMainViewToFront];
+    [containerVC bringSearchViewToBack];
     HeaderExpandOpton option;
     option = HeaderExpandDefaultOption;
     [self expandHeaderViewWithOption:option];

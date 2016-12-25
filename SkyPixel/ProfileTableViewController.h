@@ -13,6 +13,5 @@
 @interface ProfileTableViewController : UITableViewController
 
 @property (strong, nonatomic) User* user;
-//@property (strong, nonatomic) UIImage* avatorImage;
 
 @end
