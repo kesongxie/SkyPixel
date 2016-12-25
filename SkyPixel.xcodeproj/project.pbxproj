@@ -23,7 +23,7 @@
 		98621AB71DFD555500417978 /* PlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621AB61DFD555500417978 /* PlayView.m */; };
 		98621ABB1DFE94D800417978 /* CastingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621ABA1DFE94D800417978 /* CastingViewController.m */; };
 		988E69291E04F89A00A9D893 /* ExploreSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */; };
-		98AEEB491E052B4000431481 /* ExploreSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AEEB481E052B4000431481 /* ExploreSearchViewController.m */; };
+		98AEEB491E052B4000431481 /* ProfileLeftPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AEEB481E052B4000431481 /* ProfileLeftPanelViewController.m */; };
 		98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98AF06471DFA88AF0060D993 /* Assets.xcassets */; };
 		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
 		98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */; };
@@ -75,8 +75,8 @@
 		98621ABC1DFE94DF00417978 /* CastingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastingViewController.h; sourceTree = "<group>"; };
 		988E69271E04F86000A9D893 /* ExploreSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewCell.h; sourceTree = "<group>"; };
 		988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchTableViewCell.m; sourceTree = "<group>"; };
-		98AEEB471E052B2C00431481 /* ProfileLeftPanelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileLeftPanelViewController.h; sourceTree = "<group>"; };
-		98AEEB481E052B4000431481 /* ExploreSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchViewController.m; sourceTree = "<group>"; };
+		98AEEB471E052B2C00431481 /* ProfileLeftPanelTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileLeftPanelTableViewController.h; sourceTree = "<group>"; };
+		98AEEB481E052B4000431481 /* ProfileLeftPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileLeftPanelViewController.m; sourceTree = "<group>"; };
 		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98C3DD571DF0F5CC00F6B49B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -145,8 +145,6 @@
 				98621A8E1DFCCCC300417978 /* VideoStream.m */,
 				98F8BD9F1E08FB8400A9E3D2 /* Comment.h */,
 				98F8BDA01E08FB8F00A9E3D2 /* Comment.m */,
-				98F8BD8F1E08B14200A9E3D2 /* CKReference+Comparison.h */,
-				98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -265,6 +263,8 @@
 				98621A921DFCCF1400417978 /* VideoStream+Annotation.m */,
 				983046CE1E0C7C3900F0557A /* UIImageView+ProfileAvator.h */,
 				983046CF1E0C7C3900F0557A /* UIImageView+ProfileAvator.m */,
+				98F8BD8F1E08B14200A9E3D2 /* CKReference+Comparison.h */,
+				98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -281,8 +281,8 @@
 		98DC2D8E1E0F6AA50040890F /* Profile Left Panel */ = {
 			isa = PBXGroup;
 			children = (
-				98AEEB471E052B2C00431481 /* ProfileLeftPanelViewController.h */,
-				98AEEB481E052B4000431481 /* ExploreSearchViewController.m */,
+				98AEEB471E052B2C00431481 /* ProfileLeftPanelTableViewController.h */,
+				98AEEB481E052B4000431481 /* ProfileLeftPanelViewController.m */,
 			);
 			name = "Profile Left Panel";
 			sourceTree = "<group>";
@@ -437,7 +437,7 @@
 				98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */,
 				98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */,
 				98621AB71DFD555500417978 /* PlayView.m in Sources */,
-				98AEEB491E052B4000431481 /* ExploreSearchViewController.m in Sources */,
+				98AEEB491E052B4000431481 /* ProfileLeftPanelViewController.m in Sources */,
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
 				98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */,

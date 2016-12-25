@@ -175,7 +175,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.descriptionLabel.text = self.videoStream.description;
     if(self.descriptionLabel.text.length == 0){
         self.descriptionLabel.text = NSLocalizedString(@"No description available", @"default message");
-        self.descriptionLabel.textColor = [UIColor colorWithRed:90/255.0 green:90/255.0 blue:90/255.0 alpha:1]; //lighter gray
+        self.descriptionLabel.textColor = [UIColor colorWithRed:90/255.0 green:90/255.0 blue:90/255.0 alpha:1]; //lighter gray for default message
     }
     [self updatePinBottomViewUI];
 }
@@ -393,8 +393,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
     self.playerView.player = self.player;
 }
-
-
 
 -(void)resetPlayer{
     [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];

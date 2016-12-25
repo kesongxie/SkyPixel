@@ -41,7 +41,7 @@ static CGFloat const CalloutViewHeight = 50;
 @property (strong, nonatomic) CLLocation* locationCenter; //the surrounding footage will be loaded
 @property (nonatomic) BOOL isFetchingRecord;
 
-- (void) fetchLive;
+- (void) fetchMediaForMap;
 
 @end
 
@@ -74,16 +74,10 @@ static CGFloat const CalloutViewHeight = 50;
     [self.locationManager requestWhenInUseAuthorization];
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
-    }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-   
+    }   
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationDidSelected:) name:@"LocationSelected" object:nil];
 }
 
--(void) didPlayToEnd:(NSNotification*)notification{
-    [self.player seekToTime:kCMTimeZero];
-    [self.player play];
-}
 
 
 -(void) locationDidSelected:(NSNotification*)notification{
@@ -105,8 +99,8 @@ static CGFloat const CalloutViewHeight = 50;
             [self.mapView addAnnotation:spotAnnotation];
             MKCoordinateRegion region = MKCoordinateRegionMake(location.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
             [self.mapView setRegion:region];
-            //fetch live
-            [self fetchLive];
+            //re-fetch media content for the new location
+            [self fetchMediaForMap];
         });
     }else{
         NSLog(@"location is nil");
@@ -123,44 +117,24 @@ static CGFloat const CalloutViewHeight = 50;
 }
 
 
-- (void) fetchLive {
+- (void) fetchMediaForMap {
     if(self.isFetchingRecord){
         return;
     }
-    //start loading drone flying user
-    CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", self.locationCenter, searchRadius];
-    CKQuery* query = [[CKQuery alloc] initWithRecordType:@"videostream" predicate: predicate];
     self.navigationItem.title = NSLocalizedString(@"SEARCHING...", @"searching status");;
     self.isFetchingRecord = YES;
-    [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* videoStreamRecords, NSError* error){
-        if(error == nil){
-            if(videoStreamRecords){
-                NSLog(@"record is ready");
-                self.videoStreamAnnotations = [[NSMutableArray alloc]init];
-                __block NSInteger userFetchedCompletedCount = 0;
-                for(CKRecord* streamRecord in videoStreamRecords){
-                    VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:streamRecord];
-                    [videoStream fetchUserForVideoStream:^(CKRecord *userRecord, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
-                            [self.mapView addAnnotations: self.videoStreamAnnotations];
-                            userFetchedCompletedCount = userFetchedCompletedCount + 1;
-                            if(userFetchedCompletedCount == videoStreamRecords.count){
-                                //The fetching for all the users are now completed
-                                self.navigationItem.title =  NSLocalizedString(@"SKYCAST", @"title for map");
-                                self.isFetchingRecord = NO;
-                            }
-                        });
-                    }];
-                }
+    self.videoStreamAnnotations = [[NSMutableArray alloc]init];
+    [VideoStream fetchLive:self.locationCenter withRadius:searchRadius completionHandler:^(NSMutableArray<VideoStream *> *videoStreams, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            for(VideoStream* videoStream in videoStreams){
+                [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
+                [self.mapView addAnnotations: self.videoStreamAnnotations];
             }
-        }else{
-            NSLog(@"%@", error.localizedDescription);
-        }
+            self.navigationItem.title =  NSLocalizedString(@"SKYCAST", @"title for map");
+            self.isFetchingRecord = NO;
+        });
     }];
 }
-
 
 //MARK: - UPATE UI
 - (void) updateUI{
@@ -200,7 +174,7 @@ static CGFloat const CalloutViewHeight = 50;
         self.locationCenter = currentLocation;
         MKCoordinateRegion region = MKCoordinateRegionMake(currentLocation.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
         [self.mapView setRegion:region];
-        [self fetchLive];
+        [self fetchMediaForMap];
         [manager stopUpdatingLocation];
     }
 }
