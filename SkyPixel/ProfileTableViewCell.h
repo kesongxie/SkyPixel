@@ -24,4 +24,5 @@ static NSString* const VideoDetailKey = @"VideoDetailKey";
 
 @property (strong,  nonatomic) VideoStream* videoStream;
 
+
 @end

@@ -143,7 +143,6 @@
         }else{
             NSLog(@"the error is %@", error.localizedDescription);
             //try again
-            [self updateRecord:callBack];
         }
     }];
     NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
@@ -180,8 +179,6 @@
     NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
     [operationQueue addOperation:addCommentOperation];
 }
-
-
 
 //add a user to the user favor list
 -(void)deleteComment: (CKReference*)commentReference completionHandler: (void (^)(CKRecord* videoRecord, NSError* error)) callBack{

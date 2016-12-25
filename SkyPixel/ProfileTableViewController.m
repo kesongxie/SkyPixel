@@ -12,6 +12,8 @@
 #import "ProfileTableViewCell.h"
 #import "CastingViewController.h"
 
+
+//constant
 static NSString* MainStoryboardName = @"Main";
 static NSString* CastingViewControllerIdentifier = @"CastingViewController";
 static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
@@ -22,16 +24,18 @@ static CGFloat const NavigationBarTitleFontSize = 17;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bioLabel;
+@property (weak, nonatomic) IBOutlet UILabel *postCountLabel;
+@property (weak, nonatomic) IBOutlet UIButton *profileActionBtn;
 @property (strong, nonatomic) UIBarButtonItem* backBtn;
 @property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamList;
-@property (weak, nonatomic) IBOutlet UILabel *postCountLabel;
-
-
-@property (weak, nonatomic) IBOutlet UIButton *profileActionBtn;
 
 
 -(void)updateUI;
 -(void)backBtnTapped:(UIBarButtonItem*)backBtn;
+//present view controller for cell
+-(void)presentFavorListViewController:(NSNotification*)notification;
+-(void)presentCommentListViewController:(NSNotification*)notification;
 
 @end
 
@@ -62,6 +66,7 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     if(self.user != nil){
         self.avatorImageView.image = self.user.thumbImage;
         self.fullnameLabel.text = self.user.fullname;
+        self.bioLabel.text = self.user.bio;
         self.postCountLabel.text = [NSString stringWithFormat:@"%i", self.user.videoStreamRecord.count];
     }
     
@@ -102,7 +107,6 @@ static CGFloat const NavigationBarTitleFontSize = 17;
 }
 
 
-//present view controller for cell
 -(void)presentFavorListViewController:(NSNotification*)notification {
     FavorUserListViewController* favorListVC = (FavorUserListViewController*)notification.userInfo[FavorUserListVCKey];
     if(favorListVC != nil){

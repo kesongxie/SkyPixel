@@ -22,29 +22,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewThumbNailHeightConstraint;
 
-@property (weak, nonatomic) IBOutlet UIView *overlayView;
-
-@property (weak, nonatomic) IBOutlet UIImageView *pauseIcon;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-@property (weak, nonatomic) IBOutlet UIImageView *playIconImageView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-
-//video player properties
-@property (weak, nonatomic) IBOutlet PlayerView *playerView;
-@property (strong, nonatomic) AVPlayerItem* playerItem;
-@property (strong, nonatomic) AVPlayer* player;
-@property (strong, nonatomic) NSString* playerItemContext;
-@property (strong, nonatomic) CKAsset* videoAsset;
-@property (nonatomic) BOOL resetting;
-@property (nonatomic) BOOL needsResumeSettingVideo;
-@property (nonatomic) BOOL isVideoPlaying;
-@property (nonatomic) BOOL isVideoFinisedDownloading;
-@property (nonatomic) BOOL isVideoDownloading;
-
-
-
-
+@property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 
 //pinFooterView properties
 @property (weak, nonatomic) IBOutlet UIStackView *favorWrapperView;
@@ -54,20 +32,23 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *optionWrapperView;
 
--(void)previewImageViewTapped: (UITapGestureRecognizer*)tap;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
+//remove the given user reference form the userFavorList of referenList in video stream
+-(void)favorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
+
+//add the given user reference to the userFavorList of referenList in video stream
+-(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
+
 
 @end
 
 @implementation ProfileTableViewCell
 
 
--(void)dealloc{
-    [self resetPlayer];
-}
-
 -(void)setVideoStream:(VideoStream *)videoStream{
     _videoStream = videoStream;
-    self.playerView.image = self.videoStream.thumbImage;
+    self.previewImageView.image = self.videoStream.thumbImage;
     self.previewThumbNailHeightConstraint.constant = [UIScreen mainScreen].bounds.size.width * self.videoStream.height / self.videoStream.width;
     self.titleLabel.text = self.videoStream.title;
     [self updatePinBottomViewUI];
@@ -93,16 +74,11 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     //update the commnet wrapper view
     NSNumber* commentCount = [NSNumber numberWithInteger:self.videoStream.commentReferenceList.count];
     self.commentCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:commentCount];
-    
 }
 
 
 
 -(void)addTapGesture{
-    //add tap gesture recognizer
-    UITapGestureRecognizer* previewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(previewImageViewTapped:)];
-    [self.containerView addGestureRecognizer:previewTap];
-    
     //add tap gesture for the icon
     UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
     [self.favorIconImageView addGestureRecognizer:favorTapped];
@@ -117,108 +93,18 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     
     
     //add tap gesture to the cell
-    UITapGestureRecognizer* cellTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(cellTapped:)];
-    [self.titleLabel addGestureRecognizer:cellTapGesture];
+    UITapGestureRecognizer* titleTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(detailTriggerTapped:)];
+    
+    UITapGestureRecognizer* containerTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(detailTriggerTapped:)];
 
-}
+    [self.titleLabel addGestureRecognizer:titleTapGesture];
+    [self.containerView addGestureRecognizer:containerTapGesture];
 
-
--(void)previewImageViewTapped: (UITapGestureRecognizer*)tap{
-    if(!self.isVideoPlaying){
-        [self.overlayView setHidden:YES];
-        if(!self.isVideoFinisedDownloading && !self.isVideoDownloading){
-            self.isVideoDownloading = YES;
-            [self.playIconImageView setHidden:YES];
-            self.playerView.image = [[UIImage alloc]init];
-            [self.activityIndicator startAnimating];
-            //load the video
-            [self resetPlayer];
-            [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
-                self.isVideoFinisedDownloading = YES;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(!self.resetting){
-                        [self.activityIndicator stopAnimating];
-                        [self readyLoadingVideo: videoAsset];
-                    }
-                });
-            }];
-        }else{
-            [self.pauseIcon setHidden:YES];
-            [self.player play];
-            self.isVideoPlaying = YES;
-        }
-    }else{
-        //pasue the video
-        [self.overlayView setHidden:NO];
-        [self.player pause];
-        [self.pauseIcon setHidden:NO];
-        self.isVideoPlaying = NO;
-    }
-}
-
-
-//MARK: player
-- (NSURL *)videoURL: (NSURL*)fileURL {
-    return [self createHardLinkToVideoFile: fileURL];
-}
-
-//returns a hard link, so as not to maintain another copy of the video file on the disk
-- (NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
-    NSError *err;
-    NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
-    if (![hardURL checkResourceIsReachableAndReturnError:nil]) {
-        if (![[NSFileManager defaultManager] linkItemAtURL: fileURL toURL: hardURL error:&err]) {
-            // if creating hard link failed it is still possible to create a copy of self.asset.fileURL and return the URL of the copy
-        }
-    }
-    return hardURL;
-}
-
--(void) didPlayToEnd:(NSNotification*)notification{
-    [self.player seekToTime:kCMTimeZero];
-    [self.player play];
-    self.isVideoPlaying = YES;
-}
-
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == &_playerItemContext) {
-        dispatch_async(dispatch_get_main_queue(),^{
-            if ((self.player.currentItem != nil) &&
-                ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-                [self.activityIndicator stopAnimating];
-                [self.player play];
-                self.isVideoPlaying = YES;
-            }
-        });
-        return;
-    }
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    return;
-}
-
-
--(void)readyLoadingVideo: (CKAsset*)videoAsset{
-    NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
-    AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-    NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-    self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
-    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_playerItemContext];
-    // Associate the player item with the player
-    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
-    self.playerView.player = self.player;
-}
-
--(void)resetPlayer{
-    [self.playerItem removeObserver:self forKeyPath:@"status" context:&_playerItemContext];
-    [self.player pause];
 }
 
 
 //MARK: - Tap selector
-
--(void)cellTapped: (UITapGestureRecognizer*)gesture{
+-(void)detailTriggerTapped: (UITapGestureRecognizer*)gesture{
     NSDictionary* userInfo = @{VideoDetailKey: self.videoStream};
     NSNotification* notification = [[NSNotification alloc]initWithName:PresentVideoDetailNotificationName object:self  userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
@@ -243,7 +129,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         
     }else{
         //add favor
-        [self addFavorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
+        [self favorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
             heartIconImage = [UIImage imageNamed: FavorIconRed];
             count = [NSNumber numberWithInteger:[count integerValue] + 1];
             self.favorIconImageView.image = heartIconImage;
@@ -262,8 +148,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 
-
--(void)addFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
+-(void)favorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
     [videoStream addFavorUser:userReference completionHandler:^(CKRecord *videoRecord, NSError *error) {
         //update UI
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -299,6 +184,5 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         [[NSNotificationCenter defaultCenter] postNotification:notification];
     }
 }
-
 
 @end

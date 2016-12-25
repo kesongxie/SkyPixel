@@ -41,15 +41,7 @@ static CGFloat const CalloutViewHeight = 50;
 @property (strong, nonatomic) CLLocation* locationCenter; //the surrounding footage will be loaded
 @property (nonatomic) BOOL isFetchingRecord;
 
-//create a video stream record
-- (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset;
-
-//create a asset from file info
-- (CKAsset*) getCKAssetFromFileName: (NSString*)filename withExtension:(NSString*)ext inDirectory: (NSString*)dir;
-
 - (void) fetchLive;
-
-- (void) createEntries;
 
 @end
 
@@ -86,8 +78,6 @@ static CGFloat const CalloutViewHeight = 50;
     [self.locationManager requestWhenInUseAuthorization];
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
-      //  [self createEntries];
-
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
    
@@ -136,79 +126,6 @@ static CGFloat const CalloutViewHeight = 50;
     return YES;
 }
 
-//this is called to initilize the icloud storage with preset data
--(void) createEntries{
-    //create a user
-    CKRecord* user = [[CKRecord alloc] initWithRecordType:@"user"];
-    user[@"fullname"] = @"Kesong Xie";
-    user[@"email"] = email1;
-    user[@"avator"] = [self getCKAssetFromFileName:@"avator1" withExtension:@"png" inDirectory:@"avator"];
-    CKDatabase* publicDb = [[CKContainer defaultContainer] publicCloudDatabase];
-    [publicDb saveRecord:user completionHandler:^(CKRecord* record, NSError* error){
-        if(error == nil){
-            CKRecord* user = record;
-                if(user){
-                    //create a videostream record
-                    //paris
-                    CKRecord* videoStreamRecord1 = [self getVideoStreamRecord: @"Eiffel Tower Paris" fromLocation:[[CLLocation alloc] initWithLatitude:48.857610 longitude: 2.294083] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip1" withExtension:@"mp4" inDirectory:@"clip"]];
-                    CKRecord* videoStreamRecord2 = [self getVideoStreamRecord: @"Paris Skyline View Of The City and Eiffel Tower From The Arc De Triomphe" fromLocation:[[CLLocation alloc] initWithLatitude:48.857697 longitude: 2.297494] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip2" withExtension:@"mp4" inDirectory:@"clip"]];
-                    
-                    //shenzhen
-                    CKRecord* videoStreamRecord3 = [self getVideoStreamRecord: @"DJI - Phantom 4 China Launch" fromLocation:[[CLLocation alloc] initWithLatitude:22.543096 longitude: 114.057865] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip3" withExtension:@"mp4" inDirectory:@"clip"]];
-                    
-                    //ucsd
-                    CKRecord* videoStreamRecord4 = [self getVideoStreamRecord: @"UCSD, Torrey Pines, Sunset Cliffs From Above" fromLocation:[[CLLocation alloc] initWithLatitude:32.880334 longitude: -117.245793] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip4" withExtension:@"mp4" inDirectory:@"clip"]];
-                   
-                    
-                    CKRecord* videoStreamRecord5 = [self getVideoStreamRecord: @"Geisel Library Drone - UCSD - University of California San Diego" fromLocation:[[CLLocation alloc] initWithLatitude:32.881019 longitude: -117.237827] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip5" withExtension:@"mp4" inDirectory:@"clip"]];
-                    
-                    
-                    CKRecord* videoStreamRecord6 = [self getVideoStreamRecord: @"Winter at Stanford University recording with drone" fromLocation:[[CLLocation alloc] initWithLatitude:37.427517 longitude: -122.170233] isLive:1 whoShot:[[CKReference alloc] initWithRecord:user action:CKReferenceActionDeleteSelf] clipAsset:[self getCKAssetFromFileName:@"clip6" withExtension:@"mp4" inDirectory:@"clip"]];
-                    
-                    
-                    NSArray<CKRecord*>* recordToBeSaved = @[videoStreamRecord1, videoStreamRecord2, videoStreamRecord3, videoStreamRecord4, videoStreamRecord5, videoStreamRecord6];
-                    
-                    //configure the CKModifyRecordsOperation and save multiple records
-                    CKDatabase* publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
-                    CKModifyRecordsOperation* saveOperation = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:recordToBeSaved recordIDsToDelete:nil];
-                    saveOperation.database = publicDB;
-                    saveOperation.atomic = NO;
-                    saveOperation.modifyRecordsCompletionBlock = ^(NSArray<CKRecord *> *savedRecords, NSArray<CKRecordID *> *deletedRecordIDs, NSError *operationError){
-                        NSLog(@"%@", savedRecords);
-                    };
-                    NSOperationQueue* operationQueue = [[NSOperationQueue alloc] init];
-                    
-                    //save records
-                    [operationQueue addOperation:saveOperation];
-                }
-        }else{
-            NSLog(@"%@", error.localizedDescription);
-        }
-    }];
-}
-
-- (CKRecord*) getVideoStreamRecord: (NSString*)title fromLocation: (CLLocation*)location isLive: (NSInteger)live whoShot: (CKReference*)user clipAsset: (CKAsset*) asset  {
-    CKRecord* videoStreamRecord = [[CKRecord alloc] initWithRecordType:@"videostream"];
-    videoStreamRecord[@"title"] = title;
-    videoStreamRecord[@"location"] = location;
-    videoStreamRecord[@"live"] = [[NSNumber alloc] initWithInt:live];
-    videoStreamRecord[@"user"] = user;
-    videoStreamRecord[@"video"] = asset;
-    return videoStreamRecord;
-}
-
-
-- (CKAsset*) getCKAssetFromFileName: (NSString*)filename withExtension:(NSString*)ext inDirectory: (NSString*)dir{
-    NSString* pathname = [[NSBundle mainBundle] pathForResource:filename ofType: ext inDirectory:dir];
-    if(pathname){
-        NSURL* url = [[NSURL alloc] initFileURLWithPath:pathname];
-        if(url){
-            CKAsset* asset = [[CKAsset alloc] initWithFileURL:url];
-            return asset;
-        }
-    }
-    return nil;
-}
 
 - (void) fetchLive {
     if(self.isFetchingRecord){
@@ -223,7 +140,7 @@ static CGFloat const CalloutViewHeight = 50;
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* videoStreamRecords, NSError* error){
         if(error == nil){
             if(videoStreamRecords){
-                NSLog(@"record is ready %@", videoStreamRecords);
+                NSLog(@"record is ready");
                 self.videoStreamAnnotations = [[NSMutableArray alloc]init];
                 __block NSInteger userFetchedCompletedCount = 0;
                 for(CKRecord* streamRecord in videoStreamRecords){

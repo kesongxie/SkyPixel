@@ -26,6 +26,10 @@
     return self.record[FullNameKey];
 }
 
+-(NSString*) bio{
+    return self.record[BioKey];
+}
+
 -(NSString*) email{
     return self.record[EmailKey];
 }

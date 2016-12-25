@@ -12,6 +12,7 @@
 
 
 static NSString* const FullNameKey = @"fullname";
+static NSString* const BioKey = @"bio";
 static NSString* const EmailKey = @"email";
 static NSString* const AvatorKey = @"avator";
 
@@ -22,6 +23,7 @@ static NSString* const AvatorKey = @"avator";
 //compute from the record class
 @property (strong, readonly, nonatomic) CKReference* reference;
 @property (strong, readonly, nonatomic) NSString* fullname;
+@property (strong, readonly, nonatomic) NSString* bio;
 @property (strong, readonly, nonatomic) NSString* email;
 @property (strong, readonly, nonatomic) NSURL* avatorUrl;
 @property (strong, readonly, nonatomic) UIImage * thumbImage;

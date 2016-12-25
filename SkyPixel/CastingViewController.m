@@ -14,13 +14,13 @@
 #import "CommentListViewController.h"
 #import "ProfileTableViewController.h"
 
+//constants
 static NSString* const FavorIconWhite = @"favor-icon";
 static NSString* const FavorIconRed = @"favor-icon-red";
 
 @interface CastingViewController()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *liveIcon;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
@@ -30,7 +30,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *locationBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoHeightConstraint;
-
 
 //pinFooterView properties
 @property (weak, nonatomic) IBOutlet UIView *pinFooterView;
@@ -43,31 +42,51 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 //video player properties
 @property (weak, nonatomic) IBOutlet PlayerView *playerView;
+@property (weak, nonatomic) IBOutlet UIView *overlayView;
+@property (weak, nonatomic) IBOutlet UIImageView *pauseIcon;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIImageView *playIconImageView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
 @property (strong, nonatomic) CKAsset* videoAsset;
-@property (nonatomic) BOOL isViewVisible;
 
-//update the user information, such as fullname, avator
+//flags for monitoring video states
+@property (nonatomic) BOOL isViewVisible;
+@property (nonatomic) BOOL isVideoPaused;
+@property (nonatomic) BOOL isVideoFinishedLoading;
+
+
+//update the user information, such as fullname, avator, etc
 -(void)updateUI;
 
+//notification when the video finished playing
 -(void)didPlayToEnd:(NSNotification*)notification;
 
 //this is function is responsible for updating the favor and comment count
 -(void)updatePinBottomViewUI;
 
+//add gesture to views
 -(void)addTapGesture;
-
 
 -(void)favorTapped: (UITapGestureRecognizer*)gesture;
 
+-(void)playerViewTapped: (UITapGestureRecognizer*)gesture;
+
+//pause the video playing after loading, triggered while the user tapped the player view
+-(void)pausePlaying;
+
+//resume the video playing when the video is paused
+-(void)resumePlaying;
+
 
 //remove the given user reference form the userFavorList of referenList in video stream
--(void)addFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
+-(void)favorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
 
 //add the given user reference to the userFavorList of referenList in video stream
 -(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
+
 @end
 
 @implementation CastingViewController
@@ -103,24 +122,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     [self addTapGesture];
 }
 
--(void)addTapGesture{
-    //add tap gesture for the icon
-    UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
-    [self.favorIconImageView addGestureRecognizer:favorTapped];
-    
-    //add tap gesture for the comment wrapper view
-    UITapGestureRecognizer* commentWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperViewTapped:)];
-    [self.commentWrapperView addGestureRecognizer:commentWrapperTapGesture];
-    
-    //add tap gesture for favorWrapperView
-    UITapGestureRecognizer* favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
-    [self.favorWrapperView addGestureRecognizer:favorWrapperTapGesture];
-    
-    //add tap gesture for avator image view
-    UITapGestureRecognizer* avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
-    [self.avatorImageView addGestureRecognizer:avatorTapGesture];
-}
-
 -(void) viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     [self adjustVideoFrame];
@@ -141,8 +142,10 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self.player play];
     [self.player setMuted:NO];
+    if(self.isVideoFinishedLoading && !self.isVideoPaused){
+        [self resumePlaying];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -197,6 +200,60 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.commentCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:commentCount];
 }
 
+-(void)addTapGesture{
+    //add tap gesture for the icon
+    UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
+    [self.favorIconImageView addGestureRecognizer:favorTapped];
+    
+    //add tap gesture for the comment wrapper view
+    UITapGestureRecognizer* commentWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperViewTapped:)];
+    [self.commentWrapperView addGestureRecognizer:commentWrapperTapGesture];
+    
+    //add tap gesture for favorWrapperView
+    UITapGestureRecognizer* favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
+    [self.favorWrapperView addGestureRecognizer:favorWrapperTapGesture];
+    
+    //add tap gesture for avator image view
+    UITapGestureRecognizer* avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
+    [self.avatorImageView addGestureRecognizer:avatorTapGesture];
+    
+    //add tap gesture for the container view
+    UITapGestureRecognizer* containerTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerViewTapped:)];
+    [self.containerView addGestureRecognizer:containerTapGesture];
+}
+
+
+-(void)playerViewTapped: (UITapGestureRecognizer*)gesture{
+    if(self.isVideoFinishedLoading && !self.isVideoPaused){
+        //pasue the video
+        [self pausePlaying];
+    }else{
+        [self resumePlaying];
+    }
+}
+
+-(void)pausePlaying{
+    [self.overlayView setHidden:NO];
+    [self.player pause];
+    [self.playIconImageView setHidden:NO];
+    self.isVideoPaused = YES;
+}
+
+-(void)resumePlaying{
+    [self.overlayView setHidden:YES];
+    [self.player play];
+    [self.playIconImageView setHidden:YES];
+    [self.pauseIcon setHidden:NO];
+    [UIView animateWithDuration:1.0 animations:^{
+        self.pauseIcon.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.pauseIcon setHidden:YES];
+        self.pauseIcon.alpha = 1;
+    }];
+    self.isVideoPaused = NO;
+}
+
+
 -(void)favorTapped: (UITapGestureRecognizer*)gesture{
     AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
@@ -213,7 +270,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         }];
     }else{
         //add favor
-        [self addFavorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
+        [self favorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
             heartIconImage = [UIImage imageNamed: FavorIconRed];
             count = [NSNumber numberWithInteger:[count integerValue] + 1];
             self.favorIconImageView.image = heartIconImage;
@@ -222,10 +279,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
     }
 }
-
-
-
-
 
 -(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
     [videoStream deleteFavorUser:userReference completionHandler:^(CKRecord *videoRecord, NSError *error) {
@@ -237,8 +290,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 
-
--(void)addFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
+-(void)favorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack{
     [videoStream addFavorUser:userReference completionHandler:^(CKRecord *videoRecord, NSError *error) {
         //update UI
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -267,8 +319,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         [self.navigationController pushViewController:commentListVC animated:YES];
     }
 }
-
-
 
 -(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -319,6 +369,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
                         [self.player setMuted:YES];
                     }
                     [self.activityIndicator stopAnimating];
+                    self.isVideoFinishedLoading = YES;
                     [self.player play];
             }
         });
