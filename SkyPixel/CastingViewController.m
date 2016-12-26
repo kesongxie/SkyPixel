@@ -13,6 +13,7 @@
 #import "FavorUserListViewController.h"
 #import "CommentListViewController.h"
 #import "ProfileTableViewController.h"
+#import "HorizontalSlideInAnimator.h"
 
 //constants
 static NSString* const FavorIconWhite = @"favor-icon";
@@ -51,12 +52,13 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
 @property (strong, nonatomic) CKAsset* videoAsset;
+@property (strong, nonatomic) HorizontalSlideInAnimator* animator;
+
 
 //flags for monitoring video states
 @property (nonatomic) BOOL isViewVisible;
 @property (nonatomic) BOOL isVideoPaused;
 @property (nonatomic) BOOL isVideoFinishedLoading;
-
 
 //update the user information, such as fullname, avator, etc
 -(void)updateUI;
@@ -97,7 +99,10 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 - (IBAction)backFromProfileTableViewController:(UIStoryboardSegue *)segue {
+//    self.navigationController.navigationBarHidden = NO;
 }
+
+
 
 -(void) viewDidLoad{
     [super viewDidLoad];
@@ -325,7 +330,9 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     ProfileTableViewController* profileTVC = (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
     if(profileTVC){
         profileTVC.user = self.videoStream.user;
-        [self.navigationController pushViewController:profileTVC animated:YES];
+        profileTVC.transitioningDelegate = self;
+        [self presentViewController:profileTVC animated:YES completion:nil];
+
     }
 }
 
@@ -398,5 +405,17 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];
     [self.player pause];
 }
+
+
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
+    self.animator = [[HorizontalSlideInAnimator alloc] init];
+    return self.animator;
+}
+
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
+    return self.animator;
+}
+
+
 
 @end

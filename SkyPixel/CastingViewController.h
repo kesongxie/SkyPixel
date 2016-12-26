@@ -11,7 +11,8 @@
 #import "VideoStream.h"
 #import "User.h"
 
-@interface CastingViewController : UIViewController
+
+@interface CastingViewController : UIViewController<UIViewControllerTransitioningDelegate>
 
 @property (strong, nonatomic) VideoStream* videoStream;
 

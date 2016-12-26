@@ -106,6 +106,7 @@
     }];
 }
 
+
 - (UIStatusBarStyle) preferredStatusBarStyle{
     return (self.isStatusBarStyleSet) ? self.statusBarStyle: UIStatusBarStyleLightContent;
 }

@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "User.h"
 
-@interface ProfileTableViewController : UITableViewController
+@interface ProfileTableViewController : UITableViewController<UIViewControllerTransitioningDelegate>
 
 @property (strong, nonatomic) User* user;
 

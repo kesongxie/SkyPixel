@@ -19,7 +19,6 @@
 @implementation FavorTableViewCell
 
 -(void)setUser:(User *)user{
-    NSLog(@"set user");
     _user = user;
     //update UI
     self.fullnameLabel.text = self.user.fullname;

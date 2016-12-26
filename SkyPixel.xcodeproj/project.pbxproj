@@ -35,6 +35,8 @@
 		98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DDFFFA1DF600D300E2E762 /* MapKit.framework */; };
 		98E711091E0CF17F00241C12 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98E7110B1E0CF17F00241C12 /* InfoPlist.strings */; };
 		98E7110E1E0CF64000241C12 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 98E711101E0CF64000241C12 /* Localizable.strings */; };
+		98F4CAAB1E109263006EBFE8 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F4CAAA1E109263006EBFE8 /* ProfileViewController.m */; };
+		98F4CAAE1E10B8BE006EBFE8 /* HorizontalSlideInAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F4CAAD1E10B8BE006EBFE8 /* HorizontalSlideInAnimator.m */; };
 		98F8BD911E08B14200A9E3D2 /* CKReference+Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */; };
 		98F8BD931E08C38C00A9E3D2 /* FavorUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD921E08C38C00A9E3D2 /* FavorUserListViewController.m */; };
 		98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD971E08C69800A9E3D2 /* FavorTableViewCell.m */; };
@@ -75,7 +77,7 @@
 		98621ABC1DFE94DF00417978 /* CastingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastingViewController.h; sourceTree = "<group>"; };
 		988E69271E04F86000A9D893 /* ExploreSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewCell.h; sourceTree = "<group>"; };
 		988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchTableViewCell.m; sourceTree = "<group>"; };
-		98AEEB471E052B2C00431481 /* ProfileLeftPanelTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileLeftPanelTableViewController.h; sourceTree = "<group>"; };
+		98AEEB471E052B2C00431481 /* ProfileLeftPanelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileLeftPanelViewController.h; sourceTree = "<group>"; };
 		98AEEB481E052B4000431481 /* ProfileLeftPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileLeftPanelViewController.m; sourceTree = "<group>"; };
 		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C3DD531DF0F5CC00F6B49B /* SkyPixel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyPixel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +98,10 @@
 		98E711061E0CF02800241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		98E7110A1E0CF17F00241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		98E7110F1E0CF64000241C12 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		98F4CAA91E109259006EBFE8 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		98F4CAAA1E109263006EBFE8 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		98F4CAAC1E10B8B1006EBFE8 /* HorizontalSlideInAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HorizontalSlideInAnimator.h; sourceTree = "<group>"; };
+		98F4CAAD1E10B8BE006EBFE8 /* HorizontalSlideInAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalSlideInAnimator.m; sourceTree = "<group>"; };
 		98F8BD8F1E08B14200A9E3D2 /* CKReference+Comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CKReference+Comparison.h"; sourceTree = "<group>"; };
 		98F8BD901E08B14200A9E3D2 /* CKReference+Comparison.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CKReference+Comparison.m"; sourceTree = "<group>"; };
 		98F8BD921E08C38C00A9E3D2 /* FavorUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorUserListViewController.m; sourceTree = "<group>"; };
@@ -130,6 +136,8 @@
 				983046C51E0B6EDB00F0557A /* ProfileTableViewController.m */,
 				983046C81E0B6FD900F0557A /* ProfileTableViewCell.h */,
 				983046C91E0B6FE000F0557A /* ProfileTableViewCell.m */,
+				98F4CAA91E109259006EBFE8 /* ProfileViewController.h */,
+				98F4CAAA1E109263006EBFE8 /* ProfileViewController.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -274,6 +282,8 @@
 			children = (
 				983046C11E0A0F3D00F0557A /* Utility.h */,
 				983046C21E0A0F4500F0557A /* Utility.m */,
+				98F4CAAC1E10B8B1006EBFE8 /* HorizontalSlideInAnimator.h */,
+				98F4CAAD1E10B8BE006EBFE8 /* HorizontalSlideInAnimator.m */,
 			);
 			name = Ultility;
 			sourceTree = "<group>";
@@ -281,7 +291,7 @@
 		98DC2D8E1E0F6AA50040890F /* Profile Left Panel */ = {
 			isa = PBXGroup;
 			children = (
-				98AEEB471E052B2C00431481 /* ProfileLeftPanelTableViewController.h */,
+				98AEEB471E052B2C00431481 /* ProfileLeftPanelViewController.h */,
 				98AEEB481E052B4000431481 /* ProfileLeftPanelViewController.m */,
 			);
 			name = "Profile Left Panel";
@@ -441,6 +451,8 @@
 				98C3DD581DF0F5CC00F6B49B /* main.m in Sources */,
 				9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */,
 				98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */,
+				98F4CAAE1E10B8BE006EBFE8 /* HorizontalSlideInAnimator.m in Sources */,
+				98F4CAAB1E109263006EBFE8 /* ProfileViewController.m in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
 				98DC2D911E0F89730040890F /* PrepareLoginViewController.m in Sources */,
 				98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */,

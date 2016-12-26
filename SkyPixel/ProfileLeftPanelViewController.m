@@ -11,25 +11,15 @@
 #import "UIImageView+ProfileAvator.h"
 #import "User.h"
 
-
-static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
-static CGFloat const NavigationBarTitleFontSize = 17;
-static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
-
 @interface ProfileLeftPanelViewController() 
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
-
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *coverHeightConstriant;
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
-
+@property (weak, nonatomic) IBOutlet UIButton *postBtn;
 @property (nonatomic) CGFloat orginCoverHeight;
 
 @end
@@ -40,12 +30,6 @@ static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
     [super viewDidLoad];
     self.scrollView.delegate = self;
     self.scrollView.alwaysBounceVertical = YES;
-    [self.navigationBar setBarTintColor: [UIColor blackColor]];
-    UIFont* titleFont = [UIFont fontWithName: NavigationBarTitleFontName size: NavigationBarTitleFontSize];
-    [self.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    UIEdgeInsets inset = UIEdgeInsetsMake(self.navigationBar.frame.size.height, 0, 0, 0);
-    self.scrollView.contentInset = inset;
-    
     AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     User* loggedInUser = [[User alloc]initWithRecord:delegate.loggedInRecord];
     [self.avatorImageView becomeAvatorProifle:loggedInUser.thumbImage];
@@ -54,6 +38,7 @@ static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
     self.fullnameLabel.text = loggedInUser.fullname;
     self.coverImageView.image = loggedInUser.coverThumbImage;
     self.bioLabel.text = loggedInUser.bio;
+    self.postBtn.layer.cornerRadius = 3.0;
 }
 
 

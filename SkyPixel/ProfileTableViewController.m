@@ -11,84 +11,132 @@
 #import "VideoStream.h"
 #import "ProfileTableViewCell.h"
 #import "CastingViewController.h"
+#import "UIImageView+ProfileAvator.h"
+
 
 
 //constant
-static NSString* MainStoryboardName = @"Main";
-static NSString* CastingViewControllerIdentifier = @"CastingViewController";
-static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
-static CGFloat const NavigationBarTitleFontSize = 17;
+static NSString* const MainStoryboardName = @"Main";
+static NSString* const CastingViewControllerIdentifier = @"CastingViewController";
+
 
 @interface ProfileTableViewController()
 
-@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *coverHeightConstriant;
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
-@property (weak, nonatomic) IBOutlet UILabel *postCountLabel;
-@property (weak, nonatomic) IBOutlet UIButton *profileActionBtn;
-@property (strong, nonatomic) UIBarButtonItem* backBtn;
+@property (weak, nonatomic) IBOutlet UIButton *followBtn;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (nonatomic) CGFloat orginCoverHeight;
+@property (nonatomic) CGPoint backBtnOrigin;
+
+
 @property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamList;
+//@property (strong, nonatomic) UIBarButtonItem* backBtn;
 
 
--(void)updateUI;
--(void)backBtnTapped:(UIBarButtonItem*)backBtn;
+@property (nonatomic) BOOL preferStatusBarHidden;
+
 //present view controller for cell
 -(void)presentFavorListViewController:(NSNotification*)notification;
 -(void)presentCommentListViewController:(NSNotification*)notification;
+@property (weak, nonatomic) IBOutlet UIButton *backBtn;
 
 @end
 
 @implementation ProfileTableViewController
 
-
-- (IBAction)backBtnTapped:(UIBarButtonItem *)sender {
-    [self performSegueWithIdentifier:@"backFromProfileTableViewController" sender:self];
+- (IBAction)backBtnTapped:(UIButton *)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 -(void)viewDidLoad{
     [super viewDidLoad];
     //TableView set up
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    
-    [self.navigationController.navigationBar setBarTintColor: [UIColor blackColor]];
-    UIFont* titleFont = [UIFont fontWithName: NavigationBarTitleFontName size: NavigationBarTitleFontSize];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentFavorListViewController:) name:PresentFavorListNotificationName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentCommentListViewController:) name:PresentCommentListNotificationName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentCastingViewController:) name:PresentVideoDetailNotificationName object:nil];
     
     if(self.user != nil){
-        self.avatorImageView.image = self.user.thumbImage;
+        [self.avatorImageView becomeAvatorProifle:self.user.thumbImage];
+        self.avatorImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.avatorImageView.layer.borderWidth = 3.0;
         self.fullnameLabel.text = self.user.fullname;
+        self.coverImageView.image = self.user.coverThumbImage;
         self.bioLabel.text = self.user.bio;
-        self.postCountLabel.text = [NSString stringWithFormat:@"%i", self.user.videoStreamRecord.count];
+        self.followBtn.layer.cornerRadius = 3.0;
     }
-    
-    self.profileActionBtn.layer.cornerRadius = 6.0;
-    self.profileActionBtn.layer.borderColor = [UIColor colorWithRed:11/255.0 green:37/255.0 blue:84/255.0 alpha:1].CGColor;
-    self.profileActionBtn.layer.borderWidth = 1.0;
 }
+
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.width / 2;
-    self.avatorImageView.clipsToBounds = YES;
+    [self adjustCoverView];
+    [self.navigationController.navigationBar setTranslucent:YES];
+    self.navigationController.navigationBar.alpha = 0;
+}
+
+
+
+
+-(void)adjustCoverView{
+    CGSize coverImageSize = self.coverImageView.image.size;
+    self.coverHeightConstriant.constant = self.view.frame.size.width * coverImageSize.height /  coverImageSize.width;
+    self.orginCoverHeight = self.coverHeightConstriant.constant;
+}
+
+//MARK: UIScrollViewDelegate
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(scrollView.contentOffset.y < 0){
+        CGRect coverRect = CGRectMake(0, scrollView.contentOffset.y,self.coverImageView.frame.size.width, self.orginCoverHeight + (-scrollView.contentOffset.y));
+        self.coverImageView.frame = coverRect;
+        CGRect backBtnRect = CGRectMake(self.backBtnOrigin.x, self.backBtnOrigin.y + scrollView.contentOffset.y, self.backBtn.frame.size.width, self.backBtn.frame.size.height);
+        self.backBtn.frame = backBtnRect;
+        
+        
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.preferStatusBarHidden = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.view layoutIfNeeded];
+        [self setNeedsStatusBarAppearanceUpdate];
+    }];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.tableView reloadData];
+    self.backBtnOrigin = self.backBtn.frame.origin;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+}
+
+-(BOOL)prefersStatusBarHidden{
+    return self.preferStatusBarHidden;
+}
+
+
+
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
+    return UIStatusBarAnimationFade;
+}
+
+
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
 
 
 -(void)setUser:(User *)user{
-    [self updateUI];
     _user = user;
     self.videoStreamList = [[NSMutableArray alloc]init];
     for(CKRecord* record in self.user.videoStreamRecord){
@@ -98,14 +146,6 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     }
     [self.tableView reloadData];
 }
-
--(void)updateUI{
-    UIImage* backBtnImage = [UIImage imageNamed:@"back-icon"];
-    self.backBtn = [[UIBarButtonItem alloc]initWithImage:backBtnImage style:UIBarButtonItemStylePlain target:self action:@selector(backBtnTapped:)];
-    [self.backBtn setTintColor:[UIColor whiteColor]];
-    self.navigationItem.leftBarButtonItem = self.backBtn;
-}
-
 
 -(void)presentFavorListViewController:(NSNotification*)notification {
     FavorUserListViewController* favorListVC = (FavorUserListViewController*)notification.userInfo[FavorUserListVCKey];
@@ -120,7 +160,6 @@ static CGFloat const NavigationBarTitleFontSize = 17;
         [self.navigationController pushViewController:commentListVC animated:YES];
     }
 }
-
 
 -(void)presentCastingViewController:(NSNotification*)notification {
     VideoStream* videoStream = (VideoStream*)notification.userInfo[VideoDetailKey];
@@ -138,7 +177,7 @@ static CGFloat const NavigationBarTitleFontSize = 17;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.videoStreamList.count;
+    return 0; //self.videoStreamList.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -146,6 +185,5 @@ static CGFloat const NavigationBarTitleFontSize = 17;
     cell.videoStream = self.videoStreamList[indexPath.row];
     return cell;
 }
-
 
 @end
