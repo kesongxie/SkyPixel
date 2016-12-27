@@ -8,20 +8,20 @@
 
 #import  <CoreLocation/CoreLocation.h>
 #import "AppDelegate.h"
-#import "CastingViewController.h"
+#import "ShotDetailViewController.h"
 #import "PlayView.h"
 #import "FavorUserListViewController.h"
 #import "CommentListViewController.h"
-//#import "ProfileTableViewController.h"
-//#import "ProfileViewController.h"
 #import "ProfileCollectionViewController.h"
 #import "HorizontalSlideInAnimator.h"
+#import "ShotDetailNavigationController.h"
+#import "SkyCastNavigationViewController.h"
 
 //constants
 static NSString* const FavorIconWhite = @"favor-icon";
 static NSString* const FavorIconRed = @"favor-icon-red";
 
-@interface CastingViewController()
+@interface ShotDetailViewController()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
@@ -93,11 +93,16 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 @end
 
-@implementation CastingViewController
+@implementation ShotDetailViewController
 
 - (IBAction)backBtnTapped:(UIBarButtonItem *)sender {
     [self resetPlayer];
-    [self.navigationController popViewControllerAnimated:YES];
+    if([self.navigationController isKindOfClass:[ShotDetailNavigationController class]]){
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }else if([self.navigationController isKindOfClass:[SkyCastNavigationViewController class]]){
+         [self.navigationController popViewControllerAnimated:YES];
+    }
+   
 }
 
 - (IBAction)backFromProfileTableViewController:(UIStoryboardSegue *)segue {
@@ -169,13 +174,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         self.viewStatusLabel.text = NSLocalizedString(@"PEOPLE VIEWING", @"viewing count");
     }
     self.fullnameLabel.text = self.videoStream.user.fullname;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSData* imageData = [[NSData alloc]initWithContentsOfURL:self.videoStream.user.avatorUrl];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImage* avator = [[UIImage alloc]initWithData:imageData];
-            self.avatorImageView.image = avator;
-        });
-    });
+    self.avatorImageView.image = self.videoStream.user.thumbImage;
     self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.height / 2;
     self.avatorImageView.clipsToBounds = YES;
     self.videoTitleLabel.text = self.videoStream.title;
@@ -328,26 +327,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 -(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
-//    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    ProfileTableViewController* profileTVC = (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
-//    if(profileTVC){
-//        profileTVC.user = self.videoStream.user;
-//        profileTVC.transitioningDelegate = self;
-//        [self presentViewController:profileTVC animated:YES completion:nil];
-//
-//    }
-    
-    
-//    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    ProfileViewController* profileVC = (ProfileViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
-//    if(profileVC){
-//        profileVC.user = self.videoStream.user;
-//        profileVC.transitioningDelegate = self;
-//        [self presentViewController:profileVC animated:YES completion:nil];
-//        
-//    }
-
-    
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ProfileCollectionViewController* profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
     if(profileCVC){
@@ -356,7 +335,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
         [self presentViewController:profileCVC animated:YES completion:nil];
         
     }
-
 }
 
 
@@ -438,7 +416,5 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
     return self.animator;
 }
-
-
 
 @end

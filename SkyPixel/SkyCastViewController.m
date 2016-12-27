@@ -11,17 +11,14 @@
 #import "SkyCastViewController.h"
 #import "VideoStream+Annotation.h"
 #import "PlayView.h"
-#import "CastingViewController.h"
+#import "ShotDetailViewController.h"
 #import "ContainerViewController.h"
 #import "Utility.h"
 
 
 static double const LocationDegree = 0.05;
-static NSString* const NavigationBarTitleFontName = @"Avenir-Heavy";
-static CGFloat const NavigationBarTitleFontSize = 17;
 static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
 static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
-static NSString* const email1 = @"kesongxie@skypixel.com";
 static CGFloat const searchRadius = 10000; //load video within 10 km from the locationCenter
 static CGFloat const CalloutViewHeight = 50;
 
@@ -66,7 +63,6 @@ static CGFloat const CalloutViewHeight = 50;
 
 - (void) viewDidLoad{
     [super viewDidLoad];
-    [self updateUI];
     self.mapView.delegate = self;
     self.mapView.showsUserLocation = YES;
     self.locationManager = [[CLLocationManager alloc] init];
@@ -136,28 +132,6 @@ static CGFloat const CalloutViewHeight = 50;
     }];
 }
 
-//MARK: - UPATE UI
-- (void) updateUI{
-    [self.navigationController.navigationBar setBarTintColor: [UIColor blackColor]];
-    UIFont* titleFont = [UIFont fontWithName: NavigationBarTitleFontName size: NavigationBarTitleFontSize];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName: titleFont,    NSForegroundColorAttributeName: [UIColor whiteColor]}];
-}
-
-
-//MARK: - Prepare for segue
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    [self.player pause];
-    if([sender isKindOfClass:[MKAnnotationView class]]){
-        if([segue.identifier isEqualToString:ShowCastingSegueIdentifier]){
-            if([segue.destinationViewController isKindOfClass:[CastingViewController class]]){
-                CastingViewController* destinationVC = segue.destinationViewController;
-                VideoStream* videoStream = ((MKAnnotationView*)sender).annotation;
-                destinationVC.videoStream = videoStream;
-
-            }
-        }
-    }
-}
 
 //MARK: - CLLocationManagerDelegate
 -(void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
@@ -237,7 +211,14 @@ static CGFloat const CalloutViewHeight = 50;
 
 
 -(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
-    [self performSegueWithIdentifier:ShowCastingSegueIdentifier sender: view];
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ShotDetailViewController* castVC = (ShotDetailViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ShotDetailViewController"];
+    VideoStream* videoStream = (VideoStream*)view.annotation;
+    if(castVC){
+        castVC.videoStream = videoStream;
+        [self.navigationController pushViewController:castVC animated:YES];
+    }
+    
 }
 
 @end

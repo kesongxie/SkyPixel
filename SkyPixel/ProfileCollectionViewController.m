@@ -13,13 +13,17 @@
 #import "ProfileCollectionViewController.h"
 #import "ProfileHeaderView.h"
 #import "PostCollectionViewCell.h"
+#import "ShotDetailNavigationController.h"
+#import "ShotDetailViewController.h"
+
 
 static CGFloat const Space = 16;
 
-@interface ProfileCollectionViewController()<UICollectionViewDelegateFlowLayout>
+@interface ProfileCollectionViewController()<UIViewControllerTransitioningDelegate,  UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) ProfileHeaderView* headerView;
 @property (nonatomic) BOOL preferStatusBarHidden;
+@property (strong, nonatomic) HorizontalSlideInAnimator* animator;
 
 @end
 
@@ -30,11 +34,6 @@ static CGFloat const Space = 16;
     self.navigationController.navigationBarHidden = YES;
 }
 
--(void)viewDidLayoutSubviews{
-    [super viewDidLayoutSubviews];
-}
-
-
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.preferStatusBarHidden = YES;
@@ -43,6 +42,20 @@ static CGFloat const Space = 16;
         [self setNeedsStatusBarAppearanceUpdate];
     }];
 }
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.preferStatusBarHidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.view layoutIfNeeded];
+        [self setNeedsStatusBarAppearanceUpdate];
+    }];
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+}
+
 
 -(BOOL)prefersStatusBarHidden{
     return self.preferStatusBarHidden;
@@ -92,9 +105,6 @@ static CGFloat const Space = 16;
     }
 }
 
-
-
-
 //MARK: - CollectionViewDelegate, CollectionViewDataSource
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
@@ -122,7 +132,22 @@ static CGFloat const Space = 16;
     return headerView;
 }
 
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+   ShotDetailNavigationController* shotDetailNVC = (ShotDetailNavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"ShotDetailNavigationController"];
+    if(shotDetailNVC){
+         VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:self.user.videoStreamRecord[indexPath.row]];
+        videoStream.user = self.user;
+        ShotDetailViewController* shotDetailVC = (ShotDetailViewController*)shotDetailNVC.viewControllers.firstObject;
+        if(shotDetailVC){
+            shotDetailVC.videoStream = videoStream;
+            shotDetailNVC.transitioningDelegate = self;
+            [self presentViewController:shotDetailNVC animated:YES completion:nil];
+        }
+    }
+}
 
+//MARK: - CollectionViewFlowLayout
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat width = (self.view.frame.size.width - 3 * Space) / 2;
     return CGSizeMake(width, width + 44);
@@ -135,5 +160,17 @@ static CGFloat const Space = 16;
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     return UIEdgeInsetsMake(0, Space, Space, Space);
 }
+
+
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
+    self.animator = [[HorizontalSlideInAnimator alloc] init];
+    return self.animator;
+}
+
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
+    return self.animator;
+}
+
+
 
 @end

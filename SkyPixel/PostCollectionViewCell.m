@@ -24,8 +24,6 @@
     self.previewImageView.image = videoStream.thumbImage;
     self.titleLabel.text = videoStream.title;
     self.viewsLabel.text = [NSString stringWithFormat:@"%@ VIEWS", videoStream.view.stringValue];
-    
-    
 }
 
 @end
