@@ -58,6 +58,10 @@
     return self.record[DescriptionKey];
 }
 
+-(NSNumber*) view{
+    return self.record[ViewKey];
+}
+
 -(NSMutableArray<CKReference*>*) favorUserList{
     return self.record[FavorUserListKey];
 }
@@ -213,7 +217,6 @@
         if(error == nil){
             if(videoStreamRecords){
                 NSLog(@"record is ready");
-//                __block NSInteger userFetchedCompletedCount = 0;
                 NSMutableArray<VideoStream*>* resultVideoStream = [[NSMutableArray alloc]init];
                 for(CKRecord* streamRecord in videoStreamRecords){
                     VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:streamRecord];

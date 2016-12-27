@@ -11,9 +11,12 @@
 #import "ProfileViewController.h"
 #import "UIImageView+ProfileAvator.h"
 #import "HorizontalSlideInAnimator.h"
-#import "ProfileTableViewController.h"
+#import "ProfileHeaderView.h"
 
-@interface ProfileViewController()
+static CGFloat const CollectionViewMarginHorizontalSize = 20;
+
+
+@interface ProfileViewController()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
@@ -24,34 +27,36 @@
 @property (weak, nonatomic) IBOutlet UIButton *followBtn;
 @property (nonatomic) CGFloat orginCoverHeight;
 
+@property (weak, nonatomic) IBOutlet UICollectionView *postCollectionView;
+
 @end
 
 @implementation ProfileViewController
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-//    self.navigationController.navigationBarHidden = YES;
-//    self.scrollView.delegate = self;
-//    self.scrollView.alwaysBounceVertical = YES;
-//    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-//    User* loggedInUser = [[User alloc]initWithRecord:delegate.loggedInRecord];
-//    [self.avatorImageView becomeAvatorProifle:loggedInUser.thumbImage];
-//    self.avatorImageView.layer.borderColor = [UIColor whiteColor].CGColor;
-//    self.avatorImageView.layer.borderWidth = 3.0;
-//    self.fullnameLabel.text = loggedInUser.fullname;
-//    self.coverImageView.image = loggedInUser.coverThumbImage;
-//    self.bioLabel.text = loggedInUser.bio;
-//    self.followBtn.layer.cornerRadius = 3.0;
+    self.navigationController.navigationBarHidden = YES;
+    self.scrollView.delegate = self;
+    self.scrollView.alwaysBounceVertical = YES;
+    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    User* loggedInUser = [[User alloc]initWithRecord:delegate.loggedInRecord];
+    [self.avatorImageView becomeAvatorProifle:loggedInUser.thumbImage];
+    self.avatorImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.avatorImageView.layer.borderWidth = 3.0;
+    self.fullnameLabel.text = loggedInUser.fullname;
+    self.coverImageView.image = loggedInUser.coverThumbImage;
+    self.bioLabel.text = loggedInUser.bio;
+    self.followBtn.layer.cornerRadius = 3.0;
     
-    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorTapped:)];
-    self.avatorImageView.userInteractionEnabled = YES;
-    [self.avatorImageView addGestureRecognizer:tap];
+    //collectionview
+    self.postCollectionView.delegate = self;
+    self.postCollectionView.dataSource = self;
     
 }
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    //[self adjustCoverView];
+    [self adjustCoverView];
 }
 
 -(void)adjustCoverView{
@@ -59,20 +64,6 @@
     self.coverHeightConstriant.constant = self.view.frame.size.width * coverImageSize.height /  coverImageSize.width;
     self.orginCoverHeight = self.coverHeightConstriant.constant;
 }
-
--(void)avatorTapped:(UITapGestureRecognizer*)gesture{
-    NSLog(@"tapped");
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ProfileTableViewController* profileTVC =  (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    User* loggedInUser = [[User alloc]initWithRecord:delegate.loggedInRecord];
-
-    profileTVC.transitioningDelegate = self;
-    profileTVC.user = loggedInUser;
-    [self presentViewController:profileTVC animated:YES completion:nil];
-    
-}
-
 
 
 
@@ -92,9 +83,39 @@
     return animator;
 }
 
+//MARK: - CollectionViewDelegate, CollectionViewDataSource
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
+}
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    return 4;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionPostCell" forIndexPath:indexPath];
+    return cell;
+}
+
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    ProfileHeaderView* headerView = (ProfileHeaderView*)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ProfileHeaderView" forIndexPath:indexPath];
+    
+    return headerView;
+}
+
+
+
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    CGFloat width = (self.view.frame.size.width - 3 * CollectionViewMarginHorizontalSize) / 2;
+    return CGSizeMake(width, width + 60);
+}
 
 
 
 
+
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    return UIEdgeInsetsMake(0, CollectionViewMarginHorizontalSize, 0, CollectionViewMarginHorizontalSize);
+}
 
 @end

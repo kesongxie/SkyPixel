@@ -29,5 +29,4 @@
     self.avatorImageView.clipsToBounds = YES;
 }
 
-
 @end

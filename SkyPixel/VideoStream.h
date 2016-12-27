@@ -24,6 +24,7 @@ static NSString* const DescriptionKey = @"description";
 static NSString* const FavorUserListKey = @"favorUserList";
 static NSString* const CommentListKey = @"commentList";
 static NSString* const ThumbnailListKey = @"thumbnail";
+static NSString* const ViewKey = @"view";
 static NSString* const WidthKey = @"width";
 static NSString* const HeightKey = @"height";
 
@@ -43,9 +44,11 @@ static NSString* const HeightKey = @"height";
 @property (strong, readonly, nonatomic) CKReference* userReference;
 @property (strong, readonly, nonatomic) NSURL* thumbnail;
 @property (strong, readonly, nonatomic) UIImage* thumbImage;
+@property (strong, nonatomic) NSNumber* view;
 @property (strong, nonatomic) NSMutableArray<CKReference*>* favorUserList;
 @property (strong, nonatomic) NSMutableArray<CKReference*>* commentReferenceList;
 @property (readonly, nonatomic) NSInteger live;
+
 
 - (id)initWithCKRecord: (CKRecord*)record;
 

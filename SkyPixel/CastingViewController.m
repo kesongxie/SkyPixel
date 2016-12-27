@@ -12,7 +12,9 @@
 #import "PlayView.h"
 #import "FavorUserListViewController.h"
 #import "CommentListViewController.h"
-#import "ProfileTableViewController.h"
+//#import "ProfileTableViewController.h"
+//#import "ProfileViewController.h"
+#import "ProfileCollectionViewController.h"
 #import "HorizontalSlideInAnimator.h"
 
 //constants
@@ -326,14 +328,35 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 -(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ProfileTableViewController* profileTVC = (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
-    if(profileTVC){
-        profileTVC.user = self.videoStream.user;
-        profileTVC.transitioningDelegate = self;
-        [self presentViewController:profileTVC animated:YES completion:nil];
+//    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    ProfileTableViewController* profileTVC = (ProfileTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileTableViewController"];
+//    if(profileTVC){
+//        profileTVC.user = self.videoStream.user;
+//        profileTVC.transitioningDelegate = self;
+//        [self presentViewController:profileTVC animated:YES completion:nil];
+//
+//    }
+    
+    
+//    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    ProfileViewController* profileVC = (ProfileViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileViewController"];
+//    if(profileVC){
+//        profileVC.user = self.videoStream.user;
+//        profileVC.transitioningDelegate = self;
+//        [self presentViewController:profileVC animated:YES completion:nil];
+//        
+//    }
 
+    
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ProfileCollectionViewController* profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
+    if(profileCVC){
+        profileCVC.user = self.videoStream.user;
+        profileCVC.transitioningDelegate = self;
+        [self presentViewController:profileCVC animated:YES completion:nil];
+        
     }
+
 }
 
 
