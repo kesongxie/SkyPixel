@@ -13,6 +13,8 @@
 
 typedef enum ExpandHeaderOption {HeaderExpandDefaultOption, HeaderExpandNoEntryFoundOption} HeaderExpandOpton;
 
-@interface ExploreSearchTableViewController : UITableViewController<UISearchResultsUpdating, UISearchBarDelegate>
+@interface LocationSearchTableViewController : UITableViewController<UISearchResultsUpdating, UISearchBarDelegate>
+
+@property (strong, nonatomic)  NSString* serachBarPresetValue;
 
 @end

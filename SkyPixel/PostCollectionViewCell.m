@@ -23,6 +23,7 @@
 -(void)setVideoStream:(VideoStream *)videoStream{
     self.previewImageView.image = videoStream.thumbImage;
     self.titleLabel.text = videoStream.title;
+//    self.previewImageView.layer.cornerRadius = 8.0;
     self.viewsLabel.text = [NSString stringWithFormat:@"%@ VIEWS", videoStream.view.stringValue];
 }
 

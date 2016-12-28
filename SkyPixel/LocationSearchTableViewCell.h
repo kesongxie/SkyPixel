@@ -1,5 +1,5 @@
 //
-//  ExploreSearchTableViewCell.h
+//  LocationSearchTableViewCell.h
 //  SkyPixel
 //
 //  Created by Xie kesong on 12/16/16.
@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import <Contacts/Contacts.h>
-#import <AddressBookUI/AddressBookUI.h>
 
-@interface ExploreSearchTableViewCell : UITableViewCell
+@interface LocationSearchTableViewCell : UITableViewCell
 
 //model
 @property (strong, nonatomic) CLPlacemark* placeMark;

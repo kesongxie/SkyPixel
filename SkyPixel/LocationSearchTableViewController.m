@@ -6,11 +6,13 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
-#import "ExploreSearchTableViewController.h"
-#import "ExploreSearchTableViewCell.h"
+#import "LocationSearchTableViewController.h"
+#import "LocationSearchTableViewCell.h"
+#import "PostNavigationController.h"
 
+static NSString* const TableViewCellIden = @"LocationSearchCell";
 
-@interface ExploreSearchTableViewController()
+@interface LocationSearchTableViewController()
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UILabel *headerTextDescriptionLabel;
@@ -29,7 +31,7 @@
 
 @end
 
-@implementation ExploreSearchTableViewController
+@implementation LocationSearchTableViewController
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -62,6 +64,9 @@
         [self expandHeaderViewWithOption: option];
     }
 }
+
+
+
 
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleDefault;
@@ -118,9 +123,9 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"ExploreSearchCell" forIndexPath:indexPath];
-    if([cell isKindOfClass:[ExploreSearchTableViewCell class]]){
-        ExploreSearchTableViewCell* searchCell = (ExploreSearchTableViewCell*)cell;
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:TableViewCellIden forIndexPath:indexPath];
+    if([cell isKindOfClass:[LocationSearchTableViewCell class]]){
+        LocationSearchTableViewCell* searchCell = (LocationSearchTableViewCell*)cell;
         [searchCell setPlaceMark:self.placeMarks[indexPath.row]];
         return searchCell;
     }
@@ -132,7 +137,7 @@
     //bring the bottom to the top
     CLLocation* location = placeMark.location;
     //post a notification back to the skycastvc and set the new location
-    NSDictionary* userInfo = @{@"location": location, @"title": placeMark.name, @"subTitle": [ExploreSearchTableViewCell getAddressFromPlaceMark:placeMark]};
+    NSDictionary* userInfo = @{@"location": location, @"title": placeMark.name, @"subTitle": [LocationSearchTableViewCell getAddressFromPlaceMark:placeMark]};
     
     NSNotification* notification = [[NSNotification alloc] initWithName:@"LocationSelected" object:self userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
@@ -179,6 +184,8 @@
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
         [self showSkyCastMapView];
+    }else if([self.parentViewController.presentingViewController isKindOfClass:[PostNavigationController class]]) {
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

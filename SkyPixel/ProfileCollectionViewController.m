@@ -162,6 +162,8 @@ static CGFloat const Space = 16;
 }
 
 
+
+//MARK: - custom transition for presentation
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
     self.animator = [[HorizontalSlideInAnimator alloc] init];
     return self.animator;
@@ -170,7 +172,5 @@ static CGFloat const Space = 16;
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
     return self.animator;
 }
-
-
 
 @end

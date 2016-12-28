@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		980498841E02A72D0091A37C /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498831E02A72D0091A37C /* ContainerViewController.m */; };
-		9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498891E03729E0091A37C /* ExploreSearchTableViewController.m */; };
+		9804988A1E03729E0091A37C /* LocationSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 980498891E03729E0091A37C /* LocationSearchTableViewController.m */; };
 		9826C9CB1DF6ABCC0025F58F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */; };
 		983046C31E0A0F4500F0557A /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C21E0A0F4500F0557A /* Utility.m */; };
 		983046CC1E0BC52A00F0557A /* VideoAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046CB1E0BC52A00F0557A /* VideoAsset.m */; };
@@ -20,7 +20,7 @@
 		98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A921DFCCF1400417978 /* VideoStream+Annotation.m */; };
 		98621AB71DFD555500417978 /* PlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621AB61DFD555500417978 /* PlayView.m */; };
 		98621ABB1DFE94D800417978 /* ShotDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621ABA1DFE94D800417978 /* ShotDetailViewController.m */; };
-		988E69291E04F89A00A9D893 /* ExploreSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */; };
+		988E69291E04F89A00A9D893 /* LocationSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 988E69281E04F89A00A9D893 /* LocationSearchTableViewCell.m */; };
 		98AEEB491E052B4000431481 /* ProfileLeftPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98AEEB481E052B4000431481 /* ProfileLeftPanelViewController.m */; };
 		98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98AF06471DFA88AF0060D993 /* Assets.xcassets */; };
 		98C3DD581DF0F5CC00F6B49B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98C3DD571DF0F5CC00F6B49B /* main.m */; };
@@ -31,6 +31,11 @@
 		98CDE6331E11D5B500B7B439 /* PostCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CDE6321E11D5B500B7B439 /* PostCollectionViewCell.m */; };
 		98CDE6361E120C9A00B7B439 /* ShotDetailNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CDE6351E120C9A00B7B439 /* ShotDetailNavigationController.m */; };
 		98CDE6391E12131B00B7B439 /* CoreNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CDE6381E12131B00B7B439 /* CoreNavigationController.m */; };
+		98D284421E13136F006779FD /* PostNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D284411E13136F006779FD /* PostNavigationController.m */; };
+		98D284451E1313DA006779FD /* EditPostMediaPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D284441E1313DA006779FD /* EditPostMediaPickerController.m */; };
+		98D284491E131555006779FD /* MediaPickerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D284481E131555006779FD /* MediaPickerCollectionViewCell.m */; };
+		98D2844B1E1346A9006779FD /* EditPostAddDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D2844A1E1346A9006779FD /* EditPostAddDetailViewController.m */; };
+		98D2844F1E13DD15006779FD /* LocationSearchNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D2844E1E13DD15006779FD /* LocationSearchNavigationController.m */; };
 		98D9654E1DF5024500335CC6 /* SkyCastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D9654D1DF5024500335CC6 /* SkyCastViewController.m */; };
 		98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */; };
 		98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */; };
@@ -50,8 +55,8 @@
 /* Begin PBXFileReference section */
 		980498831E02A72D0091A37C /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
 		980498851E02A7380091A37C /* ContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
-		980498891E03729E0091A37C /* ExploreSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchTableViewController.m; sourceTree = "<group>"; };
-		9804988B1E0372A70091A37C /* ExploreSearchTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewController.h; sourceTree = "<group>"; };
+		980498891E03729E0091A37C /* LocationSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearchTableViewController.m; sourceTree = "<group>"; };
+		9804988B1E0372A70091A37C /* LocationSearchTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationSearchTableViewController.h; sourceTree = "<group>"; };
 		9826C9C91DF6ABC10025F58F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9826C9CA1DF6ABCC0025F58F /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		983046C11E0A0F3D00F0557A /* Utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
@@ -73,8 +78,8 @@
 		98621AB81DFD556500417978 /* PlayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayView.h; sourceTree = "<group>"; };
 		98621ABA1DFE94D800417978 /* ShotDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShotDetailViewController.m; sourceTree = "<group>"; };
 		98621ABC1DFE94DF00417978 /* ShotDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShotDetailViewController.h; sourceTree = "<group>"; };
-		988E69271E04F86000A9D893 /* ExploreSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExploreSearchTableViewCell.h; sourceTree = "<group>"; };
-		988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExploreSearchTableViewCell.m; sourceTree = "<group>"; };
+		988E69271E04F86000A9D893 /* LocationSearchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationSearchTableViewCell.h; sourceTree = "<group>"; };
+		988E69281E04F89A00A9D893 /* LocationSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearchTableViewCell.m; sourceTree = "<group>"; };
 		98AEEB471E052B2C00431481 /* ProfileLeftPanelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileLeftPanelViewController.h; sourceTree = "<group>"; };
 		98AEEB481E052B4000431481 /* ProfileLeftPanelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileLeftPanelViewController.m; sourceTree = "<group>"; };
 		98AF06471DFA88AF0060D993 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -93,6 +98,16 @@
 		98CDE6351E120C9A00B7B439 /* ShotDetailNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShotDetailNavigationController.m; sourceTree = "<group>"; };
 		98CDE6371E12130E00B7B439 /* CoreNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreNavigationController.h; sourceTree = "<group>"; };
 		98CDE6381E12131B00B7B439 /* CoreNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreNavigationController.m; sourceTree = "<group>"; };
+		98D284411E13136F006779FD /* PostNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostNavigationController.m; sourceTree = "<group>"; };
+		98D284431E131375006779FD /* PostNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostNavigationController.h; sourceTree = "<group>"; };
+		98D284441E1313DA006779FD /* EditPostMediaPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostMediaPickerController.m; sourceTree = "<group>"; };
+		98D284461E1313E1006779FD /* EditPostMediaPickerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditPostMediaPickerController.h; sourceTree = "<group>"; };
+		98D284471E13154C006779FD /* MediaPickerCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPickerCollectionViewCell.h; sourceTree = "<group>"; };
+		98D284481E131555006779FD /* MediaPickerCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPickerCollectionViewCell.m; sourceTree = "<group>"; };
+		98D2844A1E1346A9006779FD /* EditPostAddDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostAddDetailViewController.m; sourceTree = "<group>"; };
+		98D2844C1E1346B1006779FD /* EditPostAddDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditPostAddDetailViewController.h; sourceTree = "<group>"; };
+		98D2844D1E13DD0C006779FD /* LocationSearchNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationSearchNavigationController.h; sourceTree = "<group>"; };
+		98D2844E1E13DD15006779FD /* LocationSearchNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearchNavigationController.m; sourceTree = "<group>"; };
 		98D9654D1DF5024500335CC6 /* SkyCastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyCastViewController.m; sourceTree = "<group>"; };
 		98D965501DF5028800335CC6 /* SkyCastViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SkyCastViewController.h; sourceTree = "<group>"; };
 		98D965521DF5045C00335CC6 /* SkyCastNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkyCastNavigationViewController.m; sourceTree = "<group>"; };
@@ -176,15 +191,17 @@
 			name = "Shot Detail";
 			sourceTree = "<group>";
 		};
-		98AEEB4A1E052B8C00431481 /* Explore Search */ = {
+		98AEEB4A1E052B8C00431481 /* Location Search */ = {
 			isa = PBXGroup;
 			children = (
-				988E69271E04F86000A9D893 /* ExploreSearchTableViewCell.h */,
-				988E69281E04F89A00A9D893 /* ExploreSearchTableViewCell.m */,
-				9804988B1E0372A70091A37C /* ExploreSearchTableViewController.h */,
-				980498891E03729E0091A37C /* ExploreSearchTableViewController.m */,
+				988E69271E04F86000A9D893 /* LocationSearchTableViewCell.h */,
+				988E69281E04F89A00A9D893 /* LocationSearchTableViewCell.m */,
+				98D2844D1E13DD0C006779FD /* LocationSearchNavigationController.h */,
+				98D2844E1E13DD15006779FD /* LocationSearchNavigationController.m */,
+				9804988B1E0372A70091A37C /* LocationSearchTableViewController.h */,
+				980498891E03729E0091A37C /* LocationSearchTableViewController.m */,
 			);
-			name = "Explore Search";
+			name = "Location Search";
 			sourceTree = "<group>";
 		};
 		98AEEB4B1E052BA900431481 /* Container */ = {
@@ -194,7 +211,6 @@
 				980498831E02A72D0091A37C /* ContainerViewController.m */,
 				98DC2D8E1E0F6AA50040890F /* Profile Left Panel */,
 				98AEEB4C1E052BC600431481 /* SkyCast Map */,
-				98AEEB4A1E052B8C00431481 /* Explore Search */,
 			);
 			name = Container;
 			sourceTree = "<group>";
@@ -240,11 +256,13 @@
 				98D965591DF50E6400335CC6 /* SkyTabBarViewController.m */,
 				98CDE6371E12130E00B7B439 /* CoreNavigationController.h */,
 				98CDE6381E12131B00B7B439 /* CoreNavigationController.m */,
+				98D965561DF5074C00335CC6 /* Ultility */,
+				98621A871DFCBBB500417978 /* Model */,
+				98D965551DF5074400335CC6 /* Category */,
+				98AEEB4A1E052B8C00431481 /* Location Search */,
+				98D284401E131337006779FD /* Edit Post Navigation */,
 				98DC2D8F1E0F89560040890F /* PrepareLoginViewController */,
 				98DDFFF81DF5F7B800E2E762 /* LaunchScreen */,
-				98621A871DFCBBB500417978 /* Model */,
-				98D965561DF5074C00335CC6 /* Ultility */,
-				98D965551DF5074400335CC6 /* Category */,
 				98D965511DF5043000335CC6 /* SkyCast */,
 				983046C71E0B6F9200F0557A /* Profile */,
 				98C3DD5F1DF0F5CC00F6B49B /* Main.storyboard */,
@@ -263,6 +281,21 @@
 				98C3DD571DF0F5CC00F6B49B /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		98D284401E131337006779FD /* Edit Post Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				98D284431E131375006779FD /* PostNavigationController.h */,
+				98D284411E13136F006779FD /* PostNavigationController.m */,
+				98D284471E13154C006779FD /* MediaPickerCollectionViewCell.h */,
+				98D284481E131555006779FD /* MediaPickerCollectionViewCell.m */,
+				98D284461E1313E1006779FD /* EditPostMediaPickerController.h */,
+				98D284441E1313DA006779FD /* EditPostMediaPickerController.m */,
+				98D2844C1E1346B1006779FD /* EditPostAddDetailViewController.h */,
+				98D2844A1E1346A9006779FD /* EditPostAddDetailViewController.m */,
+			);
+			name = "Edit Post Navigation";
 			sourceTree = "<group>";
 		};
 		98D965511DF5043000335CC6 /* SkyCast */ = {
@@ -449,7 +482,9 @@
 				98621ABB1DFE94D800417978 /* ShotDetailViewController.m in Sources */,
 				98F8BDA11E08FB8F00A9E3D2 /* Comment.m in Sources */,
 				98CDE6331E11D5B500B7B439 /* PostCollectionViewCell.m in Sources */,
-				988E69291E04F89A00A9D893 /* ExploreSearchTableViewCell.m in Sources */,
+				98D284421E13136F006779FD /* PostNavigationController.m in Sources */,
+				98D284451E1313DA006779FD /* EditPostMediaPickerController.m in Sources */,
+				988E69291E04F89A00A9D893 /* LocationSearchTableViewCell.m in Sources */,
 				983046CC1E0BC52A00F0557A /* VideoAsset.m in Sources */,
 				98621A8A1DFCBBE100417978 /* User.m in Sources */,
 				980498841E02A72D0091A37C /* ContainerViewController.m in Sources */,
@@ -467,10 +502,13 @@
 				98F8BD981E08C69800A9E3D2 /* FavorTableViewCell.m in Sources */,
 				98F4CAAE1E10B8BE006EBFE8 /* HorizontalSlideInAnimator.m in Sources */,
 				98D9655A1DF50E6400335CC6 /* SkyTabBarViewController.m in Sources */,
+				98D2844B1E1346A9006779FD /* EditPostAddDetailViewController.m in Sources */,
+				98D284491E131555006779FD /* MediaPickerCollectionViewCell.m in Sources */,
 				98DC2D911E0F89730040890F /* PrepareLoginViewController.m in Sources */,
+				98D2844F1E13DD15006779FD /* LocationSearchNavigationController.m in Sources */,
 				98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */,
 				983046C31E0A0F4500F0557A /* Utility.m in Sources */,
-				9804988A1E03729E0091A37C /* ExploreSearchTableViewController.m in Sources */,
+				9804988A1E03729E0091A37C /* LocationSearchTableViewController.m in Sources */,
 				98D965531DF5045C00335CC6 /* SkyCastNavigationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

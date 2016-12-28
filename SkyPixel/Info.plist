@@ -36,5 +36,7 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Follow near by drone adventure at your fingertip</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose video from your libaray and share</string>
 </dict>
 </plist>

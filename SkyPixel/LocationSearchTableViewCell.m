@@ -1,5 +1,5 @@
 //
-//  ExploreSearchTableViewCell.m
+//  LocationSearchTableViewCell.m
 //  SkyPixel
 //
 //  Created by Xie kesong on 12/16/16.
@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ExploreSearchTableViewCell.h"
+#import "LocationSearchTableViewCell.h"
 
-@interface ExploreSearchTableViewCell()
+@interface LocationSearchTableViewCell()
 
 @property (weak, nonatomic) IBOutlet UIImageView *placeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *placeMarkName;
@@ -19,7 +19,7 @@
 
 @end
 
-@implementation ExploreSearchTableViewCell
+@implementation LocationSearchTableViewCell
 
 -(void)setPlaceMark:(CLPlacemark *)placeMark{
     if(placeMark != nil){
@@ -29,7 +29,7 @@
 }
 
 -(void) updateUI{
-    self.placeAddress.text = [ExploreSearchTableViewCell getAddressFromPlaceMark:self.placeMark];
+    self.placeAddress.text = [LocationSearchTableViewCell getAddressFromPlaceMark:self.placeMark];
     self.placeMarkName.text = self.placeMark.name;
 }
 

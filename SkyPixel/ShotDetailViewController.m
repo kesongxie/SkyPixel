@@ -142,12 +142,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    NSString* count = self.viewCountsLabel.text;
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    formatter.numberStyle = NSNumberFormatterDecimalStyle;
-    NSNumber *myNumber = [formatter numberFromString:count];
-    NSInteger newCount = myNumber.intValue + 1;
-    self.viewCountsLabel.text = [NSString stringWithFormat: @"%ld", (long)newCount];
     [self updatePinBottomViewUI];
     self.isViewVisible = YES;
 }
@@ -179,6 +173,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.avatorImageView.clipsToBounds = YES;
     self.videoTitleLabel.text = self.videoStream.title;
     self.descriptionLabel.text = self.videoStream.description;
+    self.viewCountsLabel.text = self.videoStream.view.stringValue;
     if(self.descriptionLabel.text.length == 0){
         self.descriptionLabel.text = NSLocalizedString(@"No description available", @"default message");
         self.descriptionLabel.textColor = [UIColor colorWithRed:90/255.0 green:90/255.0 blue:90/255.0 alpha:1]; //lighter gray for default message
@@ -368,27 +363,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.videoHeightConstraint.constant = self.view.frame.size.width * self.videoStream.height / self.videoStream.width;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == &_payerItemContext) {
-        dispatch_async(dispatch_get_main_queue(),^{
-            if ((self.player.currentItem != nil) &&
-                ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
-                    if(!self.isViewVisible){
-                        [self.player setMuted:YES];
-                    }
-                    [self.activityIndicator stopAnimating];
-                    self.isVideoFinishedLoading = YES;
-                    if(!self.isVideoPaused){
-                        [self.player play];
-                    }
-            }
-        });
-        return;
-    }
-    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    return;
-}
-
 
 -(void)readyLoadingVideo: (CKAsset*)videoAsset{
     NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
@@ -402,10 +376,34 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     self.playerView.player = self.player;
 }
 
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == &_payerItemContext) {
+        dispatch_async(dispatch_get_main_queue(),^{
+            if ((self.player.currentItem != nil) &&
+                ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
+                if(!self.isViewVisible){
+                    [self.player setMuted:YES];
+                }
+                [self.activityIndicator stopAnimating];
+                self.isVideoFinishedLoading = YES;
+                if(!self.isVideoPaused){
+                    [self.player play];
+                }
+            }
+        });
+        return;
+    }
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    return;
+}
+
+
 -(void)resetPlayer{
     [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];
     [self.player pause];
 }
+
 
 
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
