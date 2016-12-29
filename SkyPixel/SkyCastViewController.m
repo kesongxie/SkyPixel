@@ -13,15 +13,15 @@
 #import "PlayView.h"
 #import "ShotDetailViewController.h"
 #import "ContainerViewController.h"
+#import "LocationSearchTableViewController.h"
 #import "Utility.h"
 
 
 static double const LocationDegree = 0.05;
-static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
-static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 static CGFloat const searchRadius = 10000; //load video within 10 km from the locationCenter
 static CGFloat const CalloutViewHeight = 50;
-
+static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
+static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
@@ -47,9 +47,13 @@ static CGFloat const CalloutViewHeight = 50;
 - (IBAction)searchIconTapped:(UIBarButtonItem *)sender {
     if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
         ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
-        [containerVC bringExploreViewToFront];
-        NSNotification* notification = [[NSNotification alloc]initWithName:@"SearchIconTapped" object:self userInfo:nil];
-        [[NSNotificationCenter defaultCenter] postNotification:notification];
+        if([containerVC.locationSearchNavigationController.viewControllers.firstObject isKindOfClass:[LocationSearchTableViewController class]]){
+            LocationSearchTableViewController* locationSearchTVC = (LocationSearchTableViewController*)containerVC.locationSearchNavigationController.viewControllers.firstObject;
+            locationSearchTVC.targetForReceivingLocationSelection = self;
+            [containerVC bringExploreViewToFront];
+            NSNotification* notification = [[NSNotification alloc]initWithName:SearchBarShouldBecomeActiveNotificationName object:self userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        }
     }
 }
 
@@ -71,22 +75,25 @@ static CGFloat const CalloutViewHeight = 50;
     if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse){
         [self.locationManager startUpdatingLocation];
     }   
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationDidSelected:) name:@"LocationSelected" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationDidSelected:) name:LocationSelectedNotificationName object:nil];
 }
 
 
 
 -(void) locationDidSelected:(NSNotification*)notification{
-    CLLocation* location = (CLLocation*)notification.userInfo[@"location"];
+    if(notification.object != self){
+        return;
+    }
+    CLLocation* location = (CLLocation*)notification.userInfo[LocationSelectedLocationInfoKey];
     if(location != nil){
         //update
         dispatch_async(dispatch_get_main_queue(), ^{
             MKPointAnnotation* spotAnnotation = [[MKPointAnnotation alloc] init];
             [spotAnnotation setCoordinate:location.coordinate];
-            NSString* title = (NSString*)notification.userInfo[@"title"];
+            NSString* title = (NSString*)notification.userInfo[LocationSelectedTitleKey];
             if(title != nil){
                 spotAnnotation.title = title;
-                NSString* subTitle = (NSString*)notification.userInfo[@"subTitle"];
+                NSString* subTitle = (NSString*)notification.userInfo[LocationSelectedSubTitleKey];
                 if(subTitle != nil){
                     spotAnnotation.subtitle = subTitle;
                 }

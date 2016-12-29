@@ -7,23 +7,24 @@
 //
 
 #import "ContainerViewController.h"
-#import "SkyCastNavigationViewController.h"
+
+static NSString* const EmbedSegueLeftPanelIden = @"EmbedSegueLeftPanelIden";
+static NSString* const EmbedSegueSearchIden = @"EmbedSegueSearchIden";
+static NSString* const EmbedSegueSkyCastIden = @"EmbedSegueSkyCastIden";
+
 
 @interface ContainerViewController()
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet UIView *exploreSearchView;
 @property (weak, nonatomic) IBOutlet UIView *leftView;
-
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewTrailingConstraint;
 @property (strong, nonatomic) UIView* overlayView;
 @property (nonatomic) BOOL isStatusBarHidden;
 @property (nonatomic) BOOL isLeftPaneOpened;
-@property (nonatomic) UIStatusBarStyle statusBarStyle;
 @property (nonatomic) BOOL isStatusBarStyleSet;
-
+@property (nonatomic) UIStatusBarStyle statusBarStyle;
 
 @end
 
@@ -117,6 +118,17 @@
 
 -(BOOL) prefersStatusBarHidden{
     return self.isStatusBarHidden;
+}
+
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:EmbedSegueSearchIden]){
+        self.locationSearchNavigationController = segue.destinationViewController;
+    }else if([segue.identifier isEqualToString:EmbedSegueSkyCastIden]){
+        self.skyCastNavigationViewController = segue.destinationViewController;
+    }else if([segue.identifier isEqualToString:EmbedSegueLeftPanelIden]){
+        self.profileLeftPanelViewController = segue.destinationViewController;
+    }
 }
 
 

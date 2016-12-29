@@ -26,7 +26,6 @@
     CKDatabase* db = [[CKContainer defaultContainer] publicCloudDatabase];
  //   NSString* email = @"john@skypixel.com";
     NSString* email = @"kesongxie@skypixel.com";
-    
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"email=%@", email];
     CKQuery* fetchQuery = [[CKQuery alloc]initWithRecordType:@"User" predicate:predicate];
     [db performQuery:fetchQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable users, NSError * _Nullable error) {
@@ -35,6 +34,8 @@
         }else{
             if(users.count == 1){
                 self.loggedInRecord = users.firstObject;
+                User* user = [[User alloc]initWithRecord:self.loggedInRecord];
+                self.loggedInUser = user;
                 NSLog(@"The logged in user is %@", self.loggedInRecord[@"fullname"]);
                 NSDictionary* userInfo = @{UserRecordKey: self.loggedInRecord};
                 NSNotification* notification = [[NSNotification alloc]initWithName:FinishedLoggedInNotificationName object:self userInfo:userInfo];

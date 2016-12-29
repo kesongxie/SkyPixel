@@ -10,6 +10,7 @@
 #import "LocationSearchTableViewCell.h"
 #import "PostNavigationController.h"
 
+
 static NSString* const TableViewCellIden = @"LocationSearchCell";
 
 @interface LocationSearchTableViewController()
@@ -50,10 +51,12 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
     self.navigationItem.titleView = self.searchController.searchBar;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(searchIconTapped:) name:@"SearchIconTapped" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(searchBarShouldBecomeActive:) name:SearchBarShouldBecomeActiveNotificationName object:nil];
+
+    
 }
 
--(void) viewDidLayoutSubviews{
+-(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     if(!self.isKeyBoardVisible && self.placeMarks.count == 0){
         HeaderExpandOpton option;
@@ -64,8 +67,6 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
         [self expandHeaderViewWithOption: option];
     }
 }
-
-
 
 
 -(UIStatusBarStyle)preferredStatusBarStyle{
@@ -84,12 +85,12 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
             self.headerTextDescriptionLabel.text = NSLocalizedString(@"No location found", @"input not found");
             break;
         default:
-            self.headerTextDescriptionLabel.text = NSLocalizedString(@"Explore the spots you love",@"");
+            self.headerTextDescriptionLabel.text = NSLocalizedString(@"Search the name of the spot",@"");
             break;
     }
 }
 
--(void) searchIconTapped: (NSNotification*) notification{
+-(void) searchBarShouldBecomeActive: (NSNotification*) notification{
     [self.searchController.searchBar becomeFirstResponder];
 }
 
@@ -137,9 +138,8 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
     //bring the bottom to the top
     CLLocation* location = placeMark.location;
     //post a notification back to the skycastvc and set the new location
-    NSDictionary* userInfo = @{@"location": location, @"title": placeMark.name, @"subTitle": [LocationSearchTableViewCell getAddressFromPlaceMark:placeMark]};
-    
-    NSNotification* notification = [[NSNotification alloc] initWithName:@"LocationSelected" object:self userInfo:userInfo];
+    NSDictionary* userInfo = @{LocationSelectedLocationInfoKey: location, LocationSelectedTitleKey: placeMark.name, LocationSelectedSubTitleKey: [LocationSearchTableViewCell getAddressFromPlaceMark:placeMark]};
+    NSNotification* notification = [[NSNotification alloc] initWithName:LocationSelectedNotificationName object:self.targetForReceivingLocationSelection userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     [self showSkyCastMapView];
 }

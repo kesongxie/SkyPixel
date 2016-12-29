@@ -17,4 +17,6 @@ static NSString* const AssetKey = @"asset";
 
 +(void)loadAssetForVideoStreamReference: (CKReference*) videoStreamReference completionHandler: (void(^)(NSArray<CKRecord *>* results, NSError* error)) callback;
 
++(void)saveVideoWithVideoStreamReference: (CKAsset*)videoAsset withReference: (CKReference*)reference completionHandler: (void(^)(CKRecord* record, NSError* error)) callback;
+
 @end

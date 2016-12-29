@@ -88,8 +88,8 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
     EditPostAddDetailViewController* detailVC = (EditPostAddDetailViewController*)segue.destinationViewController;
     if(detailVC){
         detailVC.asset = self.selectedVideo.asset;
+        detailVC.thumbnailImage = self.selectedVideo.image;
     }
-    
 }
 
 
@@ -132,7 +132,6 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
         [self.selectedVideo.selectedContainerAccessoryView setHidden:NO];
     }
     [self updateNextBtnUIAfterCellSelection];
-  
 }
 
 

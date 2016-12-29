@@ -7,8 +7,15 @@
 //
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "SkyCastNavigationViewController.h"
+#import "LocationSearchNavigationController.h"
+#import "ProfileLeftPanelViewController.h"
 
 @interface ContainerViewController : UIViewController
+
+@property (strong, nonatomic) LocationSearchNavigationController* locationSearchNavigationController;
+@property (strong, nonatomic) SkyCastNavigationViewController* skyCastNavigationViewController;
+@property (strong, nonatomic) ProfileLeftPanelViewController* profileLeftPanelViewController;
 
 -(void) toggleLeftMainView;
 

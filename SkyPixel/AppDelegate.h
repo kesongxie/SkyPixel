@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
+#import "User.h"
 
 static NSNotificationName const FinishedLoggedInNotificationName = @"FinishedLoggedInNotificationName";
 static NSString* const UserRecordKey = @"UserRecord";
@@ -18,6 +19,7 @@ static NSString* const UserRecordKey = @"UserRecord";
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) CKRecord* loggedInRecord;
+@property (strong, nonatomic) User* loggedInUser;
 
 @end
 

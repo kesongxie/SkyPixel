@@ -29,4 +29,20 @@
     }];
 }
 
+
++(void)saveVideoWithVideoStreamReference: (CKAsset*)videoAsset withReference: (CKReference*)reference completionHandler: (void(^)(CKRecord* record, NSError* error)) callback{
+    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
+    CKRecord* record = [[CKRecord alloc]initWithRecordType:VideoAssetRecordType];
+    record[AssetKey] = videoAsset;
+    record[VideoStreamKey] = reference;
+    [db saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        if(error == nil){
+             callback(record, nil);
+        }else{
+            NSLog(@"failed to save video asset, Error:%@", error.localizedDescription);
+            callback(nil, error);
+        }
+    }];
+}
+
 @end

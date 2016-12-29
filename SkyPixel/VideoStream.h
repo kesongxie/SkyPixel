@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <Photos/Photos.h>
 #import <UIKit/UIKit.h>
 #import <CloudKit/CloudKit.h>
 #import "CKReference+Comparison.h"
 #import "User.h"
+#import "AppDelegate.h"
 
 
 //keys for columns in the CloudKit database
@@ -23,7 +25,7 @@ static NSString* const UserReferenceKey = @"user";
 static NSString* const DescriptionKey = @"description";
 static NSString* const FavorUserListKey = @"favorUserList";
 static NSString* const CommentListKey = @"commentList";
-static NSString* const ThumbnailListKey = @"thumbnail";
+static NSString* const VideoThumbnailKey = @"thumbnail";
 static NSString* const ViewKey = @"view";
 static NSString* const WidthKey = @"width";
 static NSString* const HeightKey = @"height";
@@ -70,5 +72,7 @@ static NSString* const HeightKey = @"height";
 +(void)fetchVideoStreamForUser:(CKReference*)userReference completionHandler:(void(^)(NSArray<CKRecord*>* results, NSError* error)) callback;
 
 +(void)fetchLive: (CLLocation*)location withRadius: (CGFloat)searchRadius completionHandler:(void(^)(NSMutableArray<VideoStream*>* videoStreams, NSError* error)) callback;
+
++(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail;
 
 @end

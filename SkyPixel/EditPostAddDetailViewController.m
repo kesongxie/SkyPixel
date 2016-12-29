@@ -12,12 +12,15 @@
 #import "PlayView.h"
 #import "LocationSearchNavigationController.h"
 #import "LocationSearchTableViewController.h"
+#import "ChooseDeviceNavigationController.h"
+#import "ChooseDeviceViewController.h"
+#import "ShotDevice.h"
+#import "VideoStream.h"
 
 
 static CGFloat const AdjustOffSetForKeyboardShow = 4.0;
 static NSTimeInterval const AnimationTimeIntervalForKeyboardShow = 0.3;
 static NSString* const MainStoryBoardName = @"Main";
-static NSString* const LocationSearchNavigationControllerIden = @"LocationSearchNavigationController";
 
 @interface EditPostAddDetailViewController()<UIScrollViewDelegate, UITextFieldDelegate>
 
@@ -32,15 +35,22 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
 @property (weak, nonatomic) IBOutlet UITextField *locationTextField;
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *shotByTextField;
-
 @property (strong, nonatomic) UITextField* activeTextField;
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) NSString* payerItemContext;
+
+
+//inputs
+@property (strong, nonatomic) CLLocation* videoLocationInput;
+@property (strong, nonatomic) ShotDevice* shotDeviceInput;
+
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+
+//control flags
 @property (nonatomic) BOOL isViewVisible;
 @property (nonatomic) BOOL isVideoMuted;
 @property (nonatomic) BOOL isKeyboardShowing;
-
 
 
 
@@ -48,10 +58,22 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
 
 @implementation EditPostAddDetailViewController
 
+- (IBAction)shareBtnTapped:(UIButton *)sender {
+    //ShotDetailNavigationController
+    [VideoStream shareVideoStream:self.titleTextField.text ofLocation:self.videoLocationInput withDescription:self.descriptionTextField.text videoAsset:self.asset previewThumbNail:self.thumbnailImage];
+    
+}
+
+
+
 -(IBAction)backBtnTapped:(UIBarButtonItem *)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)setAsset:(PHAsset *)asset{
+    _asset = asset;
+    
+}
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -62,20 +84,79 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
     self.locationTextField.delegate = self;
     self.descriptionTextField.delegate = self;
     self.shotByTextField.delegate = self;
+    //preload location
+    CLGeocoder* coder = [[CLGeocoder alloc]init];
+    [coder reverseGeocodeLocation:self.asset.location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if(placemarks){
+            if(placemarks.count > 0){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.videoLocationInput = self.asset.location;
+                    self.locationTextField.text = placemarks.firstObject.name;
+                });
+            }
+        }
+    }];
+    
+    //custom notification observing
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(locationDidSelected:) name:LocationSelectedNotificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(finishedDeviceSelection:) name:FinishedPickingShotDeviceNotificationName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(videoTapped:)];
+    
+    //keyboard notification observing
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+   
+    //add control event for textfield
+    [self.titleTextField addTarget:self action:@selector(textFiledDidChange) forControlEvents:UIControlEventEditingChanged];
+    
+    
+    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(videoTapped:)];
     [self.containerView addGestureRecognizer:tap];
     [self updateShareBtnUI];
     [self requestPlayerItem];
     
-    
-    
+   
+}
+
+
+-(void)textFiledDidChange{
+    [self updateShareBtnUIAfterFieldValueChanged];
 }
 
 -(void)dealloc{
     [self resetPlayer];
+}
+
+-(void)finishedDeviceSelection:(NSNotification*)notification{
+    NSDictionary* userInfo = notification.userInfo;
+    if(userInfo){
+        ShotDevice* shotDevice = (ShotDevice*)userInfo[SelectedShotDevicesNotificationUserInfoKey];
+        if(shotDevice){
+            self.shotDeviceInput = shotDevice;
+            self.shotByTextField.text = shotDevice.deviceName;
+        }
+    }else{
+        self.shotDeviceInput = nil;
+        self.shotByTextField.text = @"";
+    }
+}
+
+-(void)locationDidSelected:(NSNotification*)notification{
+    if(notification.object != self){
+        return;
+    }
+    CLLocation* location = (CLLocation*)notification.userInfo[LocationSelectedLocationInfoKey];
+    if(location != nil){
+        //update
+        NSString* title = (NSString*)notification.userInfo[LocationSelectedTitleKey];
+        if(title != nil){
+            self.videoLocationInput = location;
+            self.locationTextField.text = title;
+            [self.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+    }else{
+        NSLog(@"location is nil");
+    }
 }
 
 -(void)keyboardDidShow: (NSNotification*)notification{
@@ -106,21 +187,28 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
     [UIView animateWithDuration:AnimationTimeIntervalForKeyboardShow animations:^{
         self.view.frame = frame;
     }];
-
 }
-
 
 -(void)locationTextFieldTapped{
     UIStoryboard* storybord = [UIStoryboard storyboardWithName:MainStoryBoardName bundle:nil];
-    //LocationSearchNavigationControllerIden
     LocationSearchNavigationController* locationSearchNVC = (LocationSearchNavigationController*)[storybord instantiateViewControllerWithIdentifier:LocationSearchNavigationControllerIden];
     if(locationSearchNVC){
         LocationSearchTableViewController* locationSearchTVC = (LocationSearchTableViewController*)locationSearchNVC.viewControllers.firstObject;
         locationSearchTVC.serachBarPresetValue = self.locationTextField.text;
+        locationSearchTVC.targetForReceivingLocationSelection = self;
         [self presentViewController:locationSearchNVC animated:YES completion:nil];
     }
 }
+-(void)shotByTextFieldTapped{
+    UIStoryboard* storybord = [UIStoryboard storyboardWithName:MainStoryBoardName bundle:nil];
+    ChooseDeviceNavigationController* chooseDeviceNVC = (ChooseDeviceNavigationController*)[storybord instantiateViewControllerWithIdentifier:ChooseDeviceNavigationControllerIden];
+    if(chooseDeviceNVC){
+        ChooseDeviceViewController* chooseDeviceVC = (ChooseDeviceViewController*)chooseDeviceNVC.viewControllers.firstObject;
+        chooseDeviceVC.preSelectedShotDevice = self.shotDeviceInput;
+        [self presentViewController:chooseDeviceNVC animated:YES completion:nil];
+    }
 
+}
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
@@ -135,17 +223,13 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
 }
 
 
--(void)setAsset:(PHAsset *)asset{
-    _asset = asset;
-}
-
 -(void)updatePlayerViewUI{
     NSUInteger width = self.asset.pixelWidth;
     NSUInteger height = self.asset.pixelHeight;
     self.playerViewHeightConstraint.constant = self.view.frame.size.width * height / width;
 }
 
-// Next button UI and control
+// Share button UI and control
 -(void)updateShareBtnUI{
     self.shareBtn.layer.borderColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1].CGColor;
     self.shareBtn.layer.borderWidth = 1.0;
@@ -162,6 +246,13 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
     [self.shareBtn setEnabled:NO];
 }
 
+-(void)updateShareBtnUIAfterFieldValueChanged{
+    if(self.videoLocationInput && self.titleTextField.text.length > 0){
+        [self setShareBtnEnabled];
+    }else{
+        [self setShareBtnDisabled];
+    }
+}
 
 -(void)requestPlayerItem{
     PHCachingImageManager* cacheManager = [[PHCachingImageManager alloc]init];
@@ -223,6 +314,7 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
 }
 
 
+
 //MARK: -UITextFieldDelegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     self.activeTextField = textField;
@@ -230,9 +322,17 @@ static NSString* const LocationSearchNavigationControllerIden = @"LocationSearch
     if(textField == self.locationTextField){
         [self.view endEditing:YES];
         [self locationTextFieldTapped];
+    }else if(textField == self.shotByTextField){
+        [self.view endEditing:YES];
+        [self shotByTextFieldTapped];
     }
 }
 
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self.view endEditing:YES];
+    return true;
+}
 
 
 @end

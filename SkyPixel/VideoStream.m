@@ -85,7 +85,7 @@
 }
 
 -(NSURL *)thumbnail{
-    CKAsset* asset = self.record[ThumbnailListKey];
+    CKAsset* asset = self.record[VideoThumbnailKey];
     return asset.fileURL;
 }
 
@@ -240,6 +240,87 @@
         }
     }];
 
+}
+
+
+/*
+ static NSString* const VideoStreamRecordType = @"VideoStream";
+ static NSString* const TitleKey = @"title";
+ static NSString* const LocationKey = @"location";
+ static NSString* const LiveKey = @"live";
+ static NSString* const UserReferenceKey = @"user";
+ static NSString* const DescriptionKey = @"description";
+ static NSString* const FavorUserListKey = @"favorUserList";
+ static NSString* const CommentListKey = @"commentList";
+ static NSString* const ThumbnailKey = @"thumbnail";
+ static NSString* const ViewKey = @"view";
+ static NSString* const WidthKey = @"width";
+ static NSString* const HeightKey = @"height";
+ */
+
++(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail {
+    AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
+    CKRecord* record = [[CKRecord alloc]initWithRecordType:VideoStreamRecordType];
+    NSNumber* width =[[NSNumber alloc]initWithFloat: asset.pixelWidth];
+    NSNumber* height =[[NSNumber alloc]initWithFloat: asset.pixelHeight];
+    NSNumber* view = [[NSNumber alloc]initWithInt:1];
+
+    record[TitleKey] = title;
+    record[LocationKey] = location;
+    record[UserReferenceKey] = appDelegate.loggedInUser.reference;
+    record[WidthKey] = width;
+    record[HeightKey] = height;
+    record[ViewKey] = view;
+    
+    PHCachingImageManager* cacheManager = [[PHCachingImageManager alloc]init];
+    [cacheManager requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+        NSURL *videoURL = [(AVURLAsset *)asset URL]; //this contains the file url
+        CKAsset* videoAsset = [[CKAsset alloc]initWithFileURL:videoURL];
+       
+        NSString* filePath = [VideoStream generateFilePathFromVideoURL:videoURL];
+        CKAsset* thumbnailCKAsset = [VideoStream craeteThumbnailAssetFromImageWithFilePath:thumbnail withFilePath:filePath];
+        record[VideoThumbnailKey] = thumbnailCKAsset;
+        [db saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+            if(error == nil){
+                NSFileManager* fileManager = [[NSFileManager alloc]init];
+                NSError* error;
+                //remove the temporary thumbnail
+                [fileManager removeItemAtPath:filePath error: &error];
+                if(error != nil){
+                    NSLog(@"error is: %@", error.localizedDescription);
+                }else{
+                    //sucessfully remove
+                    NSLog(@"successfully removed!");
+                }
+                CKReference* videoStreamReference = [[CKReference alloc]initWithRecord:record action:CKReferenceActionNone];
+                
+                [VideoAsset saveVideoWithVideoStreamReference:videoAsset withReference:videoStreamReference completionHandler:^(CKRecord *record, NSError *error) {
+                    if(error == nil){
+                        NSLog(@"finished sharing shot");
+                    }
+                }];
+            }else{
+                NSLog(@"Failed to save record for video stream, error: %@", error.localizedDescription);
+            }
+        }];
+    }];
+}
+
++(CKAsset*)craeteThumbnailAssetFromImageWithFilePath:(UIImage*)thumbnail withFilePath:(NSString*)filePath{
+    // Create a temporary thumbnial image for uploading
+    NSData* imageData = UIImagePNGRepresentation(thumbnail);
+    [imageData writeToFile:filePath atomically:YES];
+    NSURL* thumbnailAssetURL = [[NSURL alloc]initFileURLWithPath:filePath];
+    return [[CKAsset alloc]initWithFileURL:thumbnailAssetURL];
+}
+
+
++(NSString*)generateFilePathFromVideoURL: (NSURL*)videoURL{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* videoFileName = [videoURL.path componentsSeparatedByString:@"/"].lastObject;
+    NSString* thumbnailImageFileName = [NSString stringWithFormat:@"%@.png",videoFileName];
+    return [paths.firstObject stringByAppendingPathComponent: thumbnailImageFileName];
 }
 
 

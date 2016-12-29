@@ -8,5 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+
+static NSString* const LocationSearchNavigationControllerIden = @"LocationSearchNavigationController";
+
 @interface LocationSearchNavigationController : UINavigationController
+
 @end
