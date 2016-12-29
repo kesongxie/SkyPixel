@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "CoreNavigationController.h"
 
+
+static NSString* const PostNavigationControllerIden = @"PostNavigationController";
+
 @interface PostNavigationController : CoreNavigationController
 @end

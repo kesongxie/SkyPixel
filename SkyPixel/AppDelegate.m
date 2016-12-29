@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "VideoStream.h"
 
 
 @interface AppDelegate ()
@@ -36,10 +37,15 @@
                 self.loggedInRecord = users.firstObject;
                 User* user = [[User alloc]initWithRecord:self.loggedInRecord];
                 self.loggedInUser = user;
-                NSLog(@"The logged in user is %@", self.loggedInRecord[@"fullname"]);
-                NSDictionary* userInfo = @{UserRecordKey: self.loggedInRecord};
-                NSNotification* notification = [[NSNotification alloc]initWithName:FinishedLoggedInNotificationName object:self userInfo:userInfo];
-                [[NSNotificationCenter defaultCenter]postNotification:notification];
+                [VideoStream fetchVideoStreamForUser:self.loggedInUser.reference completionHandler:^(NSArray<CKRecord *> *results, NSError *error) {
+                    if(error == nil){
+                        self.loggedInUser.videoStreamRecord = results;
+                        NSLog(@"The logged in user is %@", self.loggedInRecord[@"fullname"]);
+                        NSDictionary* userInfo = @{UserRecordKey: self.loggedInRecord};
+                        NSNotification* notification = [[NSNotification alloc]initWithName:FinishedLoggedInNotificationName object:self userInfo:userInfo];
+                        [[NSNotificationCenter defaultCenter]postNotification:notification];
+                    }
+                }];
             }
         }
     }];

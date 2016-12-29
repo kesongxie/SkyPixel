@@ -22,13 +22,35 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
 @property (strong, nonatomic) NSMutableArray<PHAsset*>* assets;
 @property (strong, nonatomic) PHCachingImageManager* cacheManager;
 @property (strong, nonatomic) MediaPickerCollectionViewCell* selectedVideo;
+@property (nonatomic) BOOL preferStatusBarHidden;
 
 @end
 
 @implementation EditPostMediaPickerController
 
+-(IBAction)backBtnTapped:(UIBarButtonItem *)sender {
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+        //slide up the status bar
+        self.preferStatusBarHidden = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.view layoutIfNeeded];
+            [self setNeedsStatusBarAppearanceUpdate];
+        }];
+    }];
+}
 
-- (void) viewDidLoad{
+
+-(BOOL)prefersStatusBarHidden{
+    return self.preferStatusBarHidden;
+}
+
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
+    return UIStatusBarAnimationFade;
+}
+
+
+
+-(void) viewDidLoad{
     [super viewDidLoad];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -43,6 +65,8 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
         }
     }];
 }
+
+
 
 
 // Next button UI and control

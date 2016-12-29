@@ -327,8 +327,9 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     if(profileCVC){
         profileCVC.user = self.videoStream.user;
         profileCVC.transitioningDelegate = self;
-        [self presentViewController:profileCVC animated:YES completion:nil];
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:profileCVC animated:YES completion:nil];
+        });
     }
 }
 

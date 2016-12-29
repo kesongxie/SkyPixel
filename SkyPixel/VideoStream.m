@@ -242,22 +242,6 @@
 
 }
 
-
-/*
- static NSString* const VideoStreamRecordType = @"VideoStream";
- static NSString* const TitleKey = @"title";
- static NSString* const LocationKey = @"location";
- static NSString* const LiveKey = @"live";
- static NSString* const UserReferenceKey = @"user";
- static NSString* const DescriptionKey = @"description";
- static NSString* const FavorUserListKey = @"favorUserList";
- static NSString* const CommentListKey = @"commentList";
- static NSString* const ThumbnailKey = @"thumbnail";
- static NSString* const ViewKey = @"view";
- static NSString* const WidthKey = @"width";
- static NSString* const HeightKey = @"height";
- */
-
 +(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail {
     AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;

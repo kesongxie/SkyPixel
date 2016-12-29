@@ -9,6 +9,10 @@
 #import "ProfileLeftPanelViewController.h"
 #import "AppDelegate.h"
 #import "UIImageView+ProfileAvator.h"
+#import "ContainerViewController.h"
+#import "PostNavigationController.h"
+#import "ProfileCollectionViewController.h"
+#import "HorizontalSlideInAnimator.h"
 #import "User.h"
 
 @interface ProfileLeftPanelViewController() 
@@ -20,11 +24,26 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *coverHeightConstriant;
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
 @property (weak, nonatomic) IBOutlet UIButton *postBtn;
+@property (strong, nonatomic) ContainerViewController* parentContainerViewController;
+@property (strong, nonatomic) HorizontalSlideInAnimator* animator;
 @property (nonatomic) CGFloat orginCoverHeight;
+
 
 @end
 
 @implementation ProfileLeftPanelViewController
+
+- (IBAction)postBtnTapped:(UIButton *)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PostNavigationController* postNVC = (PostNavigationController*)[storyboard instantiateViewControllerWithIdentifier:PostNavigationControllerIden];
+    if(postNVC){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.parentContainerViewController toggleLeftMainView];
+            [self presentViewController:postNVC animated:YES completion:nil];
+        });
+    }
+}
+
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -39,6 +58,10 @@
     self.coverImageView.image = loggedInUser.coverThumbImage;
     self.bioLabel.text = loggedInUser.bio;
     self.postBtn.layer.cornerRadius = 3.0;
+    
+    //add tap gesture for avator image view
+    UITapGestureRecognizer* avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
+    [self.avatorImageView addGestureRecognizer:avatorTapGesture];
 }
 
 
@@ -49,13 +72,32 @@
     [self adjustCoverView];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if([self.parentViewController isKindOfClass:[ContainerViewController class]]){
+        self.parentContainerViewController = (ContainerViewController*)self.parentViewController;
+    }
+}
+
 -(void)adjustCoverView{
     CGSize coverImageSize = self.coverImageView.image.size;
     self.coverHeightConstriant.constant = self.view.frame.size.width * coverImageSize.height /  coverImageSize.width;
     self.orginCoverHeight = self.coverHeightConstriant.constant;
 }
 
-
+-(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ProfileCollectionViewController* profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
+    if(profileCVC){
+        AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        profileCVC.user = appDelegate.loggedInUser;
+        [self.parentContainerViewController toggleLeftMainView];
+        profileCVC.transitioningDelegate = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:profileCVC animated:YES completion:nil];
+        });
+    }
+}
 
 //MARK: UIScrollViewDelegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -65,8 +107,14 @@
     }
 }
 
+//custom transition
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
+    self.animator = [[HorizontalSlideInAnimator alloc] init];
+    return self.animator;
+}
 
-
-
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
+    return self.animator;
+}
 
 @end

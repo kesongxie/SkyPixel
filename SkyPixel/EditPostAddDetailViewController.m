@@ -152,7 +152,9 @@ static NSString* const MainStoryBoardName = @"Main";
         if(title != nil){
             self.videoLocationInput = location;
             self.locationTextField.text = title;
-            [self.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 [self.navigationController.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+            });
         }
     }else{
         NSLog(@"location is nil");
@@ -196,7 +198,9 @@ static NSString* const MainStoryBoardName = @"Main";
         LocationSearchTableViewController* locationSearchTVC = (LocationSearchTableViewController*)locationSearchNVC.viewControllers.firstObject;
         locationSearchTVC.serachBarPresetValue = self.locationTextField.text;
         locationSearchTVC.targetForReceivingLocationSelection = self;
-        [self presentViewController:locationSearchNVC animated:YES completion:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:locationSearchNVC animated:YES completion:nil];
+        });
     }
 }
 -(void)shotByTextFieldTapped{
@@ -205,7 +209,9 @@ static NSString* const MainStoryBoardName = @"Main";
     if(chooseDeviceNVC){
         ChooseDeviceViewController* chooseDeviceVC = (ChooseDeviceViewController*)chooseDeviceNVC.viewControllers.firstObject;
         chooseDeviceVC.preSelectedShotDevice = self.shotDeviceInput;
-        [self presentViewController:chooseDeviceNVC animated:YES completion:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:chooseDeviceNVC animated:YES completion:nil];
+        });
     }
 
 }

@@ -10,7 +10,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProfileLeftPanelViewController : UIViewController<UIScrollViewDelegate>
+@interface ProfileLeftPanelViewController : UIViewController<UIScrollViewDelegate, UIViewControllerTransitioningDelegate>
 
 
 @end

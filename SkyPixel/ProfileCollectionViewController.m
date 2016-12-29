@@ -142,7 +142,9 @@ static CGFloat const Space = 16;
         if(shotDetailVC){
             shotDetailVC.videoStream = videoStream;
             shotDetailNVC.transitioningDelegate = self;
-            [self presentViewController:shotDetailNVC animated:YES completion:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:shotDetailNVC animated:YES completion:nil];
+            });
         }
     }
 }
