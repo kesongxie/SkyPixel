@@ -56,4 +56,11 @@ Deployment Target: iOS 10 and above
 </ul>
 
 <h1>Video Walk Through</h1>
-
+<ul>
+<li>
+<a href="https://www.dropbox.com/s/7uobrhturzihfir/SkyPixel%20Walk%20Through.MOV.mov?dl=0">Feature Walk Through</a>
+</li>
+<li>
+<a href="https://www.dropbox.com/s/f59llqbn5sgjtse/Localization.MOV.mov?dl=0">Localization</a>
+</li>
+</ul>
