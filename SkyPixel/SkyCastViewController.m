@@ -128,14 +128,18 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
     self.isFetchingRecord = YES;
     self.videoStreamAnnotations = [[NSMutableArray alloc]init];
     [VideoStream fetchLive:self.locationCenter withRadius:searchRadius completionHandler:^(NSMutableArray<VideoStream *> *videoStreams, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            for(VideoStream* videoStream in videoStreams){
-                [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
-                [self.mapView addAnnotations: self.videoStreamAnnotations];
+         dispatch_async(dispatch_get_main_queue(), ^{
+            if(error == nil){
+                for(VideoStream* videoStream in videoStreams){
+                    [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
+                    [self.mapView addAnnotations: self.videoStreamAnnotations];
+                }
+                self.isFetchingRecord = NO;
+            }else{
+                self.isFetchingRecord = NO;
             }
             self.navigationItem.title =  NSLocalizedString(@"SKYCAST", @"title for map");
-            self.isFetchingRecord = NO;
-        });
+         });
     }];
 }
 
@@ -218,14 +222,7 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 
 
 -(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ShotDetailViewController* castVC = (ShotDetailViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ShotDetailViewController"];
-    VideoStream* videoStream = (VideoStream*)view.annotation;
-    if(castVC){
-        castVC.videoStream = videoStream;
-        [self.navigationController pushViewController:castVC animated:YES];
-    }
-    
+    [ShotDetailViewController pushShotDetailWithVideoStream:self.navigationController withVideoStream:(VideoStream*)view.annotation];
 }
 
 @end

@@ -20,7 +20,7 @@ static NSString* const CoverKey = @"cover";
 @interface User : NSObject
 
 @property (strong, nonatomic) CKRecord* record;
-@property (strong, nonatomic) NSArray<CKRecord*>* videoStreamRecord;
+@property (strong, nonatomic) NSMutableArray<CKRecord*>* videoStreamRecord;
 //compute from the record class
 @property (strong, readonly, nonatomic) CKReference* reference;
 @property (strong, readonly, nonatomic) NSString* fullname;
@@ -35,4 +35,7 @@ static NSString* const CoverKey = @"cover";
 -(id)initWithRecord: (CKRecord*) record;
 
 +(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord* userRecord, NSError* error)) callback;
+
++(void)loggedIn: (void(^)(User* user, NSError* error)) callback;
+
 @end

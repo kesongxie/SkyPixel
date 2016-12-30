@@ -1015,19 +1015,19 @@
         <scene sceneID="Vm5-hs-ybR">
             <objects>
                 <collectionViewController storyboardIdentifier="ProfileCollectionViewController" id="TK8-oy-xFf" customClass="ProfileCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="fem-j4-dvr">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="fem-j4-dvr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ce6-z8-Cim">
                             <size key="itemSize" width="133" height="195"/>
-                            <size key="headerReferenceSize" width="50" height="386"/>
+                            <size key="headerReferenceSize" width="50" height="377"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionPostCell" id="tWf-w1-z8M" userLabel="Post collection view cell" customClass="PostCollectionViewCell">
-                                <rect key="frame" x="0.0" y="386" width="133" height="195"/>
+                                <rect key="frame" x="0.0" y="377" width="133" height="195"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="133" height="195"/>
@@ -1103,7 +1103,7 @@
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProfileHeaderView" id="7g7-Rb-2Ft" customClass="ProfileHeaderView">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="386"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="377"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jPn-J4-W9X" userLabel="Cover Image View">
@@ -1212,7 +1212,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nhA-fv-CQM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5428" y="493"/>
+            <point key="canvasLocation" x="5427.5" y="492.5"/>
         </scene>
         <!--Shot Detail Navigation Controller-->
         <scene sceneID="R3b-4L-t9e">

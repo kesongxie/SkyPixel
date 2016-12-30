@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "VideoStream.h"
 
 @interface User()
 
@@ -66,6 +67,31 @@
     NSURL* thumbnailURL = self.coverUrl;
     NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
     return [[UIImage alloc]initWithData:imageData];
+}
+
++(void)loggedIn: (void(^)(User* user, NSError* error)) callback{
+    CKDatabase* db = [[CKContainer defaultContainer] publicCloudDatabase];
+    NSString* email = @"kesongxie@skypixel.com";
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"email=%@", email];
+    CKQuery* fetchQuery = [[CKQuery alloc]initWithRecordType:@"User" predicate:predicate];
+    [db performQuery:fetchQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable userRecords, NSError * _Nullable error) {
+        if(error != nil){
+            NSLog(@"%@", error.localizedDescription);
+            callback(nil, error);
+        }else{
+            if(userRecords.count == 1){
+                User* user = [[User alloc]initWithRecord:userRecords.firstObject];
+                [VideoStream fetchVideoStreamForUser:user.reference completionHandler:^(NSArray<CKRecord *> *results, NSError *error) {
+                    if(error == nil){
+                        user.videoStreamRecord = [NSMutableArray arrayWithArray:results];
+                        callback(user, nil);
+                    }else{
+                        callback(nil, error);
+                    }
+                }];
+            }
+        }
+    }];
 }
 
 

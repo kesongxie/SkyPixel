@@ -7,6 +7,9 @@
 //
 
 #import "SkyCastNavigationViewController.h"
+#import "CoreConstant.h"
+#import "ShotDetailViewController.h"
+
 
 @interface SkyCastNavigationViewController ()
 
@@ -17,6 +20,7 @@
 
 - (void) viewDidLoad{
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(pushShotDetailAfterFinishingSharing:) name:FinishedSharingPostNotificationName object:nil];
 }
 
 
@@ -24,6 +28,12 @@
     return UIStatusBarStyleLightContent;
 }
 
+-(void)pushShotDetailAfterFinishingSharing: (NSNotification*)notification{
+    VideoStream* videoStream = notification.userInfo[FinishedSharingPostVideoStreamInfoKey];
+    if(videoStream){
+        [ShotDetailViewController pushShotDetailWithVideoStream:self withVideoStream:videoStream];
+    }
+}
 
 @end
 

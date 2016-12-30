@@ -8,6 +8,7 @@
 
 #import "VideoStream.h"
 #import "VideoAsset.h"
+#import "ShotDevice.h"
 
 @interface VideoStream()
 
@@ -38,7 +39,7 @@
         [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable results, NSError * _Nullable error) {
             if(error == nil){
                 callBack(userRecord, error);
-                self.user.videoStreamRecord = results;
+                self.user.videoStreamRecord = [NSMutableArray arrayWithArray:results];
             }else{
                 callBack(nil, error);
             }
@@ -77,7 +78,7 @@
 
 
 -(CKReference *)reference{
-    return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionNone];
+    return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionDeleteSelf];
 }
 
 -(CKReference *)userReference{
@@ -107,13 +108,12 @@
     return [[UIImage alloc]initWithData:imageData];
 }
 
+
 -(void)loadVideoAsset: (void(^)(CKAsset* videoAsset, NSError *error)) callback{
-        [VideoAsset loadAssetForVideoStreamReference:self.reference completionHandler:^(NSArray<CKRecord *> *results, NSError *error) {
+    [VideoAsset loadAssetForVideoStreamReference:self.reference completionHandler:^(NSArray<CKRecord *> *results, NSError *error) {
         if(error == nil){
             CKRecord* assetRecord = results.firstObject;
             callback(assetRecord[AssetKey], nil);
-        }else{
-            callback(nil, error);
         }
     }];
 }
@@ -216,7 +216,6 @@
     [publicDB performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord*>* videoStreamRecords, NSError* error){
         if(error == nil){
             if(videoStreamRecords){
-                NSLog(@"record is ready");
                 NSMutableArray<VideoStream*>* resultVideoStream = [[NSMutableArray alloc]init];
                 for(CKRecord* streamRecord in videoStreamRecords){
                     VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:streamRecord];
@@ -230,19 +229,21 @@
                                 callback(resultVideoStream, error);
                             }
                         }else{
+                             callback(nil, error);
                              NSLog(@"%@", error.localizedDescription);
                         }
                     }];
                 }
             }
         }else{
+            callback(nil, error);
             NSLog(@"%@", error.localizedDescription);
         }
     }];
 
 }
 
-+(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail {
++(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description shotBy: (ShotDevice*)shotDevice videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail completionHandler: (void(^)(VideoStream* videoStram, NSError* error)) callback{
     AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
     CKRecord* record = [[CKRecord alloc]initWithRecordType:VideoStreamRecordType];
@@ -256,35 +257,35 @@
     record[WidthKey] = width;
     record[HeightKey] = height;
     record[ViewKey] = view;
+    record[ShotDeviceKey] = shotDevice.reference;
+    if(shotDevice != nil){
+        description = [NSString stringWithFormat:@"Shot by %@\n%@", shotDevice.deviceName, description];
+    }
+    record[DescriptionKey] = description;
     
     PHCachingImageManager* cacheManager = [[PHCachingImageManager alloc]init];
     [cacheManager requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
         NSURL *videoURL = [(AVURLAsset *)asset URL]; //this contains the file url
-        CKAsset* videoAsset = [[CKAsset alloc]initWithFileURL:videoURL];
        
         NSString* filePath = [VideoStream generateFilePathFromVideoURL:videoURL];
         CKAsset* thumbnailCKAsset = [VideoStream craeteThumbnailAssetFromImageWithFilePath:thumbnail withFilePath:filePath];
         record[VideoThumbnailKey] = thumbnailCKAsset;
-        [db saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        [db saveRecord:record completionHandler:^(CKRecord * _Nullable videoStreamRecord, NSError * _Nullable error) {
             if(error == nil){
-                NSFileManager* fileManager = [[NSFileManager alloc]init];
-                NSError* error;
-                //remove the temporary thumbnail
-                [fileManager removeItemAtPath:filePath error: &error];
-                if(error != nil){
-                    NSLog(@"error is: %@", error.localizedDescription);
-                }else{
-                    //sucessfully remove
-                    NSLog(@"successfully removed!");
-                }
-                CKReference* videoStreamReference = [[CKReference alloc]initWithRecord:record action:CKReferenceActionNone];
-                
-                [VideoAsset saveVideoWithVideoStreamReference:videoAsset withReference:videoStreamReference completionHandler:^(CKRecord *record, NSError *error) {
+                //create a return VideoStream
+                VideoStream* resultVideoStream = [[VideoStream alloc]initWithCKRecord:videoStreamRecord];
+                resultVideoStream.user = appDelegate.loggedInUser;
+                CKReference* videoStreamReference = resultVideoStream.reference;
+                CKAsset* videoAsset = [[CKAsset alloc]initWithFileURL:videoURL];
+                [VideoAsset saveVideoWithVideoStreamReference:videoAsset withReference:videoStreamReference completionHandler:^(CKRecord *videoAssetRecord, NSError *error) {
                     if(error == nil){
-                        NSLog(@"finished sharing shot");
+                        resultVideoStream.videoAsset = videoAsset;
+                        [appDelegate.loggedInUser.videoStreamRecord insertObject: videoStreamRecord atIndex:0];
+                        callback(resultVideoStream, nil);
                     }
                 }];
             }else{
+                callback(nil, error);
                 NSLog(@"Failed to save record for video stream, error: %@", error.localizedDescription);
             }
         }];

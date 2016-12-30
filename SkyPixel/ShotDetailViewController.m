@@ -7,6 +7,7 @@
 //
 
 #import  <CoreLocation/CoreLocation.h>
+#import "CoreConstant.h"
 #import "AppDelegate.h"
 #import "ShotDetailViewController.h"
 #import "PlayView.h"
@@ -20,6 +21,7 @@
 //constants
 static NSString* const FavorIconWhite = @"favor-icon";
 static NSString* const FavorIconRed = @"favor-icon-red";
+static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 @interface ShotDetailViewController()
 
@@ -53,9 +55,8 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) NSString* payerItemContext;
-@property (strong, nonatomic) CKAsset* videoAsset;
 @property (strong, nonatomic) HorizontalSlideInAnimator* animator;
-
+@property (nonatomic) NSInteger numberOfVideoLoadingTrial;
 
 //flags for monitoring video states
 @property (nonatomic) BOOL isViewVisible;
@@ -95,7 +96,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 @implementation ShotDetailViewController
 
-- (IBAction)backBtnTapped:(UIBarButtonItem *)sender {
+-(IBAction)backBtnTapped:(UIBarButtonItem *)sender {
     [self resetPlayer];
     if([self.navigationController isKindOfClass:[ShotDetailNavigationController class]]){
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -104,12 +105,6 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     }
    
 }
-
-- (IBAction)backFromProfileTableViewController:(UIStoryboardSegue *)segue {
-//    self.navigationController.navigationBarHidden = NO;
-}
-
-
 
 -(void) viewDidLoad{
     [super viewDidLoad];
@@ -127,6 +122,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     //load asset
     [self.activityIndicator startAnimating];
     [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
+        self.numberOfVideoLoadingTrial += 1;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self readyLoadingVideo: videoAsset];
         });
@@ -322,7 +318,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 -(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
     ProfileCollectionViewController* profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
     if(profileCVC){
         profileCVC.user = self.videoStream.user;
@@ -333,15 +329,25 @@ static NSString* const FavorIconRed = @"favor-icon-red";
     }
 }
 
++(void)pushShotDetailWithVideoStream:(UINavigationController*)navigationController withVideoStream: (VideoStream*) videoStream{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
+    ShotDetailViewController* castVC = (ShotDetailViewController*)[storyboard instantiateViewControllerWithIdentifier:ShotDetailViewControllerIden];
+    if(castVC){
+        castVC.videoStream = videoStream;
+        [navigationController pushViewController:castVC animated:YES];
+    }
+}
+
+
 
 //MARK: player
 
-- (NSURL *)videoURL: (NSURL*)fileURL {
+-(NSURL *)videoURL: (NSURL*)fileURL {
     return [self createHardLinkToVideoFile: fileURL];
 }
 
 //returns a hard link, so as not to maintain another copy of the video file on the disk
-- (NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
+-(NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
     NSError *err;
     NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
     if (![hardURL checkResourceIsReachableAndReturnError:nil]) {
@@ -361,24 +367,41 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 
 
 -(void) adjustVideoFrame{
-    self.videoHeightConstraint.constant = self.view.frame.size.width * self.videoStream.height / self.videoStream.width;
+    if(self.videoStream.width != 0 && self.videoStream.height != 0){
+        self.videoHeightConstraint.constant = self.view.frame.size.width * self.videoStream.height / self.videoStream.width;
+    }
 }
 
 
 -(void)readyLoadingVideo: (CKAsset*)videoAsset{
-    NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
-    AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-    NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
-    self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
-    [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
-    // Associate the player item with the player
-    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
-    self.playerView.player = self.player;
+    if(videoAsset){
+        NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
+        AVAsset* asset = [AVAsset assetWithURL:viedoURL];
+        NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
+        self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
+        [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
+        // Associate the player item with the player
+        self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+        self.playerView.player = self.player;
+    }else{
+        //try again
+        if(self.numberOfVideoLoadingTrial < MaximumNumberOfVideoLoadingTrial){
+            self.numberOfVideoLoadingTrial += 1;
+            [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self readyLoadingVideo: videoAsset];
+                });
+            }];
+        }else{
+            //media is not available
+            NSLog(@"Media is not available");
+        }
+    }
 }
 
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == &_payerItemContext) {
         dispatch_async(dispatch_get_main_queue(),^{
             if ((self.player.currentItem != nil) &&
@@ -406,7 +429,7 @@ static NSString* const FavorIconRed = @"favor-icon-red";
 }
 
 
-
+//custom transition
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
     self.animator = [[HorizontalSlideInAnimator alloc] init];
     return self.animator;

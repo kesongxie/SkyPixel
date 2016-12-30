@@ -39,7 +39,7 @@
     if(postNVC){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.parentContainerViewController toggleLeftMainView];
-            [self presentViewController:postNVC animated:YES completion:nil];
+            [self.parentContainerViewController.navigationController presentViewController:postNVC animated:YES completion:nil];
         });
     }
 }

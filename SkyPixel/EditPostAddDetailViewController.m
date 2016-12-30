@@ -8,6 +8,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <Photos/Photos.h>
+#import "CoreConstant.h"
 #import "EditPostAddDetailViewController.h"
 #import "PlayView.h"
 #import "LocationSearchNavigationController.h"
@@ -20,7 +21,6 @@
 
 static CGFloat const AdjustOffSetForKeyboardShow = 4.0;
 static NSTimeInterval const AnimationTimeIntervalForKeyboardShow = 0.3;
-static NSString* const MainStoryBoardName = @"Main";
 
 @interface EditPostAddDetailViewController()<UIScrollViewDelegate, UITextFieldDelegate>
 
@@ -36,6 +36,8 @@ static NSString* const MainStoryBoardName = @"Main";
 @property (weak, nonatomic) IBOutlet UITextField *descriptionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *shotByTextField;
 @property (strong, nonatomic) UITextField* activeTextField;
+
+//player
 @property (strong, nonatomic) AVPlayer* player;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 @property (strong, nonatomic) NSString* payerItemContext;
@@ -58,13 +60,24 @@ static NSString* const MainStoryBoardName = @"Main";
 
 @implementation EditPostAddDetailViewController
 
-- (IBAction)shareBtnTapped:(UIButton *)sender {
-    //ShotDetailNavigationController
-    [VideoStream shareVideoStream:self.titleTextField.text ofLocation:self.videoLocationInput withDescription:self.descriptionTextField.text videoAsset:self.asset previewThumbNail:self.thumbnailImage];
-    
+-(IBAction)shareBtnTapped:(UIButton *)sender {
+    [self disableUserInterationAfterSharingBtnTapped];
+    self.navigationItem.title = NSLocalizedString(@"SHARING...", @"Sharing post state");
+    [VideoStream shareVideoStream:self.titleTextField.text ofLocation:self.videoLocationInput withDescription:self.descriptionTextField.text shotBy:self.shotDeviceInput videoAsset:self.asset previewThumbNail:self.thumbnailImage completionHandler:^(VideoStream* videoSteam, NSError* error){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.navigationItem.title = NSLocalizedString(@"PUBLISHED", @"Finished sharing post");
+            if(error == nil){
+                [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                    NSDictionary* userInfo = @{FinishedSharingPostVideoStreamInfoKey : videoSteam };
+                    NSNotification* notification = [[NSNotification alloc]initWithName:FinishedSharingPostNotificationName object:self userInfo:userInfo];
+                    [[NSNotificationCenter defaultCenter]postNotification:notification];
+                }];
+            }else{
+                NSLog(@"%@", error);
+            }
+        });
+    }];
 }
-
-
 
 -(IBAction)backBtnTapped:(UIBarButtonItem *)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -72,8 +85,8 @@ static NSString* const MainStoryBoardName = @"Main";
 
 -(void)setAsset:(PHAsset *)asset{
     _asset = asset;
-    
 }
+
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -114,8 +127,6 @@ static NSString* const MainStoryBoardName = @"Main";
     [self.containerView addGestureRecognizer:tap];
     [self updateShareBtnUI];
     [self requestPlayerItem];
-    
-   
 }
 
 
@@ -192,7 +203,7 @@ static NSString* const MainStoryBoardName = @"Main";
 }
 
 -(void)locationTextFieldTapped{
-    UIStoryboard* storybord = [UIStoryboard storyboardWithName:MainStoryBoardName bundle:nil];
+    UIStoryboard* storybord = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
     LocationSearchNavigationController* locationSearchNVC = (LocationSearchNavigationController*)[storybord instantiateViewControllerWithIdentifier:LocationSearchNavigationControllerIden];
     if(locationSearchNVC){
         LocationSearchTableViewController* locationSearchTVC = (LocationSearchTableViewController*)locationSearchNVC.viewControllers.firstObject;
@@ -204,7 +215,7 @@ static NSString* const MainStoryBoardName = @"Main";
     }
 }
 -(void)shotByTextFieldTapped{
-    UIStoryboard* storybord = [UIStoryboard storyboardWithName:MainStoryBoardName bundle:nil];
+    UIStoryboard* storybord = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
     ChooseDeviceNavigationController* chooseDeviceNVC = (ChooseDeviceNavigationController*)[storybord instantiateViewControllerWithIdentifier:ChooseDeviceNavigationControllerIden];
     if(chooseDeviceNVC){
         ChooseDeviceViewController* chooseDeviceVC = (ChooseDeviceViewController*)chooseDeviceNVC.viewControllers.firstObject;
@@ -227,12 +238,23 @@ static NSString* const MainStoryBoardName = @"Main";
     [super viewWillAppear:animated];
     self.isViewVisible = YES;
 }
-
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+}
 
 -(void)updatePlayerViewUI{
     NSUInteger width = self.asset.pixelWidth;
     NSUInteger height = self.asset.pixelHeight;
     self.playerViewHeightConstraint.constant = self.view.frame.size.width * height / width;
+}
+
+-(void)disableUserInterationAfterSharingBtnTapped{
+    [self setShareBtnDisabled];
+    [self.titleTextField setEnabled:NO];
+    [self.locationTextField setEnabled:NO];
+    [self.descriptionTextField setEnabled:NO];
+    [self.shotByTextField setEnabled:NO];
 }
 
 // Share button UI and control

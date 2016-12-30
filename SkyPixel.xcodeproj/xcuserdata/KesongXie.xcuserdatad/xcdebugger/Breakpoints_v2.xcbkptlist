@@ -72,7 +72,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SkyPixel/VideoStream.m"
-            timestampString = "504694165.808186"
+            timestampString = "504772757.710081"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "125"
@@ -168,6 +168,22 @@
             startingLineNumber = "97"
             endingLineNumber = "97"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SkyPixel/VideoStream.m"
+            timestampString = "504772757.710081"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
+            landmarkName = "+shareVideoStream:ofLocation:withDescription:shotBy:videoAsset:previewThumbNail:completionHandler:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

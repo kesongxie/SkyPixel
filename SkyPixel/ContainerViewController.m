@@ -12,7 +12,6 @@ static NSString* const EmbedSegueLeftPanelIden = @"EmbedSegueLeftPanelIden";
 static NSString* const EmbedSegueSearchIden = @"EmbedSegueSearchIden";
 static NSString* const EmbedSegueSkyCastIden = @"EmbedSegueSkyCastIden";
 
-
 @interface ContainerViewController()
 
 @property (weak, nonatomic) IBOutlet UIView *mainView;

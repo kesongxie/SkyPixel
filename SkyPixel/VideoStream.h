@@ -29,6 +29,8 @@ static NSString* const VideoThumbnailKey = @"thumbnail";
 static NSString* const ViewKey = @"view";
 static NSString* const WidthKey = @"width";
 static NSString* const HeightKey = @"height";
+static NSString* const ShotDeviceKey = @"shotDevice";
+
 
 @interface VideoStream : NSObject
 
@@ -46,6 +48,7 @@ static NSString* const HeightKey = @"height";
 @property (strong, readonly, nonatomic) CKReference* userReference;
 @property (strong, readonly, nonatomic) NSURL* thumbnail;
 @property (strong, readonly, nonatomic) UIImage* thumbImage;
+@property (strong, nonatomic) CKAsset* videoAsset;
 @property (strong, nonatomic) NSNumber* view;
 @property (strong, nonatomic) NSMutableArray<CKReference*>* favorUserList;
 @property (strong, nonatomic) NSMutableArray<CKReference*>* commentReferenceList;
@@ -73,6 +76,6 @@ static NSString* const HeightKey = @"height";
 
 +(void)fetchLive: (CLLocation*)location withRadius: (CGFloat)searchRadius completionHandler:(void(^)(NSMutableArray<VideoStream*>* videoStreams, NSError* error)) callback;
 
-+(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail;
++(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description shotBy: (CKReference*)shotDeviceReference videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail completionHandler: (void(^)(VideoStream* videoStram, NSError* error)) callback;
 
 @end

@@ -11,9 +11,11 @@
 #import "VideoStream.h"
 #import "User.h"
 
-
+static NSString* const ShotDetailViewControllerIden = @"ShotDetailViewController";
 @interface ShotDetailViewController : UIViewController<UIViewControllerTransitioningDelegate>
 
 @property (strong, nonatomic) VideoStream* videoStream;
+
++(void)pushShotDetailWithVideoStream:(UINavigationController*)navigationController withVideoStream: (VideoStream*) videoStream;
 
 @end
