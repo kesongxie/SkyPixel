@@ -5,6 +5,8 @@ Author: Kesong Xie
 
 Time Spent: 3 weeks
 
+Language: Objective-C
+
 Testing Environment: iPhone physical device running iOS 10.2, Xcode Version 8.2 beta
 
 Deployment Target: iOS 10 and above
@@ -45,6 +47,10 @@ Deployment Target: iOS 10 and above
   <li>Customized video picker interface that allows user to pick videos from user's own libaray with ease and use it to compose a post, and the user may also include a title for the video, the location name(the App automatically extract location information from the video asset and fill it in the input text field automatically), short description, the devices used for shooting the video(current supporting devices availabe for user to select from are mostly DJI's products, including Phantom 4 Pro, Mavic, Inspire series, etc)
    <br/>
    <strong>Technical Keywords: Photos, AVFoundation, UICollectionView, UICollectionViewFlowLayout, CloudKit, GeoCoder</strong>
+  </li>
+   <li>The App supports both English and Chinese(Simplified Han)
+    <br/>
+   Technical Keywords: <strong> Internationalization and Localization, NSLocalizedString</strong>
   </li>
   <li>Live streaming video(with DJI iOS SDK)coming soon</li>
 </ul>
