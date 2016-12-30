@@ -1,4 +1,6 @@
 # SkyPixel
+<img src="https://github.com/kesongxie/SkyPixel/blob/master/SkyPixel/Assets.xcassets/AppIcon.appiconset/60px%403x.png" width="100">
+
 Follow and share nearby live stream drone footage at your finger tip. Edit (README.md, coming soon)
 
 Author: Kesong Xie
