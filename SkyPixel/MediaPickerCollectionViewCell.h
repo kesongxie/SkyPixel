@@ -12,7 +12,11 @@
 @interface MediaPickerCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIView *selectedContainerAccessoryView;
-@property (strong, nonatomic) UIImage* image;
-@property (strong, nonatomic) PHAsset* asset;
+
+/*! @brief Thumbnail preview image associate with the video/cell */
+@property (strong, nonatomic) UIImage *image;
+
+/*! @brief The PHAsset associate with the video/cell */
+@property (strong, nonatomic) PHAsset *asset;
 
 @end

@@ -13,15 +13,18 @@
 
 
 
-
 static NSNotificationName const FinishedLoggedInNotificationName = @"FinishedLoggedInNotificationName";
-static NSString* const FinishedLoggedInNotificationInfoUserKey = @"user";
+static NSString *const FinishedLoggedInNotificationInfoUserKey = @"user";
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) CKRecord* loggedInRecord;
-@property (strong, nonatomic) User* loggedInUser;
+
+/*! @brief The CKRecord for the user who is currently loggedIn */
+@property (strong, nonatomic) CKRecord *loggedInRecord;
+
+/*! @brief The User who is currently loggedIn */
+@property (strong, nonatomic) User *loggedInUser;
 
 @end
 

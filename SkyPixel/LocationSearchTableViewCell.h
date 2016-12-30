@@ -11,11 +11,13 @@
 
 @interface LocationSearchTableViewCell : UITableViewCell
 
-//model
-@property (strong, nonatomic) CLPlacemark* placeMark;
+@property (strong, nonatomic) CLPlacemark *placeMark;
 
 -(void)setPlaceMark:(CLPlacemark *)placeMark;
 
+/**
+ Return a string representation of the placeMark
+ */
 +(NSString*)getAddressFromPlaceMark: (CLPlacemark*) placeMark;
 
 @end

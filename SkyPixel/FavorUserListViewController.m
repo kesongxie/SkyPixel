@@ -12,9 +12,9 @@
 
 @interface FavorUserListViewController()
 
-@property (strong, nonatomic) UIBarButtonItem* backBtn;
+@property (strong, nonatomic) UIBarButtonItem *backBtn;
 
-@property (strong, nonatomic) NSMutableArray<User*>* userList;
+@property (strong, nonatomic) NSMutableArray<User*> *userList;
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 
@@ -35,8 +35,8 @@
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
-    self.navigationItem.title = @"FAVORS";
-    UIImage* backBtnImage = [UIImage imageNamed:@"back-icon"];
+    self.navigationItem.title = NSLocalizedString(@"FAVORS", @"title for favor page");
+    UIImage *backBtnImage = [UIImage imageNamed:@"back-icon"];
     self.backBtn = [[UIBarButtonItem alloc]initWithImage:backBtnImage style:UIBarButtonItemStylePlain target:self action:@selector(backBtnTapped:)];
     [self.backBtn setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = self.backBtn;
@@ -71,20 +71,19 @@
 -(void)setFavorUserList:(NSArray<CKReference *> *)favorUserList{
     _favorUserList = favorUserList;
     [self.activityIndicatorView startAnimating];
-    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
+    CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
     self.userList = [[NSMutableArray alloc]init];
     __block NSInteger fetchUserCounter = 0;
-    for(CKReference* reference in self.favorUserList){
-        CKRecordID* recordID = reference.recordID;
-        [db fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable userRecord, NSError * _Nullable error) {
+    for(CKReference *reference in self.favorUserList){
+        CKRecordID *recordID = reference.recordID;
+        [db fetchRecordWithID:recordID completionHandler:^(CKRecord  *_Nullable userRecord, NSError  *_Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(error == nil){
-                    User* user = [[User alloc]initWithRecord:userRecord];
+                    User *user = [[User alloc]initWithRecord:userRecord];
                     [self.userList addObject:user];
                 }else{
                     NSLog(@"failed to fetch record %@", error.localizedDescription);
                 }
-                
                 fetchUserCounter += 1;
                 if(fetchUserCounter == self.favorUserList.count){
                     //done with fetching
@@ -112,7 +111,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    FavorTableViewCell* cell = (FavorTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"FavorCell" forIndexPath:indexPath];
+    FavorTableViewCell *cell = (FavorTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"FavorCell" forIndexPath:indexPath];
     if(cell != nil){
         cell.user = self.userList[indexPath.row];
     }

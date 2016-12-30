@@ -6,19 +6,20 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
+#import "CoreConstant.h"
 #import "LocationSearchTableViewController.h"
 #import "LocationSearchTableViewCell.h"
 #import "PostNavigationController.h"
 
 
-static NSString* const TableViewCellIden = @"LocationSearchCell";
+static NSString *const TableViewCellIden = @"LocationSearchCell";
 
 @interface LocationSearchTableViewController()
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UILabel *headerTextDescriptionLabel;
-@property (strong, nonatomic) UISearchController* searchController;
-@property (strong, nonatomic) NSArray<CLPlacemark *> * placeMarks;
+@property (strong, nonatomic) UISearchController *searchController;
+@property (strong, nonatomic) NSArray<CLPlacemark *>  *placeMarks;
 @property (nonatomic) BOOL didUserStartTyping;
 @property (nonatomic) BOOL isKeyBoardVisible;
 @property (nonatomic) BOOL viewShouldExpand;
@@ -73,6 +74,11 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
     return UIStatusBarStyleDefault;
 }
 
+-(void) searchBarShouldBecomeActive: (NSNotification*) notification{
+    [self.searchController.searchBar becomeFirstResponder];
+}
+
+
 -(void)expandHeaderViewWithOption: (HeaderExpandOpton)option {
     [self.headerView setHidden:NO];
     CGSize size = self.view.frame.size;
@@ -90,10 +96,6 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
     }
 }
 
--(void) searchBarShouldBecomeActive: (NSNotification*) notification{
-    [self.searchController.searchBar becomeFirstResponder];
-}
-
 
 -(void)collapseHeaderView{
     [self.headerView setHidden:YES];
@@ -101,7 +103,7 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
 }
 
 -(void)showSkyCastMapView{
-    ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
+    ContainerViewController *containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
     [containerVC bringMainViewToFront];
     [containerVC bringSearchViewToBack];
     HeaderExpandOpton option;
@@ -124,9 +126,9 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:TableViewCellIden forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TableViewCellIden forIndexPath:indexPath];
     if([cell isKindOfClass:[LocationSearchTableViewCell class]]){
-        LocationSearchTableViewCell* searchCell = (LocationSearchTableViewCell*)cell;
+        LocationSearchTableViewCell *searchCell = (LocationSearchTableViewCell*)cell;
         [searchCell setPlaceMark:self.placeMarks[indexPath.row]];
         return searchCell;
     }
@@ -134,12 +136,12 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    CLPlacemark* placeMark = self.placeMarks[indexPath.row];
+    CLPlacemark *placeMark = self.placeMarks[indexPath.row];
     //bring the bottom to the top
-    CLLocation* location = placeMark.location;
+    CLLocation *location = placeMark.location;
     //post a notification back to the skycastvc and set the new location
-    NSDictionary* userInfo = @{LocationSelectedLocationInfoKey: location, LocationSelectedTitleKey: placeMark.name, LocationSelectedSubTitleKey: [LocationSearchTableViewCell getAddressFromPlaceMark:placeMark]};
-    NSNotification* notification = [[NSNotification alloc] initWithName:LocationSelectedNotificationName object:self.targetForReceivingLocationSelection userInfo:userInfo];
+    NSDictionary *userInfo = @{LocationSelectedLocationInfoKey: location, LocationSelectedTitleKey: placeMark.name, LocationSelectedSubTitleKey: [LocationSearchTableViewCell getAddressFromPlaceMark:placeMark]};
+    NSNotification *notification = [[NSNotification alloc] initWithName:LocationSelectedNotificationName object:self.targetForReceivingLocationSelection userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     [self showSkyCastMapView];
 }
@@ -149,9 +151,9 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
     if(self.didUserStartTyping){
         [self collapseHeaderView];
-        CLGeocoder* geoCoder = [[CLGeocoder alloc]init];
+        CLGeocoder *geoCoder = [[CLGeocoder alloc]init];
         [geoCoder geocodeAddressString:self.searchController.searchBar.text
-     completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+     completionHandler:^(NSArray<CLPlacemark *>  *_Nullable placemarks, NSError  *_Nullable error) {
          dispatch_async(dispatch_get_main_queue(), ^{
              self.placeMarks = placemarks;
              [self.tableView reloadData];
@@ -192,9 +194,5 @@ static NSString* const TableViewCellIden = @"LocationSearchCell";
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     self.searchBtnTapped = YES;
 }
-
-
-
-
 
 @end

@@ -12,6 +12,6 @@
 
 @interface ChooseDeviceTableViewCell : UITableViewCell
 
-@property (strong, nonatomic) ShotDevice* shotDevice;
+@property (strong, nonatomic) ShotDevice *shotDevice;
 
 @end

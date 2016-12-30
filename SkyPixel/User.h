@@ -10,32 +10,32 @@
 #import <CloudKit/CloudKit.h>
 #import <UIKit/UIKit.h>
 
-
-static NSString* const FullNameKey = @"fullname";
-static NSString* const BioKey = @"bio";
-static NSString* const EmailKey = @"email";
-static NSString* const AvatorKey = @"avator";
-static NSString* const CoverKey = @"cover";
+//keys for columns in the CloudKit database
+static NSString *const FullNameKey = @"fullname";
+static NSString *const BioKey = @"bio";
+static NSString *const EmailKey = @"email";
+static NSString *const AvatorKey = @"avator";
+static NSString *const CoverKey = @"cover";
 
 @interface User : NSObject
 
-@property (strong, nonatomic) CKRecord* record;
-@property (strong, nonatomic) NSMutableArray<CKRecord*>* videoStreamRecord;
-//compute from the record class
-@property (strong, readonly, nonatomic) CKReference* reference;
-@property (strong, readonly, nonatomic) NSString* fullname;
-@property (strong, readonly, nonatomic) NSString* bio;
-@property (strong, readonly, nonatomic) NSString* email;
-@property (strong, readonly, nonatomic) NSURL* avatorUrl;
-@property (strong, readonly, nonatomic) NSURL* coverUrl;
-@property (strong, readonly, nonatomic) UIImage * thumbImage;
-@property (strong, readonly, nonatomic) UIImage * coverThumbImage;
+@property (strong, nonatomic) CKRecord *record;
+@property (strong, nonatomic) NSMutableArray<CKRecord*> *videoStreamRecord;
 
+//compute from the record property
+@property (strong, readonly, nonatomic) CKReference *reference;
+@property (strong, readonly, nonatomic) NSString *fullname;
+@property (strong, readonly, nonatomic) NSString *bio;
+@property (strong, readonly, nonatomic) NSString *email;
+@property (strong, readonly, nonatomic) NSURL *avatorUrl;
+@property (strong, readonly, nonatomic) NSURL *coverUrl;
+@property (strong, readonly, nonatomic) UIImage  *thumbImage;
+@property (strong, readonly, nonatomic) UIImage  *coverThumbImage;
 
 -(id)initWithRecord: (CKRecord*) record;
 
-+(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord* userRecord, NSError* error)) callback;
++(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord *userRecord, NSError *error)) callback;
 
-+(void)loggedIn: (void(^)(User* user, NSError* error)) callback;
++(void)loggedIn: (void(^)(User *user, NSError *error)) callback;
 
 @end

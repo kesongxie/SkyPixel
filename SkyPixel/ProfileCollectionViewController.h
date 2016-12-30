@@ -11,6 +11,6 @@
 
 @interface ProfileCollectionViewController : UICollectionViewController
 
-@property (strong, nonatomic) User* user;
+@property (strong, nonatomic) User *user;
 
 @end

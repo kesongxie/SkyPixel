@@ -29,7 +29,7 @@
 }
 
 -(void)pushShotDetailAfterFinishingSharing: (NSNotification*)notification{
-    VideoStream* videoStream = notification.userInfo[FinishedSharingPostVideoStreamInfoKey];
+    VideoStream *videoStream = notification.userInfo[FinishedSharingPostVideoStreamInfoKey];
     if(videoStream){
         [ShotDetailViewController pushShotDetailWithVideoStream:self withVideoStream:videoStream];
     }

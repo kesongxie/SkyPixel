@@ -6,21 +6,27 @@
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
+#import "CoreConstant.h"
 #import "ChooseDeviceViewController.h"
 #import "ChooseDeviceTableViewCell.h"
 
 
-static NSString* const reuseIden = @"ChooseDeviceCell";
+static NSString *const reuseIden = @"ChooseDeviceCell";
 
 @interface ChooseDeviceViewController() <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (strong, nonatomic) NSArray<ShotDevice*>* shotDevices;
+@property (strong, nonatomic) NSArray<ShotDevice*> *shotDevices;
 
-//this method calls backBtnTapped without a parameter
+/**
+ This method calls backBtnTapped without a parameter
+*/
 -(IBAction)backBtnTapped:(UIBarButtonItem *)sender;
 
+/**
+ Action when the back button is tapped, this will post a FinishedPickingShotDeviceNotification
+ */
 -(void)backBtnTapped;
 
 @end
@@ -50,15 +56,16 @@ static NSString* const reuseIden = @"ChooseDeviceCell";
     }];
 }
 
+
 -(void)backBtnTapped{
-    ShotDevice* shotDevice = nil;
-    NSIndexPath* selectedIndexPath = self.tableView.indexPathForSelectedRow;
-    NSDictionary* userInfoDict = nil;
+    ShotDevice *shotDevice = nil;
+    NSIndexPath *selectedIndexPath = self.tableView.indexPathForSelectedRow;
+    NSDictionary *userInfoDict = nil;
     if(selectedIndexPath != nil){
         shotDevice = self.shotDevices[selectedIndexPath.row];
         userInfoDict = @{SelectedShotDevicesNotificationUserInfoKey : shotDevice};
     }
-    NSNotification* notification = [[NSNotification alloc]initWithName:FinishedPickingShotDeviceNotificationName object:self userInfo:userInfoDict];
+    NSNotification *notification = [[NSNotification alloc]initWithName:FinishedPickingShotDeviceNotificationName object:self userInfo:userInfoDict];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -66,7 +73,7 @@ static NSString* const reuseIden = @"ChooseDeviceCell";
 }
 
 
-//MARK: TableViewDelegate and TableViewDelegate
+//MARK: - TableViewDelegate and TableViewDelegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
@@ -74,6 +81,7 @@ static NSString* const reuseIden = @"ChooseDeviceCell";
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return (self.shotDevices == nil) ? 0 : self.shotDevices.count;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -94,7 +102,7 @@ static NSString* const reuseIden = @"ChooseDeviceCell";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ChooseDeviceTableViewCell* cell = (ChooseDeviceTableViewCell*)[tableView dequeueReusableCellWithIdentifier:reuseIden forIndexPath:indexPath];
+    ChooseDeviceTableViewCell *cell = (ChooseDeviceTableViewCell*)[tableView dequeueReusableCellWithIdentifier:reuseIden forIndexPath:indexPath];
     if(cell){
         cell.shotDevice = self.shotDevices[indexPath.row];
         if([cell.shotDevice isEqual:self.preSelectedShotDevice]){

@@ -12,6 +12,6 @@
 
 @interface PostCollectionViewCell : UICollectionViewCell
 
-@property (strong,  nonatomic) VideoStream* videoStream;
+@property (strong,  nonatomic) VideoStream *videoStream;
 
 @end

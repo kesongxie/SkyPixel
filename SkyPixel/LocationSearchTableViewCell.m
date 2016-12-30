@@ -9,6 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "LocationSearchTableViewCell.h"
 
+static NSString *const StreetKey = @"Street";
+static NSString *const SubLocalityKey = @"SubLocality";
+static NSString *const StateKey = @"State";
+static NSString *const ZIPKey = @"ZIP";
+static NSString *const CountryKey = @"Country";
+
+
+
+
+
+
+
 @interface LocationSearchTableViewCell()
 
 @property (weak, nonatomic) IBOutlet UIImageView *placeImageView;
@@ -35,12 +47,12 @@
 
 
 +(NSString*)getAddressFromPlaceMark: (CLPlacemark*) placeMark{
-    NSDictionary* addr = placeMark.addressDictionary;
-    NSString* street = addr[@"Street"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"Street"]] : @"";
-    NSString* subLocality = addr[@"SubLocality"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"SubLocality"]] : @"";
-    NSString* state = addr[@"State"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"State"]] : @"";
-    NSString* postCode = addr[@"ZIP"] != nil ? [NSString stringWithFormat:@"%@, ", addr[@"ZIP"]] : @"";
-    NSString* country = addr[@"Country"] != nil ? [NSString stringWithFormat:@"%@", addr[@"Country"]] : @"";
+    NSDictionary *addr = placeMark.addressDictionary;
+    NSString *street = addr[StreetKey] != nil ? [NSString stringWithFormat:@"%@, ", addr[StreetKey]] : @"";
+    NSString *subLocality = addr[SubLocalityKey] != nil ? [NSString stringWithFormat:@"%@, ", addr[SubLocalityKey]] : @"";
+    NSString *state = addr[StateKey] != nil ? [NSString stringWithFormat:@"%@, ", addr[StateKey]] : @"";
+    NSString *postCode = addr[ZIPKey] != nil ? [NSString stringWithFormat:@"%@, ", addr[ZIPKey]] : @"";
+    NSString *country = addr[CountryKey] != nil ? [NSString stringWithFormat:@"%@", addr[CountryKey]] : @"";
     return [NSString stringWithFormat:@"%@%@%@%@%@", street,subLocality, state, postCode,country];
 }
 

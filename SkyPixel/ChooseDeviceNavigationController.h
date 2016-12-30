@@ -10,7 +10,6 @@
 #import "CoreNavigationController.h"
 
 
-static NSString* const ChooseDeviceNavigationControllerIden = @"ChooseDeviceNavigationController";
 
 @interface ChooseDeviceNavigationController : CoreNavigationController
 

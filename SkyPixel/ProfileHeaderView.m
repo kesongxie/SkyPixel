@@ -11,11 +11,8 @@
 
 @interface ProfileHeaderView()
 
-
 @end
 
 @implementation ProfileHeaderView
-
-
 
 @end

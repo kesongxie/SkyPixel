@@ -44,43 +44,44 @@
     return ((CKAsset*)self.record[CoverKey]).fileURL;
 }
 
-+(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord* userRecord, NSError* error)) callback{
-    CKRecordID* recordID = reference.recordID;
-    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
-    [db fetchRecordWithID:recordID completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
-        callback(record, error);
-    }];
-}
-
 -(CKReference *)reference{
     return [[CKReference alloc]initWithRecord:self.record action:CKReferenceActionNone];
 }
 
 -(UIImage *)thumbImage{
-    NSURL* thumbnailURL = self.avatorUrl;
-    NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
+    NSURL *thumbnailURL = self.avatorUrl;
+    NSData *imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
     return [[UIImage alloc]initWithData:imageData];
 }
 
 
 -(UIImage *)coverThumbImage{
-    NSURL* thumbnailURL = self.coverUrl;
-    NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
+    NSURL *thumbnailURL = self.coverUrl;
+    NSData *imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
     return [[UIImage alloc]initWithData:imageData];
 }
 
-+(void)loggedIn: (void(^)(User* user, NSError* error)) callback{
-    CKDatabase* db = [[CKContainer defaultContainer] publicCloudDatabase];
-    NSString* email = @"kesongxie@skypixel.com";
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"email=%@", email];
-    CKQuery* fetchQuery = [[CKQuery alloc]initWithRecordType:@"User" predicate:predicate];
-    [db performQuery:fetchQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * _Nullable userRecords, NSError * _Nullable error) {
+
++(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord *userRecord, NSError *error)) callback{
+    CKRecordID *recordID = reference.recordID;
+    CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
+    [db fetchRecordWithID:recordID completionHandler:^(CKRecord  *_Nullable record, NSError  *_Nullable error) {
+        callback(record, error);
+    }];
+}
+
++(void)loggedIn: (void(^)(User *user, NSError *error)) callback{
+    CKDatabase *db = [[CKContainer defaultContainer] publicCloudDatabase];
+    NSString *email = @"kesongxie@skypixel.com";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"email=%@", email];
+    CKQuery *fetchQuery = [[CKQuery alloc]initWithRecordType:@"User" predicate:predicate];
+    [db performQuery:fetchQuery inZoneWithID:nil completionHandler:^(NSArray<CKRecord *>  *_Nullable userRecords, NSError  *_Nullable error) {
         if(error != nil){
             NSLog(@"%@", error.localizedDescription);
             callback(nil, error);
         }else{
             if(userRecords.count == 1){
-                User* user = [[User alloc]initWithRecord:userRecords.firstObject];
+                User *user = [[User alloc]initWithRecord:userRecords.firstObject];
                 [VideoStream fetchVideoStreamForUser:user.reference completionHandler:^(NSArray<CKRecord *> *results, NSError *error) {
                     if(error == nil){
                         user.videoStreamRecord = [NSMutableArray arrayWithArray:results];

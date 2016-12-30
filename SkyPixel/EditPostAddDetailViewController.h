@@ -11,7 +11,7 @@
 
 @interface EditPostAddDetailViewController : UIViewController
 
-@property (strong, nonatomic) PHAsset* asset;
-@property (strong, nonatomic) UIImage* thumbnailImage;
+@property (strong, nonatomic) PHAsset *asset;
+@property (strong, nonatomic) UIImage *thumbnailImage;
 
 @end

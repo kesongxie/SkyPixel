@@ -13,6 +13,6 @@
 
 @interface CommentListViewController: UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
-@property (strong, nonatomic) VideoStream* videoStream;
+@property (strong, nonatomic) VideoStream *videoStream;
 
 @end

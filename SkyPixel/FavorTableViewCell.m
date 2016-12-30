@@ -22,8 +22,8 @@
     _user = user;
     //update UI
     self.fullnameLabel.text = self.user.fullname;
-    NSData* imageData = [[NSData alloc]initWithContentsOfURL:self.user.avatorUrl];
-    UIImage* avator = [[UIImage alloc]initWithData:imageData];
+    NSData *imageData = [[NSData alloc]initWithContentsOfURL:self.user.avatorUrl];
+    UIImage *avator = [[UIImage alloc]initWithData:imageData];
     self.avatorImageView.image = avator;
     self.avatorImageView.layer.cornerRadius = self.avatorImageView.frame.size.width / 2;
     self.avatorImageView.clipsToBounds = YES;

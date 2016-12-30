@@ -5,7 +5,7 @@
 //  Created by Xie kesong on 12/15/16.
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
-
+#import "CoreConstant.h"
 #import "ProfileLeftPanelViewController.h"
 #import "AppDelegate.h"
 #import "UIImageView+ProfileAvator.h"
@@ -24,18 +24,21 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *coverHeightConstriant;
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
 @property (weak, nonatomic) IBOutlet UIButton *postBtn;
-@property (strong, nonatomic) ContainerViewController* parentContainerViewController;
-@property (strong, nonatomic) HorizontalSlideInAnimator* animator;
+@property (strong, nonatomic) ContainerViewController *parentContainerViewController;
+@property (strong, nonatomic) HorizontalSlideInAnimator *animator;
 @property (nonatomic) CGFloat orginCoverHeight;
 
+-(void)adjustCoverView;
+
+-(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture;
 
 @end
 
 @implementation ProfileLeftPanelViewController
 
 - (IBAction)postBtnTapped:(UIButton *)sender {
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    PostNavigationController* postNVC = (PostNavigationController*)[storyboard instantiateViewControllerWithIdentifier:PostNavigationControllerIden];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PostNavigationController *postNVC = (PostNavigationController*)[storyboard instantiateViewControllerWithIdentifier:PostNavigationControllerIden];
     if(postNVC){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.parentContainerViewController toggleLeftMainView];
@@ -49,8 +52,8 @@
     [super viewDidLoad];
     self.scrollView.delegate = self;
     self.scrollView.alwaysBounceVertical = YES;
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    User* loggedInUser = [[User alloc]initWithRecord:delegate.loggedInRecord];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    User *loggedInUser = [[User alloc]initWithRecord:delegate.loggedInRecord];
     [self.avatorImageView becomeAvatorProifle:loggedInUser.thumbImage];
     self.avatorImageView.layer.borderColor = [UIColor whiteColor].CGColor;
     self.avatorImageView.layer.borderWidth = 3.0;
@@ -60,14 +63,14 @@
     self.postBtn.layer.cornerRadius = 3.0;
     
     //add tap gesture for avator image view
-    UITapGestureRecognizer* avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
+    UITapGestureRecognizer *avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
     [self.avatorImageView addGestureRecognizer:avatorTapGesture];
 }
 
 
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    CGRect leftViewRect = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width * 0.85, self.view.frame.size.height);
+    CGRect leftViewRect = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width  *0.85, self.view.frame.size.height);
     self.view.frame = leftViewRect;
     [self adjustCoverView];
 }
@@ -81,15 +84,15 @@
 
 -(void)adjustCoverView{
     CGSize coverImageSize = self.coverImageView.image.size;
-    self.coverHeightConstriant.constant = self.view.frame.size.width * coverImageSize.height /  coverImageSize.width;
+    self.coverHeightConstriant.constant = self.view.frame.size.width  *coverImageSize.height /  coverImageSize.width;
     self.orginCoverHeight = self.coverHeightConstriant.constant;
 }
 
 -(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ProfileCollectionViewController* profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
+    ProfileCollectionViewController *profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:ProfileCollectionViewControllerIden];
     if(profileCVC){
-        AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        AppDelegate *appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
         profileCVC.user = appDelegate.loggedInUser;
         [self.parentContainerViewController toggleLeftMainView];
         profileCVC.transitioningDelegate = self;

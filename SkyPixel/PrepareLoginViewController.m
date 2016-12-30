@@ -10,11 +10,16 @@
 #import "PrepareLoginViewController.h"
 #import "ContainerViewController.h"
 
-static NSString* const SegueIden = @"PresentMainContainerViewController";
-static NSString* const MainStoryBoardName = @"Main";
-static NSString* const ContainerViewIden = @"ContainerViewController";
+static NSString *const SegueIden = @"PresentMainContainerViewController";
+static NSString *const MainStoryBoardName = @"Main";
+static NSString *const ContainerViewIden = @"ContainerViewController";
 
 @interface PrepareLoginViewController()
+
+/**
+ Present the main view after the user logged in
+ */
+-(void)userloggedIn: (NSNotification*)notification;
 
 @end
 
@@ -27,8 +32,8 @@ static NSString* const ContainerViewIden = @"ContainerViewController";
 }
 
 -(void)userloggedIn: (NSNotification*)notification{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:MainStoryBoardName bundle:nil];
-    ContainerViewController* mainContainerVC = [storyboard instantiateViewControllerWithIdentifier:ContainerViewIden];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryBoardName bundle:nil];
+    ContainerViewController *mainContainerVC = [storyboard instantiateViewControllerWithIdentifier:ContainerViewIden];
     if(mainContainerVC){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.navigationController pushViewController:mainContainerVC animated:YES];

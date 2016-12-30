@@ -14,6 +14,6 @@
 
 @interface CommentTableViewCell : UITableViewCell
 
-@property (strong, nonatomic) Comment* comment;
+@property (strong, nonatomic) Comment *comment;
 
 @end

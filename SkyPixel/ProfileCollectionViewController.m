@@ -21,9 +21,9 @@ static CGFloat const Space = 16;
 
 @interface ProfileCollectionViewController()<UIViewControllerTransitioningDelegate,  UICollectionViewDelegateFlowLayout>
 
-@property (strong, nonatomic) ProfileHeaderView* headerView;
+@property (strong, nonatomic) ProfileHeaderView *headerView;
 @property (nonatomic) BOOL preferStatusBarHidden;
-@property (strong, nonatomic) HorizontalSlideInAnimator* animator;
+@property (strong, nonatomic) HorizontalSlideInAnimator *animator;
 
 @end
 
@@ -72,7 +72,7 @@ static CGFloat const Space = 16;
 
 -(void)adjustCoverView{
     CGSize coverImageSize = self.headerView.coverImageView.image.size;
-    self.headerView.coverHeightConstriant.constant = self.view.frame.size.width * coverImageSize.height /  coverImageSize.width;
+    self.headerView.coverHeightConstriant.constant = self.view.frame.size.width  *coverImageSize.height /  coverImageSize.width;
     self.headerView.orginCoverHeight = self.headerView.coverHeightConstriant.constant;
 }
 
@@ -115,16 +115,16 @@ static CGFloat const Space = 16;
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    PostCollectionViewCell* cell = (PostCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionPostCell" forIndexPath:indexPath];
+    PostCollectionViewCell *cell = (PostCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionPostCell" forIndexPath:indexPath];
     
-    VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:self.user.videoStreamRecord[indexPath.row]];
+    VideoStream *videoStream = [[VideoStream alloc]initWithCKRecord:self.user.videoStreamRecord[indexPath.row]];
     cell.videoStream = videoStream;
     cell.layer.cornerRadius = 4.0;
     return cell;
 }
 
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
-    ProfileHeaderView* headerView = (ProfileHeaderView*)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ProfileHeaderView" forIndexPath:indexPath];
+    ProfileHeaderView *headerView = (ProfileHeaderView*)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ProfileHeaderView" forIndexPath:indexPath];
     if(self.headerView == nil){
         //set only once
         self.headerView = headerView;
@@ -133,12 +133,12 @@ static CGFloat const Space = 16;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-   ShotDetailNavigationController* shotDetailNVC = (ShotDetailNavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"ShotDetailNavigationController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+   ShotDetailNavigationController *shotDetailNVC = (ShotDetailNavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"ShotDetailNavigationController"];
     if(shotDetailNVC){
-         VideoStream* videoStream = [[VideoStream alloc]initWithCKRecord:self.user.videoStreamRecord[indexPath.row]];
+         VideoStream *videoStream = [[VideoStream alloc]initWithCKRecord:self.user.videoStreamRecord[indexPath.row]];
         videoStream.user = self.user;
-        ShotDetailViewController* shotDetailVC = (ShotDetailViewController*)shotDetailNVC.viewControllers.firstObject;
+        ShotDetailViewController *shotDetailVC = (ShotDetailViewController*)shotDetailNVC.viewControllers.firstObject;
         if(shotDetailVC){
             shotDetailVC.videoStream = videoStream;
             shotDetailNVC.transitioningDelegate = self;
@@ -151,7 +151,7 @@ static CGFloat const Space = 16;
 
 //MARK: - CollectionViewFlowLayout
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = (self.view.frame.size.width - 3 * Space) / 2;
+    CGFloat width = (self.view.frame.size.width - 3  *Space) / 2;
     return CGSizeMake(width, width + 44);
 }
 

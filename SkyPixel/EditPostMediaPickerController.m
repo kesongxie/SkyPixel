@@ -11,6 +11,7 @@
 #import "MediaPickerCollectionViewCell.h"
 #import "EditPostAddDetailViewController.h"
 
+//Constants for adjusting the collectionView UI
 static CGFloat const Space = 12;
 static CGFloat const cacheThumbnailSizeWidth = 120;
 
@@ -19,9 +20,12 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *nextBtn;
-@property (strong, nonatomic) NSMutableArray<PHAsset*>* assets;
-@property (strong, nonatomic) PHCachingImageManager* cacheManager;
-@property (strong, nonatomic) MediaPickerCollectionViewCell* selectedVideo;
+@property (strong, nonatomic) NSMutableArray<PHAsset*> *assets;
+@property (strong, nonatomic) PHCachingImageManager *cacheManager;
+@property (strong, nonatomic) MediaPickerCollectionViewCell *selectedVideo;
+
+
+/*! @brief BOOL for determining whether the status bar should be hidden or not */
 @property (nonatomic) BOOL preferStatusBarHidden;
 
 @end
@@ -38,17 +42,6 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
         }];
     }];
 }
-
-
--(BOOL)prefersStatusBarHidden{
-    return self.preferStatusBarHidden;
-}
-
--(UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
-    return UIStatusBarAnimationFade;
-}
-
-
 
 -(void) viewDidLoad{
     [super viewDidLoad];
@@ -67,9 +60,16 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
 }
 
 
+-(BOOL)prefersStatusBarHidden{
+    return self.preferStatusBarHidden;
+}
+
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation{
+    return UIStatusBarAnimationFade;
+}
 
 
-// Next button UI and control
+//MARK: - Next button UI and control
 -(void)updateBtnUI{
     self.nextBtn.layer.borderColor = [UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1].CGColor;
     self.nextBtn.layer.borderWidth = 1.0;
@@ -93,11 +93,13 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
         [self setNextBtnDisabled];
     }
 }
-
+/**
+ Fecth videos from libararu after the user set the permission to authorized
+ */
 -(void)fetchAfterAuthorized{
-    PHFetchResult<PHAsset *>* results = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeVideo options:nil];
+    PHFetchResult<PHAsset *> *results = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeVideo options:nil];
     self.assets = [[NSMutableArray alloc]init];
-    [results enumerateObjectsUsingBlock:^(PHAsset * _Nonnull asset, NSUInteger idx, BOOL * _Nonnull stop) {
+    [results enumerateObjectsUsingBlock:^(PHAsset  *_Nonnull asset, NSUInteger idx, BOOL  *_Nonnull stop) {
         [self.assets insertObject:asset atIndex:0];
     }];
     self.cacheManager = [[PHCachingImageManager alloc]init];
@@ -108,8 +110,9 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
     });
 }
 
+//prepare for segue
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    EditPostAddDetailViewController* detailVC = (EditPostAddDetailViewController*)segue.destinationViewController;
+    EditPostAddDetailViewController *detailVC = (EditPostAddDetailViewController*)segue.destinationViewController;
     if(detailVC){
         detailVC.asset = self.selectedVideo.asset;
         detailVC.thumbnailImage = self.selectedVideo.image;
@@ -128,10 +131,10 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    MediaPickerCollectionViewCell* cell = (MediaPickerCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"MediaPickerCell" forIndexPath:indexPath];
+    MediaPickerCollectionViewCell *cell = (MediaPickerCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"MediaPickerCell" forIndexPath:indexPath];
     
     CGSize cacheThumbnailSize = CGSizeMake(cacheThumbnailSizeWidth, cacheThumbnailSizeWidth);
-    [self.cacheManager requestImageForAsset:self.assets[indexPath.row] targetSize:cacheThumbnailSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage * _Nullable image, NSDictionary * _Nullable info) {
+    [self.cacheManager requestImageForAsset:self.assets[indexPath.row] targetSize:cacheThumbnailSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage  *_Nullable image, NSDictionary  *_Nullable info) {
         cell.image = image;
         cell.asset = self.assets[indexPath.row];
     }];
@@ -144,7 +147,7 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-     MediaPickerCollectionViewCell* selectedCell = (MediaPickerCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+     MediaPickerCollectionViewCell *selectedCell = (MediaPickerCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
     if(self.selectedVideo != nil){
         ////Clear the selected view from the previous selected cell
         [self.selectedVideo.selectedContainerAccessoryView setHidden:YES];
@@ -161,7 +164,7 @@ static CGFloat const cacheThumbnailSizeWidth = 120;
 
 //MARK: - CollectionViewFlowLayout
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = (self.view.frame.size.width - 3 * Space) / 2;
+    CGFloat width = (self.view.frame.size.width - 3  *Space) / 2;
     return CGSizeMake(width, width);
 
 }

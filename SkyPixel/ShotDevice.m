@@ -8,9 +8,8 @@
 
 #import "ShotDevice.h"
 
-static NSString* const ShotDeviceRecordType = @"ShotDevice";
+static NSString *const ShotDeviceRecordType = @"ShotDevice";
 @interface ShotDevice()
-
 @end
 
 @implementation ShotDevice
@@ -36,8 +35,8 @@ static NSString* const ShotDeviceRecordType = @"ShotDevice";
 }
 
 -(UIImage *)thumbnailImage{
-    NSURL* thumbnailURL = self.thumbnailURL;
-    NSData* imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
+    NSURL *thumbnailURL = self.thumbnailURL;
+    NSData *imageData = [[NSData alloc]initWithContentsOfURL:thumbnailURL];
     return [[UIImage alloc]initWithData:imageData];
 }
 
@@ -49,21 +48,21 @@ static NSString* const ShotDeviceRecordType = @"ShotDevice";
     return NO;
 }
 
-+(void)fetchAvailabeDevices: (void(^)(NSArray<ShotDevice *> * results, NSError * error))callback{
-    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-    CKQuery* query = [[CKQuery alloc]initWithRecordType:ShotDeviceRecordType predicate:predicate];
-    NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc]initWithKey:DeviceNameKey ascending:YES];
++(void)fetchAvailabeDevices: (void(^)(NSArray<ShotDevice *>  *results, NSError  *error))callback{
+    CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+    CKQuery *query = [[CKQuery alloc]initWithRecordType:ShotDeviceRecordType predicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]initWithKey:DeviceNameKey ascending:YES];
     query.sortDescriptors = @[sortDescriptor];
-    [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> * results, NSError * error) {
+    [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *>  *results, NSError  *error) {
         if(error == nil){
-            NSMutableArray<ShotDevice *>* resultArray = [[NSMutableArray alloc]init];
-            for(CKRecord* record in results){
-                ShotDevice* shotDevice = [[ShotDevice alloc]initWithRecord:record];
+            NSMutableArray<ShotDevice *> *resultArray = [[NSMutableArray alloc]init];
+            for(CKRecord *record in results){
+                ShotDevice *shotDevice = [[ShotDevice alloc]initWithRecord:record];
                 [resultArray insertObject:shotDevice atIndex:0];
             }
             
-            NSArray* returnArray = [NSArray arrayWithArray:resultArray];
+            NSArray *returnArray = [NSArray arrayWithArray:resultArray];
             callback(returnArray, error);
         }else{
             NSLog(@"error: %@", error.localizedDescription);

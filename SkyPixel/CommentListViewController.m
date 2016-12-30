@@ -21,9 +21,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *commentTextField;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activitityIndicatorView;
 @property (weak, nonatomic) IBOutlet UIButton *commentBtn;
-@property (strong, nonatomic) NSArray<CKReference*>* commentReferenceList;
-@property (strong, nonatomic) UIBarButtonItem* backBtn;
-@property (strong, nonatomic) NSMutableArray<Comment*>* commentList;
+@property (strong, nonatomic) NSArray<CKReference*> *commentReferenceList;
+@property (strong, nonatomic) UIBarButtonItem *backBtn;
+@property (strong, nonatomic) NSMutableArray<Comment*> *commentList;
 @property (nonatomic) BOOL isSendingComment;
 
 //update the user interface
@@ -116,7 +116,7 @@
 //MARK: - Update UI
 -(void)updateUI{
     self.navigationItem.title = NSLocalizedString(@"COMMENTS", @"title");
-    UIImage* backBtnImage = [UIImage imageNamed:@"back-icon"];
+    UIImage *backBtnImage = [UIImage imageNamed:@"back-icon"];
     self.backBtn = [[UIBarButtonItem alloc]initWithImage:backBtnImage style:UIBarButtonItemStylePlain target:self action:@selector(backBtnTapped:)];
     [self.backBtn setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = self.backBtn;
@@ -153,7 +153,7 @@
 -(void)sendComment{
     self.isSendingComment = YES;
     self.navigationItem.title = NSLocalizedString( @"SENDING...", @"comment sending");
-    NSString* text = self.commentTextField.text;
+    NSString *text = self.commentTextField.text;
     if(text.length != 0){
         [self resetUIAfterCommentBtnTapped];
         [Comment sendComment:text inVideo:self.videoStream completionHandler:^(Comment *comment, NSError *error) {
@@ -163,7 +163,7 @@
                 [self hideHeaderView];
                 //update the datasource and insert the comment
                 [self.commentList insertObject:comment atIndex:0];
-                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                 [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
             });
         }];
@@ -180,7 +180,7 @@
 
 //MAKR: - Keyboard event
 -(void)keyboardDidShow:(NSNotification*)notification{
-    NSValue* value = notification.userInfo[UIKeyboardFrameEndUserInfoKey];
+    NSValue *value = notification.userInfo[UIKeyboardFrameEndUserInfoKey];
     CGRect rect = value.CGRectValue;
     
     CGRect viewNewFrame = CGRectMake(0, -rect.size.height, self.view.frame.size.width,  self.view.frame.size.height);
@@ -224,7 +224,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    CommentTableViewCell* cell = (CommentTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
+    CommentTableViewCell *cell = (CommentTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
     cell.comment = self.commentList[indexPath.row];
     return cell;
 }
@@ -243,9 +243,9 @@
 }
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    AppDelegate* deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKReference* loggedinReference = [[CKReference alloc]initWithRecord:deleagte.loggedInRecord action:CKReferenceActionNone];
-    CKReference* commentOwnerReference = [[CKReference alloc]initWithRecord:self.commentList[indexPath.row].userRecord action:CKReferenceActionNone];
+    AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKReference *loggedinReference = [[CKReference alloc]initWithRecord:deleagte.loggedInRecord action:CKReferenceActionNone];
+    CKReference *commentOwnerReference = [[CKReference alloc]initWithRecord:self.commentList[indexPath.row].userRecord action:CKReferenceActionNone];
     if([loggedinReference isEqual:self.videoStream.userReference] || [loggedinReference isEqual:commentOwnerReference]){
         return YES;
     }else{

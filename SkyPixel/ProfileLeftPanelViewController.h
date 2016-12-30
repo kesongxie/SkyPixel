@@ -11,6 +11,4 @@
 #import <UIKit/UIKit.h>
 
 @interface ProfileLeftPanelViewController : UIViewController<UIScrollViewDelegate, UIViewControllerTransitioningDelegate>
-
-
 @end

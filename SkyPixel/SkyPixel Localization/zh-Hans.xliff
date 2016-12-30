@@ -11,25 +11,20 @@
       <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.2" build-num="8C30a"/>
     </header>
     <body>
-      <trans-unit id="2GP-Qa-wHx.text">
-        <source>Followers</source>
-        <target>关注</target>
-        <note>Class = "UILabel"; text = "Followers"; ObjectID = "2GP-Qa-wHx";</note>
-      </trans-unit>
-      <trans-unit id="5Em-Ab-Txa.text">
-        <source>0</source>
-        <target>0</target>
-        <note>Class = "UILabel"; text = "0"; ObjectID = "5Em-Ab-Txa";</note>
+      <trans-unit id="5R5-1C-Vl6.placeholder">
+        <source>Add a short title for your video</source>
+        <target>为您的视频添加一个标题</target>
+        <note>Class = "UITextField"; placeholder = "Add a short title for your video"; ObjectID = "5R5-1C-Vl6";</note>
       </trans-unit>
       <trans-unit id="5hM-4E-J5e.text">
         <source>DESCRIPTION</source>
         <target>描述</target>
         <note>Class = "UILabel"; text = "DESCRIPTION"; ObjectID = "5hM-4E-J5e";</note>
       </trans-unit>
-      <trans-unit id="7dQ-4G-RHg.text">
-        <source>0</source>
-        <target>0</target>
-        <note>Class = "UILabel"; text = "0"; ObjectID = "7dQ-4G-RHg";</note>
+      <trans-unit id="5hX-CH-HN4.placeholder">
+        <source>Where's been shot</source>
+        <target>在哪里拍摄的</target>
+        <note>Class = "UITextField"; placeholder = "Where's been shot"; ObjectID = "5hX-CH-HN4";</note>
       </trans-unit>
       <trans-unit id="8ip-aU-YZR.text">
         <source>0</source>
@@ -41,20 +36,34 @@
         <target>Place Mark Name</target>
         <note>Class = "UILabel"; text = "Place Mark Name"; ObjectID = "9J8-Dr-0Rp";</note>
       </trans-unit>
+      <trans-unit id="51q-ed-QTa.text">
+        <source>3</source>
+        <note>Class = "UILabel"; text = "3"; ObjectID = "51q-ed-QTa";</note>
+      </trans-unit>
+      <trans-unit id="BAV-h1-cf8.title">
+        <source>CHOOSE A DEVICE</source>
+        <target>请选择拍摄的设备</target>
+        <note>Class = "UINavigationItem"; title = "CHOOSE A DEVICE"; ObjectID = "BAV-h1-cf8";</note>
+      </trans-unit>
       <trans-unit id="C88-mv-IyG.text">
         <source>Title</source>
         <target>Title</target>
         <note>Class = "UILabel"; text = "Title"; ObjectID = "C88-mv-IyG";</note>
       </trans-unit>
-      <trans-unit id="CpI-l8-z6K.text">
-        <source>Title</source>
-        <target>Title</target>
-        <note>Class = "UILabel"; text = "Title"; ObjectID = "CpI-l8-z6K";</note>
+      <trans-unit id="DaC-DH-Bid.title">
+        <source>ADD DETAILS</source>
+        <target>添加描述</target>
+        <note>Class = "UINavigationItem"; title = "ADD DETAILS"; ObjectID = "DaC-DH-Bid";</note>
       </trans-unit>
-      <trans-unit id="IG4-yW-3Y7.text">
-        <source>9k</source>
-        <target>9k</target>
-        <note>Class = "UILabel"; text = "9k"; ObjectID = "IG4-yW-3Y7";</note>
+      <trans-unit id="Ea0-Pa-0JR.text">
+        <source>SHOTS</source>
+        <target>个视频</target>
+        <note>Class = "UILabel"; text = "SHOTS"; ObjectID = "Ea0-Pa-0JR";</note>
+      </trans-unit>
+      <trans-unit id="I2E-kf-peT.placeholder">
+        <source>Mention devices for the shot (optional)</source>
+        <target>注明您用的拍摄设备</target>
+        <note>Class = "UITextField"; placeholder = "Mention devices for the shot (optional)"; ObjectID = "I2E-kf-peT";</note>
       </trans-unit>
       <trans-unit id="Jga-Gw-7FA.text">
         <source>VIEWS</source>
@@ -65,6 +74,15 @@
         <source>Fullname</source>
         <target>Fullname</target>
         <note>Class = "UILabel"; text = "Fullname"; ObjectID = "K6a-57-PIE";</note>
+      </trans-unit>
+      <trans-unit id="MUp-Sw-P8x.normalTitle">
+        <source>SHARE</source>
+        <target>分享</target>
+        <note>Class = "UIButton"; normalTitle = "SHARE"; ObjectID = "MUp-Sw-P8x";</note>
+      </trans-unit>
+      <trans-unit id="Nu1-wN-gne.text">
+        <source>fullname</source>
+        <note>Class = "UILabel"; text = "fullname"; ObjectID = "Nu1-wN-gne";</note>
       </trans-unit>
       <trans-unit id="NuL-Ay-FU8.placeholder">
         <source>Comment here</source>
@@ -81,30 +99,29 @@
         <target>Button</target>
         <note>Class = "UIButton"; normalTitle = "Button"; ObjectID = "RSD-CY-AWW";</note>
       </trans-unit>
-      <trans-unit id="TVm-Hf-JPv.text">
-        <source>A programming nerd loves exploring the world, a ucsd computer science major</source>
-        <target>A programming nerd loves exploring the world, a ucsd computer science major</target>
-        <note>Class = "UILabel"; text = "A programming nerd loves exploring the world, a ucsd computer science major"; ObjectID = "TVm-Hf-JPv";</note>
+      <trans-unit id="SYJ-oW-GbZ.text">
+        <source>fullname</source>
+        <note>Class = "UILabel"; text = "fullname"; ObjectID = "SYJ-oW-GbZ";</note>
       </trans-unit>
       <trans-unit id="Ttd-Lt-dSp.text">
         <source>Be the first one to favor</source>
-        <target>Be the first one to favor</target>
+        <target>还没有人点赞</target>
         <note>Class = "UILabel"; text = "Be the first one to favor"; ObjectID = "Ttd-Lt-dSp";</note>
       </trans-unit>
-      <trans-unit id="Ug7-Vc-FHe.text">
-        <source>Views</source>
-        <target>浏览</target>
-        <note>Class = "UILabel"; text = "Views"; ObjectID = "Ug7-Vc-FHe";</note>
+      <trans-unit id="V5Q-69-rhB.title">
+        <source>CHOOSE A VIDEO</source>
+        <target>选择一个视频</target>
+        <note>Class = "UINavigationItem"; title = "CHOOSE A VIDEO"; ObjectID = "V5Q-69-rhB";</note>
       </trans-unit>
       <trans-unit id="VRM-qa-xE4.text">
         <source>Fullname</source>
         <target>Fullname</target>
         <note>Class = "UILabel"; text = "Fullname"; ObjectID = "VRM-qa-xE4";</note>
       </trans-unit>
-      <trans-unit id="ZHP-B6-gFT.text">
-        <source>643</source>
-        <target>643</target>
-        <note>Class = "UILabel"; text = "643"; ObjectID = "ZHP-B6-gFT";</note>
+      <trans-unit id="Ytr-xj-A1g.text">
+        <source>Location</source>
+        <target>景点</target>
+        <note>Class = "UILabel"; text = "Location"; ObjectID = "Ytr-xj-A1g";</note>
       </trans-unit>
       <trans-unit id="ZWW-Ly-rnG.text">
         <source>Un jour, un événement jusqu'à 2017... Déc 18 Il a échoué à 18 reprises mais cette année, @Leander a soulevé le trophée du double mixte !</source>
@@ -116,40 +133,73 @@
         <target>空中放映</target>
         <note>Class = "UINavigationItem"; title = "SKYCAST"; ObjectID = "aH6-0s-tL4";</note>
       </trans-unit>
+      <trans-unit id="adp-5V-t1C.placeholder">
+        <source>Add a description for your video (optional)</source>
+        <target>加入描述</target>
+        <note>Class = "UITextField"; placeholder = "Add a description for your video (optional)"; ObjectID = "adp-5V-t1C";</note>
+      </trans-unit>
+      <trans-unit id="as4-Gd-9Z6.text">
+        <source>Description</source>
+        <target>描述</target>
+        <note>Class = "UILabel"; text = "Description"; ObjectID = "as4-Gd-9Z6";</note>
+      </trans-unit>
       <trans-unit id="bW0-ed-QXG.text">
         <source>3w</source>
         <target>3w</target>
         <note>Class = "UILabel"; text = "3w"; ObjectID = "bW0-ed-QXG";</note>
-      </trans-unit>
-      <trans-unit id="ckO-Fd-aKA.text">
-        <source>Posts</source>
-        <target>帖子</target>
-        <note>Class = "UILabel"; text = "Posts"; ObjectID = "ckO-Fd-aKA";</note>
       </trans-unit>
       <trans-unit id="d6P-aI-ntU.text">
         <source>16</source>
         <target>16</target>
         <note>Class = "UILabel"; text = "16"; ObjectID = "d6P-aI-ntU";</note>
       </trans-unit>
+      <trans-unit id="dBr-Zl-QHE.text">
+        <source>bio</source>
+        <note>Class = "UILabel"; text = "bio"; ObjectID = "dBr-Zl-QHE";</note>
+      </trans-unit>
+      <trans-unit id="fCp-eh-eds.text">
+        <source>Title</source>
+        <target>标题</target>
+        <note>Class = "UILabel"; text = "Title"; ObjectID = "fCp-eh-eds";</note>
+      </trans-unit>
       <trans-unit id="fNh-XM-bQV.title">
         <source>SHOTS</source>
         <target>视频</target>
         <note>Class = "UINavigationItem"; title = "SHOTS"; ObjectID = "fNh-XM-bQV";</note>
       </trans-unit>
-      <trans-unit id="hrE-YZ-bPJ.text">
-        <source>Explore the spots you love</source>
-        <target>探索你喜欢的地方</target>
-        <note>Class = "UILabel"; text = "Explore the spots you love"; ObjectID = "hrE-YZ-bPJ";</note>
+      <trans-unit id="hGn-we-mNl.normalTitle">
+        <source>+ FOLLOW</source>
+        <target>+关注</target>
+        <note>Class = "UIButton"; normalTitle = "+ FOLLOW"; ObjectID = "hGn-we-mNl";</note>
       </trans-unit>
-      <trans-unit id="p4Q-yY-7zJ.text">
-        <source>Fullname</source>
-        <target>Fullname</target>
-        <note>Class = "UILabel"; text = "Fullname"; ObjectID = "p4Q-yY-7zJ";</note>
+      <trans-unit id="hrE-YZ-bPJ.text">
+        <source>Search the name of the spot</source>
+        <target>探索您喜欢的地方</target>
+        <note>Class = "UILabel"; text = "Search the name of the spot"; ObjectID = "hrE-YZ-bPJ";</note>
+      </trans-unit>
+      <trans-unit id="klQ-9l-eeu.normalTitle">
+        <source>+ POST</source>
+        <target>分享</target>
+        <note>Class = "UIButton"; normalTitle = "+ POST"; ObjectID = "klQ-9l-eeu";</note>
+      </trans-unit>
+      <trans-unit id="lPR-7K-W4Z.text">
+        <source>Title</source>
+        <note>Class = "UILabel"; text = "Title"; ObjectID = "lPR-7K-W4Z";</note>
+      </trans-unit>
+      <trans-unit id="pqb-9T-77S.normalTitle">
+        <source>NEXT</source>
+        <target>下一步</target>
+        <note>Class = "UIButton"; normalTitle = "NEXT"; ObjectID = "pqb-9T-77S";</note>
       </trans-unit>
       <trans-unit id="qHu-Zf-Mlj.text">
         <source>Be the first one to comment</source>
         <target>第一个评论</target>
         <note>Class = "UILabel"; text = "Be the first one to comment"; ObjectID = "qHu-Zf-Mlj";</note>
+      </trans-unit>
+      <trans-unit id="qb4-zU-exs.text">
+        <source>Shot By</source>
+        <target>拍摄设备</target>
+        <note>Class = "UILabel"; text = "Shot By"; ObjectID = "qb4-zU-exs";</note>
       </trans-unit>
       <trans-unit id="r14-s8-VdK.text">
         <source>Text</source>
@@ -166,25 +216,25 @@
         <target>Fullname</target>
         <note>Class = "UILabel"; text = "Fullname"; ObjectID = "rw7-js-GgK";</note>
       </trans-unit>
-      <trans-unit id="sSO-DF-bBP.title">
-        <source>PROFILE</source>
-        <target>主页</target>
-        <note>Class = "UINavigationItem"; title = "PROFILE"; ObjectID = "sSO-DF-bBP";</note>
-      </trans-unit>
       <trans-unit id="vFB-6Y-mP7.text">
         <source>0</source>
         <target>0</target>
         <note>Class = "UILabel"; text = "0"; ObjectID = "vFB-6Y-mP7";</note>
       </trans-unit>
-      <trans-unit id="vja-bT-BJq.text">
-        <source>3</source>
-        <target>3</target>
-        <note>Class = "UILabel"; text = "3"; ObjectID = "vja-bT-BJq";</note>
+      <trans-unit id="xXF-Qj-Ent.text">
+        <source>bio</source>
+        <target>个人说明</target>
+        <note>Class = "UILabel"; text = "bio"; ObjectID = "xXF-Qj-Ent";</note>
       </trans-unit>
-      <trans-unit id="yrK-HH-32m.text">
-        <source>EXPLORE SKYPIXEL</source>
-        <target>探索“像素天空”</target>
-        <note>Class = "UILabel"; text = "EXPLORE SKYPIXEL"; ObjectID = "yrK-HH-32m";</note>
+      <trans-unit id="z9c-71-iGQ.text">
+        <source>Device Name</source>
+        <target>设备名字</target>
+        <note>Class = "UILabel"; text = "Device Name"; ObjectID = "z9c-71-iGQ";</note>
+      </trans-unit>
+      <trans-unit id="zHl-2o-ul5.text">
+        <source>Views</source>
+        <target>浏览</target>
+        <note>Class = "UILabel"; text = "Views"; ObjectID = "zHl-2o-ul5";</note>
       </trans-unit>
     </body>
   </file>
@@ -209,46 +259,77 @@
       <trans-unit id="COMMENTS">
         <source>COMMENTS</source>
         <target>评论</target>
+        <note>title</note>
       </trans-unit>
       <trans-unit id="DELETING...">
         <source>DELETING...</source>
-        <target>正在删除</target>
+        <target>正在删除...</target>
+        <note>comment deleting</note>
       </trans-unit>
       <trans-unit id="Enter a spot">
         <source>Enter a spot</source>
         <target>输入一个景点</target>
+        <note>enter a spot</note>
       </trans-unit>
-      <trans-unit id="Explore the spots you love">
-        <source>Explore the spots you love</source>
-        <target>探索你喜欢的地方</target>
+      <trans-unit id="FAVORS">
+          <source>FAVORS</source>
+          <target>点赞</target>
+          <note>title for favor page</note>
       </trans-unit>
       <trans-unit id="LIVE NOW">
         <source>LIVE NOW</source>
         <target>直播</target>
+        <note>live video</note>
       </trans-unit>
       <trans-unit id="No description available">
         <source>No description available</source>
-        <target>没有相关描述</target>
+        <target>没有相关的描述</target>
+        <note>default message</note>
       </trans-unit>
       <trans-unit id="No location found">
         <source>No location found</source>
-        <target>没有搜索到对应的地方</target>
+        <target>找不到相关的景点</target>
+        <note>input not found</note>
       </trans-unit>
       <trans-unit id="PEOPLE VIEWING">
         <source>PEOPLE VIEWING</source>
-        <target>人正在看</target>
+        <target>人正在观看</target>
+        <note>viewing count</note>
+      </trans-unit>
+      <trans-unit id="PUBLISHED">
+        <source>PUBLISHED</source>
+        <target>已发送</target>
+        <note>Finished sharing post</note>
       </trans-unit>
       <trans-unit id="SEARCHING...">
         <source>SEARCHING...</source>
-        <target>正在搜索</target>
+        <target>正在搜索...</target>
+        <note>searching status</note>
       </trans-unit>
       <trans-unit id="SENDING...">
         <source>SENDING...</source>
-        <target>发送中</target>
+        <target>发送中...</target>
+        <note>comment sending</note>
+      </trans-unit>
+      <trans-unit id="SHARING...">
+        <source>SHARING...</source>
+        <target>分享中...</target>
+        <note>Sharing post state</note>
       </trans-unit>
       <trans-unit id="SKYCAST">
         <source>SKYCAST</source>
         <target>空中放映</target>
+        <note>title for map</note>
+      </trans-unit>
+      <trans-unit id="Search the name of the spot">
+        <source>Search the name of the spot</source>
+        <target>搜索景点</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="VIEWS">
+          <source>VIEWS</source>
+          <target>人浏览</target>
+          <note>views on profile page post</note>
       </trans-unit>
     </body>
   </file>

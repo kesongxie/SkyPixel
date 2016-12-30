@@ -13,10 +13,14 @@
 @interface Utility : NSObject
 
 
+/**
+ Covert date to Ago format
+*/
 +(NSString*)agoFormatterFromDate: (NSDate*) date;
 
+/**
+ Generate a thmbnail image for a video asset
+ */
 +(UIImage *)generateThumbImage : (NSURL *)url;
-
-
 
 @end

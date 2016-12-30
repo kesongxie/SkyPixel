@@ -12,6 +12,6 @@
 
 @interface FavorUserListViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 
-@property (strong, nonatomic) NSArray<CKReference*>* favorUserList;
+@property (strong, nonatomic) NSArray<CKReference*> *favorUserList;
 
 @end

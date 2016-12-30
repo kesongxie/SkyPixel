@@ -2,32 +2,44 @@
 "COMMENTS" = "评论";
 
 /* comment deleting */
-"DELETING..." = "正在删除";
+"DELETING..." = "正在删除...";
 
 /* enter a spot */
 "Enter a spot" = "输入一个景点";
 
-/* No comment provided by engineer. */
-"Explore the spots you love" = "探索你喜欢的地方";
+/* title for favor page */
+"FAVORS" = "点赞";
 
 /* live video */
 "LIVE NOW" = "直播";
 
 /* default message */
-"No description available" = "没有相关描述";
+"No description available" = "没有相关的描述";
 
 /* input not found */
-"No location found" = "没有搜索到对应的地方";
+"No location found" = "找不到相关的景点";
 
 /* viewing count */
-"PEOPLE VIEWING" = "人正在看";
+"PEOPLE VIEWING" = "人正在观看";
+
+/* Finished sharing post */
+"PUBLISHED" = "已发送";
 
 /* searching status */
-"SEARCHING..." = "正在搜索";
+"SEARCHING..." = "正在搜索...";
 
 /* comment sending */
-"SENDING..." = "发送中";
+"SENDING..." = "发送中...";
+
+/* Sharing post state */
+"SHARING..." = "分享中...";
 
 /* title for map */
 "SKYCAST" = "空中放映";
+
+/* No comment provided by engineer. */
+"Search the name of the spot" = "搜索景点";
+
+/* views on profile page post */
+"VIEWS" = "人浏览";
 

@@ -10,17 +10,15 @@
 
 
 @interface VideoAsset()
-
-
 @end
 
 @implementation VideoAsset
 
-+(void)loadAssetForVideoStreamReference: (CKReference*) videoStreamReference completionHandler: (void(^)(NSArray<CKRecord *>* results, NSError* error)) callback{
-    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"%K = %@", VideoStreamKey, videoStreamReference];
-    CKQuery* query = [[CKQuery alloc]initWithRecordType:VideoAssetRecordType predicate:predicate];
-    [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *>* results, NSError* error) {
++(void)loadAssetForVideoStreamReference: (CKReference*) videoStreamReference completionHandler: (void(^)(NSArray<CKRecord *> *results, NSError *error)) callback{
+    CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K = %@", VideoStreamKey, videoStreamReference];
+    CKQuery *query = [[CKQuery alloc]initWithRecordType:VideoAssetRecordType predicate:predicate];
+    [db performQuery:query inZoneWithID:nil completionHandler:^(NSArray<CKRecord *> *results, NSError *error) {
         if(error == nil){
             callback(results, nil);
         }else{
@@ -30,12 +28,12 @@
 }
 
 
-+(void)saveVideoWithVideoStreamReference: (CKAsset*)videoAsset withReference: (CKReference*)reference completionHandler: (void(^)(CKRecord* record, NSError* error)) callback{
-    CKDatabase* db = [CKContainer defaultContainer].publicCloudDatabase;
-    CKRecord* record = [[CKRecord alloc]initWithRecordType:VideoAssetRecordType];
++(void)saveVideoWithVideoStreamReference: (CKAsset*)videoAsset withReference: (CKReference*)reference completionHandler: (void(^)(CKRecord *record, NSError *error)) callback{
+    CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
+    CKRecord *record = [[CKRecord alloc]initWithRecordType:VideoAssetRecordType];
     record[AssetKey] = videoAsset;
     record[VideoStreamKey] = reference;
-    [db saveRecord:record completionHandler:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+    [db saveRecord:record completionHandler:^(CKRecord  *_Nullable record, NSError  *_Nullable error) {
         if(error == nil){
              callback(record, nil);
         }else{

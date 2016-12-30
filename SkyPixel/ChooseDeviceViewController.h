@@ -9,10 +9,8 @@
 #import <UIKit/UIkit.h>
 #import "ShotDevice.h"
 
-static NSString* const SelectedShotDevicesNotificationUserInfoKey = @"SelectedShotDevices";
-static NSString* const FinishedPickingShotDeviceNotificationName = @"FinishedPickingShotDevice";
 
 @interface ChooseDeviceViewController : UIViewController
 
-@property (strong, nonatomic) ShotDevice* preSelectedShotDevice;
+@property (strong, nonatomic) ShotDevice *preSelectedShotDevice;
 @end

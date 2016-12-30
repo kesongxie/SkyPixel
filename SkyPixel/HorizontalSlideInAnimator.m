@@ -25,7 +25,6 @@ static NSTimeInterval const TransitionDuration = 0.30;
 
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-    
     // Get the set of relevant objects.
     UIView *containerView = [transitionContext containerView];
     containerView.backgroundColor = [UIColor blueColor];
@@ -63,9 +62,6 @@ static NSTimeInterval const TransitionDuration = 0.30;
         // Notify UIKit that the transition has finished
         [transitionContext completeTransition:success];
     }];
-
-    
-    
 }
 
 @end

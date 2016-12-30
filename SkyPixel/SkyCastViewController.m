@@ -8,6 +8,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import <CloudKit/CloudKit.h>
+#import "CoreConstant.h"
 #import "SkyCastViewController.h"
 #import "VideoStream+Annotation.h"
 #import "PlayView.h"
@@ -20,22 +21,22 @@
 static double const LocationDegree = 0.05;
 static CGFloat const searchRadius = 10000; //load video within 10 km from the locationCenter
 static CGFloat const CalloutViewHeight = 50;
-static NSString* const MapViewReuseIdentifier = @"AnnotationViweIden";
-static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
+static NSString *const MapViewReuseIdentifier = @"AnnotationViweIden";
+static NSString *const ShowCastingSegueIdentifier = @"ShowCasting";
 
 @interface SkyCastViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (strong, nonatomic) NSMutableArray* photos;
-@property (strong, nonatomic) CLLocationManager* locationManager;
-@property (strong, nonatomic) NSMutableArray<VideoStream*>* videoStreamAnnotations;
-@property (strong, nonatomic) AVAsset* asset;
-@property (strong, nonatomic) AVPlayerItem* playerItem;
-@property (strong, nonatomic) AVPlayer* player;
-@property (strong, nonatomic) PlayerView* playerView;
-@property (strong, nonatomic) NSString* payerItemContext;
-@property (strong, nonatomic) UISearchController* searchController;
-@property (strong, nonatomic) CLLocation* locationCenter; //the surrounding footage will be loaded
+@property (strong, nonatomic) NSMutableArray *photos;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) NSMutableArray<VideoStream*> *videoStreamAnnotations;
+@property (strong, nonatomic) AVAsset *asset;
+@property (strong, nonatomic) AVPlayerItem *playerItem;
+@property (strong, nonatomic) AVPlayer *player;
+@property (strong, nonatomic) PlayerView *playerView;
+@property (strong, nonatomic) NSString *payerItemContext;
+@property (strong, nonatomic) UISearchController *searchController;
+@property (strong, nonatomic) CLLocation *locationCenter; //the surrounding footage will be loaded
 @property (nonatomic) BOOL isFetchingRecord;
 
 - (void) fetchMediaForMap;
@@ -46,12 +47,12 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 
 - (IBAction)searchIconTapped:(UIBarButtonItem *)sender {
     if([self.parentViewController.parentViewController isKindOfClass:[ContainerViewController class]]){
-        ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
+        ContainerViewController *containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
         if([containerVC.locationSearchNavigationController.viewControllers.firstObject isKindOfClass:[LocationSearchTableViewController class]]){
-            LocationSearchTableViewController* locationSearchTVC = (LocationSearchTableViewController*)containerVC.locationSearchNavigationController.viewControllers.firstObject;
+            LocationSearchTableViewController *locationSearchTVC = (LocationSearchTableViewController*)containerVC.locationSearchNavigationController.viewControllers.firstObject;
             locationSearchTVC.targetForReceivingLocationSelection = self;
             [containerVC bringExploreViewToFront];
-            NSNotification* notification = [[NSNotification alloc]initWithName:SearchBarShouldBecomeActiveNotificationName object:self userInfo:nil];
+            NSNotification *notification = [[NSNotification alloc]initWithName:SearchBarShouldBecomeActiveNotificationName object:self userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotification:notification];
         }
     }
@@ -59,7 +60,7 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 
 - (IBAction)dotBtnTapped:(UIBarButtonItem *)sender {
     if([self.parentViewController.parentViewController isKindOfClass: [ContainerViewController class]]){
-        ContainerViewController* containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
+        ContainerViewController *containerVC = (ContainerViewController*)self.parentViewController.parentViewController;
         [containerVC toggleLeftMainView];
     }
 }
@@ -84,16 +85,16 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
     if(notification.object != self){
         return;
     }
-    CLLocation* location = (CLLocation*)notification.userInfo[LocationSelectedLocationInfoKey];
+    CLLocation *location = (CLLocation*)notification.userInfo[LocationSelectedLocationInfoKey];
     if(location != nil){
         //update
         dispatch_async(dispatch_get_main_queue(), ^{
-            MKPointAnnotation* spotAnnotation = [[MKPointAnnotation alloc] init];
+            MKPointAnnotation *spotAnnotation = [[MKPointAnnotation alloc] init];
             [spotAnnotation setCoordinate:location.coordinate];
-            NSString* title = (NSString*)notification.userInfo[LocationSelectedTitleKey];
+            NSString *title = (NSString*)notification.userInfo[LocationSelectedTitleKey];
             if(title != nil){
                 spotAnnotation.title = title;
-                NSString* subTitle = (NSString*)notification.userInfo[LocationSelectedSubTitleKey];
+                NSString *subTitle = (NSString*)notification.userInfo[LocationSelectedSubTitleKey];
                 if(subTitle != nil){
                     spotAnnotation.subtitle = subTitle;
                 }
@@ -130,7 +131,7 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
     [VideoStream fetchLive:self.locationCenter withRadius:searchRadius completionHandler:^(NSMutableArray<VideoStream *> *videoStreams, NSError *error) {
          dispatch_async(dispatch_get_main_queue(), ^{
             if(error == nil){
-                for(VideoStream* videoStream in videoStreams){
+                for(VideoStream *videoStream in videoStreams){
                     [self.videoStreamAnnotations insertObject:videoStream atIndex:0];
                     [self.mapView addAnnotations: self.videoStreamAnnotations];
                 }
@@ -155,7 +156,7 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 
 -(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
     if([locations count] > 0){
-        CLLocation* currentLocation = locations.lastObject;
+        CLLocation *currentLocation = locations.lastObject;
         self.locationCenter = currentLocation;
         MKCoordinateRegion region = MKCoordinateRegionMake(currentLocation.coordinate, MKCoordinateSpanMake(LocationDegree, LocationDegree));
         [self.mapView setRegion:region];
@@ -172,13 +173,13 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
     }else if([annotation isKindOfClass:[ MKPointAnnotation class]]){
         return nil;
     }
-    MKAnnotationView* annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier: MapViewReuseIdentifier];
+    MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier: MapViewReuseIdentifier];
     if(!annotationView){
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MapViewReuseIdentifier];
     }else{
         annotationView.annotation = annotation;
     }
-    VideoStream* videoStream = (VideoStream*)annotation;
+    VideoStream *videoStream = (VideoStream*)annotation;
     annotationView.image = videoStream.thumbImage;
     annotationView.frame = CGRectMake(0, 0, 60, 60);
     annotationView.layer.borderColor = [[UIColor whiteColor] CGColor];
@@ -186,13 +187,13 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
     annotationView.canShowCallout = YES;
     if([videoStream isLive]){
         //add overlay
-        UIView* overlayView = [[UIView alloc]initWithFrame:annotationView.frame];
+        UIView *overlayView = [[UIView alloc]initWithFrame:annotationView.frame];
         overlayView.backgroundColor = [UIColor blackColor];
         overlayView.alpha = 0.1;
         [annotationView addSubview:overlayView];
         //add video icon
-        UIImage* liveIcon = [UIImage imageNamed:@"live-icon"];
-        UIImageView* liveIconImageView = [[UIImageView alloc] initWithImage:liveIcon];
+        UIImage *liveIcon = [UIImage imageNamed:@"live-icon"];
+        UIImageView *liveIconImageView = [[UIImageView alloc] initWithImage:liveIcon];
         liveIconImageView.frame = CGRectMake(36, 6, 18, 14);
         [annotationView addSubview:liveIconImageView];
     }
@@ -203,17 +204,17 @@ static NSString* const ShowCastingSegueIdentifier = @"ShowCasting";
 -(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
     if([view.annotation isKindOfClass:[VideoStream class]]){
         //configure left callout accessory view
-        VideoStream* videoStream = (VideoStream*)view.annotation;
-        CGRect rect = CGRectMake(0, 0, CalloutViewHeight * videoStream.width / videoStream.height, CalloutViewHeight);
-        UIImageView* imageView = [[UIImageView alloc]initWithFrame:rect];
+        VideoStream *videoStream = (VideoStream*)view.annotation;
+        CGRect rect = CGRectMake(0, 0, CalloutViewHeight  *videoStream.width / videoStream.height, CalloutViewHeight);
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:rect];
         imageView.image = videoStream.thumbImage;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         view.leftCalloutAccessoryView = imageView;
 
         //configure right callout accessory view and btn
-        UIImage* arrowIcon = [UIImage imageNamed:@"arrow-icon"];
-        UIButton* disclosureBtn = [[UIButton alloc]init];
+        UIImage *arrowIcon = [UIImage imageNamed:@"arrow-icon"];
+        UIButton *disclosureBtn = [[UIButton alloc]init];
         [disclosureBtn sizeToFit];
         [disclosureBtn setBackgroundImage:arrowIcon forState:UIControlStateNormal];
         view.rightCalloutAccessoryView = disclosureBtn;

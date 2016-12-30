@@ -23,9 +23,9 @@
     _comment = comment;
     //update UI
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSData* imageData = [[NSData alloc]initWithContentsOfURL:self.comment.avatorURL];
+        NSData *imageData = [[NSData alloc]initWithContentsOfURL:self.comment.avatorURL];
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIImage* avator = [[UIImage alloc]initWithData:imageData];
+            UIImage *avator = [[UIImage alloc]initWithData:imageData];
             self.avatorImageView.image = avator;
         });
     });

@@ -11,10 +11,8 @@
 @interface PostCollectionViewCell()
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
-
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewsLabel;
-
 
 @end
 
@@ -23,7 +21,8 @@
 -(void)setVideoStream:(VideoStream *)videoStream{
     self.previewImageView.image = videoStream.thumbImage;
     self.titleLabel.text = videoStream.title;
-    self.viewsLabel.text = [NSString stringWithFormat:@"%@ VIEWS", videoStream.view.stringValue];
+    NSString* views = NSLocalizedString(@"VIEWS", @"views on profile page post");
+    self.viewsLabel.text = [NSString stringWithFormat:@"%@ %@", videoStream.view.stringValue, views];
 }
 
 @end

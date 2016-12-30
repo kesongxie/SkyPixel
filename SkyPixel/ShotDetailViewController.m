@@ -19,8 +19,8 @@
 #import "SkyCastNavigationViewController.h"
 
 //constants
-static NSString* const FavorIconWhite = @"favor-icon";
-static NSString* const FavorIconRed = @"favor-icon-red";
+static NSString *const FavorIconWhite = @"favor-icon";
+static NSString *const FavorIconRed = @"favor-icon-red";
 static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 @interface ShotDetailViewController()
@@ -52,10 +52,10 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIImageView *playIconImageView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (strong, nonatomic) AVPlayerItem* playerItem;
-@property (strong, nonatomic) AVPlayer* player;
-@property (strong, nonatomic) NSString* payerItemContext;
-@property (strong, nonatomic) HorizontalSlideInAnimator* animator;
+@property (strong, nonatomic) AVPlayerItem *playerItem;
+@property (strong, nonatomic) AVPlayer *player;
+@property (strong, nonatomic) NSString *payerItemContext;
+@property (strong, nonatomic) HorizontalSlideInAnimator *animator;
 @property (nonatomic) NSInteger numberOfVideoLoadingTrial;
 
 //flags for monitoring video states
@@ -63,33 +63,48 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 @property (nonatomic) BOOL isVideoPaused;
 @property (nonatomic) BOOL isVideoFinishedLoading;
 
-//update the user information, such as fullname, avator, etc
+/**
+ update the user information, such as fullname, avator, etc
+ */
 -(void)updateUI;
 
-//notification when the video finished playing
+/**
+ notification when the video finished playing
+ */
 -(void)didPlayToEnd:(NSNotification*)notification;
 
-//this is function is responsible for updating the favor and comment count
+/**
+this is function is responsible for updating the favor and comment count
+*/
 -(void)updatePinBottomViewUI;
 
-//add gesture to views
+/**
+ add gesture to views
+*/
 -(void)addTapGesture;
 
 -(void)favorTapped: (UITapGestureRecognizer*)gesture;
 
 -(void)playerViewTapped: (UITapGestureRecognizer*)gesture;
 
-//pause the video playing after loading, triggered while the user tapped the player view
+/**
+ pause the video playing after loading, triggered while the user tapped the player view
+ */
 -(void)pausePlaying;
 
-//resume the video playing when the video is paused
+/**
+ resume the video playing when the video is paused
+ */
 -(void)resumePlaying;
 
-
-//remove the given user reference form the userFavorList of referenList in video stream
+/**
+ add the given user reference to the userFavorList of referenList in video stream
+ */
 -(void)favorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
 
-//add the given user reference to the userFavorList of referenList in video stream
+/**
+ remove the given user reference form the userFavorList of referenList in video stream
+ */
 -(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
 
 @end
@@ -111,10 +126,10 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
     if(self.videoStream != nil){
         [self updateUI];
         //convert latitude and longitude to human-readable string
-        CLGeocoder* geoCoder = [[CLGeocoder alloc]init];
-        [geoCoder reverseGeocodeLocation:self.videoStream.location completionHandler:^(NSArray* placemarks, NSError* error){
+        CLGeocoder *geoCoder = [[CLGeocoder alloc]init];
+        [geoCoder reverseGeocodeLocation:self.videoStream.location completionHandler:^(NSArray *placemarks, NSError *error){
             if(error == nil){
-                CLPlacemark* placeMark = placemarks.lastObject;
+                CLPlacemark *placeMark = placemarks.lastObject;
                 [self.locationBtn setTitle: placeMark.name forState:UIControlStateNormal];
             }
         }];
@@ -178,44 +193,44 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 }
 
 -(void)updatePinBottomViewUI{
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
-    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionNone];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKRecordID *loggedInReferenceId = [delegate.loggedInRecord recordID];
+    CKReference *loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionNone];
     //update the favor icon wrapper view
-    UIImage* heartIconImage;
+    UIImage *heartIconImage;
     if([self.videoStream.favorUserList containsObject:loggedInReference]){
         heartIconImage = [UIImage imageNamed: FavorIconRed];
     }else{
         heartIconImage =  [UIImage imageNamed: FavorIconWhite];
     }
     self.favorIconImageView.image = heartIconImage;
-    NSNumber* favorCount = [NSNumber numberWithInteger:self.videoStream.favorUserList.count];
+    NSNumber *favorCount = [NSNumber numberWithInteger:self.videoStream.favorUserList.count];
     self.favorCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:favorCount];
     
     //update the commnet wrapper view
-    NSNumber* commentCount = [NSNumber numberWithInteger:self.videoStream.commentReferenceList.count];
+    NSNumber *commentCount = [NSNumber numberWithInteger:self.videoStream.commentReferenceList.count];
     self.commentCountLabel.text = [[NSNumberFormatter alloc]stringFromNumber:commentCount];
 }
 
 -(void)addTapGesture{
     //add tap gesture for the icon
-    UITapGestureRecognizer* favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
+    UITapGestureRecognizer *favorTapped = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorTapped:)];
     [self.favorIconImageView addGestureRecognizer:favorTapped];
     
     //add tap gesture for the comment wrapper view
-    UITapGestureRecognizer* commentWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperViewTapped:)];
+    UITapGestureRecognizer *commentWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(commentWrapperViewTapped:)];
     [self.commentWrapperView addGestureRecognizer:commentWrapperTapGesture];
     
     //add tap gesture for favorWrapperView
-    UITapGestureRecognizer* favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
+    UITapGestureRecognizer *favorWrapperTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favorWrapperViewTapped:)];
     [self.favorWrapperView addGestureRecognizer:favorWrapperTapGesture];
     
     //add tap gesture for avator image view
-    UITapGestureRecognizer* avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
+    UITapGestureRecognizer *avatorTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(avatorImageViewTapped:)];
     [self.avatorImageView addGestureRecognizer:avatorTapGesture];
     
     //add tap gesture for the container view
-    UITapGestureRecognizer* containerTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerViewTapped:)];
+    UITapGestureRecognizer *containerTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerViewTapped:)];
     [self.containerView addGestureRecognizer:containerTapGesture];
 }
 
@@ -252,11 +267,11 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 
 -(void)favorTapped: (UITapGestureRecognizer*)gesture{
-    AppDelegate* delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKRecordID* loggedInReferenceId = [delegate.loggedInRecord recordID];
-    CKReference* loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
-    __block UIImage* heartIconImage;
-    __block NSNumber* count = [[NSNumberFormatter alloc]numberFromString:self.favorCountLabel.text];
+    AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    CKRecordID *loggedInReferenceId = [delegate.loggedInRecord recordID];
+    CKReference *loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
+    __block UIImage *heartIconImage;
+    __block NSNumber *count = [[NSNumberFormatter alloc]numberFromString:self.favorCountLabel.text];
     if([self.videoStream.favorUserList containsObject:loggedInReference]){
        //delete favor
         [self deleteFavorForUserReferenceInVideoStream:loggedInReference videoStream:self.videoStream completionHandler:^{
@@ -298,8 +313,8 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 -(void)favorWrapperViewTapped: (UITapGestureRecognizer*)gesture{
     //segue to the favor list view controller
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    FavorUserListViewController* favorUserListVC= (FavorUserListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FavorUserListViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    FavorUserListViewController *favorUserListVC= (FavorUserListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FavorUserListViewController"];
     if(favorUserListVC){
         favorUserListVC.favorUserList = self.videoStream.favorUserList;
         [self.navigationController pushViewController:favorUserListVC animated:YES];
@@ -309,8 +324,8 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 -(void)commentWrapperViewTapped: (UITapGestureRecognizer*)gesture{
     //show a new segue
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    CommentListViewController* commentListVC = (CommentListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"CommentListViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    CommentListViewController *commentListVC = (CommentListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"CommentListViewController"];
     if(commentListVC){
         commentListVC.videoStream = self.videoStream;
         [self.navigationController pushViewController:commentListVC animated:YES];
@@ -318,8 +333,8 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 }
 
 -(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
-    ProfileCollectionViewController* profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
+    ProfileCollectionViewController *profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
     if(profileCVC){
         profileCVC.user = self.videoStream.user;
         profileCVC.transitioningDelegate = self;
@@ -330,8 +345,8 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 }
 
 +(void)pushShotDetailWithVideoStream:(UINavigationController*)navigationController withVideoStream: (VideoStream*) videoStream{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
-    ShotDetailViewController* castVC = (ShotDetailViewController*)[storyboard instantiateViewControllerWithIdentifier:ShotDetailViewControllerIden];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
+    ShotDetailViewController *castVC = (ShotDetailViewController*)[storyboard instantiateViewControllerWithIdentifier:ShotDetailViewControllerIden];
     if(castVC){
         castVC.videoStream = videoStream;
         [navigationController pushViewController:castVC animated:YES];
@@ -341,7 +356,6 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 
 //MARK: player
-
 -(NSURL *)videoURL: (NSURL*)fileURL {
     return [self createHardLinkToVideoFile: fileURL];
 }
@@ -349,7 +363,7 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 //returns a hard link, so as not to maintain another copy of the video file on the disk
 -(NSURL *)createHardLinkToVideoFile: (NSURL*)fileURL {
     NSError *err;
-    NSURL* hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
+    NSURL *hardURL = [fileURL URLByAppendingPathExtension:@"mp4"];
     if (![hardURL checkResourceIsReachableAndReturnError:nil]) {
         if (![[NSFileManager defaultManager] linkItemAtURL: fileURL toURL: hardURL error:&err]) {
             // if creating hard link failed it is still possible to create a copy of self.asset.fileURL and return the URL of the copy
@@ -365,19 +379,17 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
     }
 }
 
-
 -(void) adjustVideoFrame{
     if(self.videoStream.width != 0 && self.videoStream.height != 0){
-        self.videoHeightConstraint.constant = self.view.frame.size.width * self.videoStream.height / self.videoStream.width;
+        self.videoHeightConstraint.constant = self.view.frame.size.width  *self.videoStream.height / self.videoStream.width;
     }
 }
 
-
 -(void)readyLoadingVideo: (CKAsset*)videoAsset{
     if(videoAsset){
-        NSURL* viedoURL = [self videoURL:videoAsset.fileURL];
-        AVAsset* asset = [AVAsset assetWithURL:viedoURL];
-        NSArray* assetKeys = @[@"playable", @"hasProtectedContent"];
+        NSURL *viedoURL = [self videoURL:videoAsset.fileURL];
+        AVAsset *asset = [AVAsset assetWithURL:viedoURL];
+        NSArray *assetKeys = @[@"playable", @"hasProtectedContent"];
         [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
         self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
         [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
@@ -429,7 +441,7 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 }
 
 
-//custom transition
+//MARK: - Custom transition
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
     self.animator = [[HorizontalSlideInAnimator alloc] init];
     return self.animator;

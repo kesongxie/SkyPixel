@@ -11,7 +11,7 @@
 
 @interface PlayerView : UIImageView
 
-@property (nonatomic) AVPlayer* player;
+@property (nonatomic) AVPlayer *player;
 
 @end
 
