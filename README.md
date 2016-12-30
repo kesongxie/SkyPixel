@@ -1,12 +1,53 @@
-# SkyPixel (DJI)
+# SkyPixel
 Follow and share nearby live stream drone footage at your finger tip. Edit (README.md, coming soon)
 
+Author: Kesong Xie
+
+Time Spent: 3 weeks
+
+Testing Environment: iPhone physical device running iOS 10.2, Xcode Version 8.2 beta
+
+Deployment Target: iOS 10 and above
 
 <h1>Frameworks Used</h1>
 <ul>
   <li>MapKit</li>
-  <li>CoreData</li>
   <li>CloudKit</li>
+  <li>Photos</li>
   <li>AVFoundation</li>
+  <li>Foundation</li>
+  <li>CoreLocation</li>
   <li>UIKit</li>
 </ul>
+
+<h1>Features Highlighted</h1>
+<ul>
+  <li>Search video footage near your current location or a spot with your preference
+  <br/>
+  Technical Keywords: <strong>MapKit, UISearchController, Cloudkit</strong>
+  </li>
+  <li>View video footage details including video content, title, location associated with the footage, number of viewers, description, author and more 
+   <br/>
+   Technical Keywords: <strong>AVFoundation, CLGeocoder/CoreLocation, Cloudkit, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning</strong>
+   </li>
+  <li>Users can favor or comment a specific video shot
+   <br/>
+  Technical Keywords: <strong>UITableView, Cloudkit</strong>
+  </li>
+  <li>Each user has his or her own profile page listing all the video footage he or she shared, other information includes streachy cover photo, profile picture, fullname, nationality(with a flag), bio.(The follower functionality coming soon)
+   <br/>
+  Technical Keywords: <strong>UICollectionView, UICollectionViewFlowLayout, UIScrollViewDelegate</strong>
+  </li>
+  <li>A left slide out navigation panel for easily navigating to the logged-in user's profile and it also includes sharing button for composing a shot
+    <br/>
+   Technical Keywords: <strong> ContainerView, Embed segue</strong>
+  </li>
+  <li>Customized video picker interface that allows user to pick videos from user's own libaray with ease and use it to compose a post, and the user may also include a title for the video, the location name(the App automatically extract location information from the video asset and fill it in the input text field automatically), short description, the devices used for shooting the video(current supporting devices availabe for user to select from are mostly DJI's products, including Phantom 4 Pro, Mavic, Inspire series, etc)
+   <br/>
+   <strong>Technical Keywords: Photos, AVFoundation, UICollectionView, UICollectionViewFlowLayout, CloudKit, GeoCoder</strong>
+  </li>
+  <li>Live streaming video(with DJI iOS SDK)coming soon</li>
+</ul>
+
+<h1>Video Walk Through</h1>
+
