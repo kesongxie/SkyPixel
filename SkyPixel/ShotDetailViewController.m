@@ -60,6 +60,7 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 //flags for monitoring video states
 @property (nonatomic) BOOL isViewVisible;
+@property (nonatomic) BOOL viewControllerWillDeallocate;
 @property (nonatomic) BOOL isVideoPaused;
 @property (nonatomic) BOOL isVideoFinishedLoading;
 
@@ -112,6 +113,7 @@ this is function is responsible for updating the favor and comment count
 @implementation ShotDetailViewController
 
 -(IBAction)backBtnTapped:(UIBarButtonItem *)sender {
+    self.viewControllerWillDeallocate = YES;
     [self resetPlayer];
     if([self.navigationController isKindOfClass:[ShotDetailNavigationController class]]){
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -139,7 +141,10 @@ this is function is responsible for updating the favor and comment count
     [self.videoStream loadVideoAsset:^(CKAsset *videoAsset, NSError *error) {
         self.numberOfVideoLoadingTrial += 1;
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self readyLoadingVideo: videoAsset];
+            if(!self.viewControllerWillDeallocate){
+                [self readyLoadingVideo: videoAsset];
+            }
+            
         });
     }];
     [self addTapGesture];
@@ -169,7 +174,6 @@ this is function is responsible for updating the favor and comment count
     [super viewWillDisappear:animated];
     self.isViewVisible = NO;
     [self.player setMuted:YES];
-
 }
 
 -(void) updateUI{

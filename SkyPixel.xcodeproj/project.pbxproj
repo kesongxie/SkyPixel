@@ -13,7 +13,6 @@
 		983046C31E0A0F4500F0557A /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046C21E0A0F4500F0557A /* Utility.m */; };
 		983046CC1E0BC52A00F0557A /* VideoAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046CB1E0BC52A00F0557A /* VideoAsset.m */; };
 		983046D01E0C7C3900F0557A /* UIImageView+ProfileAvator.m in Sources */ = {isa = PBXBuildFile; fileRef = 983046CF1E0C7C3900F0557A /* UIImageView+ProfileAvator.m */; };
-		98621A841DFC9B7500417978 /* clip in Resources */ = {isa = PBXBuildFile; fileRef = 98621A831DFC9B7500417978 /* clip */; };
 		98621A8A1DFCBBE100417978 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A891DFCBBE100417978 /* User.m */; };
 		98621A8F1DFCCCC300417978 /* VideoStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A8E1DFCCCC300417978 /* VideoStream.m */; };
 		98621A931DFCCF1400417978 /* VideoStream+Annotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 98621A921DFCCF1400417978 /* VideoStream+Annotation.m */; };
@@ -69,7 +68,6 @@
 		983046CD1E0BC53600F0557A /* VideoAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoAsset.h; sourceTree = "<group>"; };
 		983046CE1E0C7C3900F0557A /* UIImageView+ProfileAvator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ProfileAvator.h"; sourceTree = "<group>"; };
 		983046CF1E0C7C3900F0557A /* UIImageView+ProfileAvator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ProfileAvator.m"; sourceTree = "<group>"; };
-		98621A831DFC9B7500417978 /* clip */ = {isa = PBXFileReference; lastKnownFileType = folder; name = clip; path = SkyPixel/clip; sourceTree = "<group>"; };
 		98621A881DFCBBD600417978 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		98621A891DFCBBE100417978 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		98621A8E1DFCCCC300417978 /* VideoStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoStream.m; sourceTree = "<group>"; };
@@ -195,10 +193,10 @@
 		98621AB91DFE94BC00417978 /* Shot Detail */ = {
 			isa = PBXGroup;
 			children = (
-				98621ABC1DFE94DF00417978 /* ShotDetailViewController.h */,
-				98621ABA1DFE94D800417978 /* ShotDetailViewController.m */,
 				98CDE6341E120C9200B7B439 /* ShotDetailNavigationController.h */,
 				98CDE6351E120C9A00B7B439 /* ShotDetailNavigationController.m */,
+				98621ABC1DFE94DF00417978 /* ShotDetailViewController.h */,
+				98621ABA1DFE94D800417978 /* ShotDetailViewController.m */,
 				98F8BD951E08C3F100A9E3D2 /* Favor User List */,
 				98F8BDA51E090B7200A9E3D2 /* Comment list */,
 			);
@@ -245,7 +243,6 @@
 		98C3DD4A1DF0F5CC00F6B49B = {
 			isa = PBXGroup;
 			children = (
-				98621A831DFC9B7500417978 /* clip */,
 				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
 				98C3DD541DF0F5CC00F6B49B /* Products */,
 				98DDFFF91DF600D300E2E762 /* Frameworks */,
@@ -272,6 +269,7 @@
 				98AEEB4A1E052B8C00431481 /* Location Search */,
 				98DC2D8F1E0F89560040890F /* Prepare for Login */,
 				98D284401E131337006779FD /* Edit Post Navigation */,
+				98621AB91DFE94BC00417978 /* Shot Detail */,
 				98D965511DF5043000335CC6 /* SkyCast Scene */,
 				983046C71E0B6F9200F0557A /* Profile Scene */,
 				98E649291E1656C800E0383A /* Storyboard */,
@@ -325,7 +323,6 @@
 			isa = PBXGroup;
 			children = (
 				98AEEB4B1E052BA900431481 /* Container */,
-				98621AB91DFE94BC00417978 /* Shot Detail */,
 			);
 			name = "SkyCast Scene";
 			sourceTree = "<group>";
@@ -513,7 +510,6 @@
 			files = (
 				98E711091E0CF17F00241C12 /* InfoPlist.strings in Resources */,
 				98E649261E1650D200E0383A /* Localizable.strings in Resources */,
-				98621A841DFC9B7500417978 /* clip in Resources */,
 				98C3DD661DF0F5CC00F6B49B /* LaunchScreen.storyboard in Resources */,
 				98AF06481DFA88AF0060D993 /* Assets.xcassets in Resources */,
 				98C3DD611DF0F5CC00F6B49B /* Main.storyboard in Resources */,
