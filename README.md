@@ -9,6 +9,8 @@ Language: Objective-C
 
 Testing Environment: iPhone physical device running iOS 10.2, Xcode Version 8.2 beta
 
+Testing: Go to the right upper corner search icon and enter one of the following location that has already had videos associated with it: UCSD, Stanford University, Eiffel Tower, Madison Square Garden(You may also try to compose a new video and the video will appear at the location associated with it)
+
 Deployment Target: iOS 10 and above
 
 <h1>Frameworks Used</h1>
@@ -54,6 +56,12 @@ Deployment Target: iOS 10 and above
   </li>
   <li>Live streaming video(with DJI iOS SDK)coming soon</li>
 </ul>
+
+<h1>Screen Shot Demostration</h1>
+<div>
+<img src="https://github.com/kesongxie/SkyPixel/blob/master/SkyPixel/screen%20shot%20/ShowCase.png">
+</div>
+
 
 <h1>Video Walk Through</h1>
 <ul>
