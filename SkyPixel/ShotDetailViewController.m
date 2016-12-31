@@ -108,6 +108,10 @@ this is function is responsible for updating the favor and comment count
  */
 -(void)deleteFavorForUserReferenceInVideoStream: (CKReference*) userReference videoStream: (VideoStream*) videoStream completionHandler: (void (^)(void)) callBack;
 
+/**
+ Check whether this is the current loggedin user's shot
+ */
+-(BOOL)isCurrentUserShot;
 @end
 
 @implementation ShotDetailViewController
@@ -193,6 +197,9 @@ this is function is responsible for updating the favor and comment count
         self.descriptionLabel.text = NSLocalizedString(@"No description available", @"default message");
         self.descriptionLabel.textColor = [UIColor colorWithRed:90/255.0 green:90/255.0 blue:90/255.0 alpha:1]; //lighter gray for default message
     }
+
+    
+    
     [self updatePinBottomViewUI];
 }
 
@@ -236,6 +243,11 @@ this is function is responsible for updating the favor and comment count
     //add tap gesture for the container view
     UITapGestureRecognizer *containerTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(playerViewTapped:)];
     [self.containerView addGestureRecognizer:containerTapGesture];
+    
+    //add tap gesture for the optionWrapperView
+    UITapGestureRecognizer *optionTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(optionWrapperViewTapped:)];
+    [self.optionWrapperView addGestureRecognizer:optionTapGesture];
+
 }
 
 
@@ -267,6 +279,39 @@ this is function is responsible for updating the favor and comment count
         self.pauseIcon.alpha = 1;
     }];
     self.isVideoPaused = NO;
+}
+
+-(void)optionWrapperViewTapped: (UITapGestureRecognizer*)gesture{
+    NSString* alertTitle;
+    NSString* alertDescription;
+    UIAlertAction* mainAction;
+    NSString* mainActionTitle;
+    NSString* cancelActionTitle = NSLocalizedString(@"Cancel", @"cancel main action");
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle style:UIAlertActionStyleCancel handler:nil];
+
+    if([self isCurrentUserShot]){
+        //current user's shot
+        alertTitle = NSLocalizedString(@"Delete This Shot", @"delete post alert title");
+        alertDescription = NSLocalizedString(@"Are you sure you want to delete this shot? All the data associated with the shot will be removed as well", @"delete post alert description");
+        mainActionTitle = NSLocalizedString(@"Delete", @"delete post action");
+        mainAction = [UIAlertAction actionWithTitle:mainActionTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            //delete action
+        }];
+    }else{
+        //otherwise
+        alertTitle = NSLocalizedString(@"Report This Shot", @"report post");
+        alertDescription = NSLocalizedString(@"Do you want to report this shot? A shot is considered inappropriate when it contains voilent, pornography, or misleading content", @"report post description");
+        mainActionTitle = NSLocalizedString(@"Report", @"report post action");
+        mainAction = [UIAlertAction actionWithTitle:mainActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //report action
+        }];
+    }
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:alertTitle message:alertDescription preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:mainAction];
+    [alert addAction:cancelAction];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alert animated:YES completion:nil];
+    });
 }
 
 
@@ -348,6 +393,13 @@ this is function is responsible for updating the favor and comment count
     }
 }
 
+
+
+-(BOOL)isCurrentUserShot{
+    AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    return [self.videoStream.user.reference isEqual:appDelegate.loggedInUser.reference];
+}
+
 +(void)pushShotDetailWithVideoStream:(UINavigationController*)navigationController withVideoStream: (VideoStream*) videoStream{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
     ShotDetailViewController *castVC = (ShotDetailViewController*)[storyboard instantiateViewControllerWithIdentifier:ShotDetailViewControllerIden];
@@ -356,7 +408,6 @@ this is function is responsible for updating the favor and comment count
         [navigationController pushViewController:castVC animated:YES];
     }
 }
-
 
 
 //MARK: player

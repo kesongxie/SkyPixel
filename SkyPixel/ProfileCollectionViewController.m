@@ -15,6 +15,7 @@
 #import "PostCollectionViewCell.h"
 #import "ShotDetailNavigationController.h"
 #import "ShotDetailViewController.h"
+#import "CKReference+Comparison.h"
 
 
 static CGFloat const Space = 16;
@@ -86,14 +87,23 @@ static CGFloat const Space = 16;
     self.headerView.coverImageView.image = self.user.coverThumbImage;
     self.headerView.bioLabel.text = self.user.bio;
     self.headerView.followBtn.layer.cornerRadius = 3.0;
+    if([self isCurrentUserProfile]){
+        [self.headerView.followBtn setTitle:NSLocalizedString(@"Edit Profile", "Edit profile button text") forState:UIControlStateNormal];
+    }
     [self.headerView.backBtn addTarget:self action:@selector(backBtnTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.headerView.backBtnOrigin = self.headerView.backBtn.frame.origin;
     [self adjustCoverView];
 }
 
-- (void)backBtnTapped:(UIButton *)sender {
+-(void)backBtnTapped:(UIButton *)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+-(BOOL)isCurrentUserProfile{
+    AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    return [self.user.reference isEqual:appDelegate.loggedInUser.reference];
+}
+
 
 //MARK: UIScrollViewDelegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
