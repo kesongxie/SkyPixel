@@ -1,5 +1,5 @@
 # SkyPixel
-Follow and share nearby live stream drone footage at your finger tip. Edit (README.md, coming soon)
+Follow and share nearby drone footage at your finger tip. Edit (README.md, coming soon)
 
 Author: Kesong Xie
 
