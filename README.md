@@ -55,6 +55,12 @@ Deployment Target: iOS 10 and above
   <li>Live streaming video(with DJI iOS SDK)coming soon</li>
 </ul>
 
+<h1>Screen Shot Demostration</h1>
+<div>
+<img src="https://github.com/kesongxie/SkyPixel/blob/master/SkyPixel/screen%20shot%20/ShowCase.png">
+</div>
+
+
 <h1>Video Walk Through</h1>
 <ul>
 <li>
