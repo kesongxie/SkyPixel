@@ -266,15 +266,20 @@
         <target>正在删除...</target>
         <note>comment deleting</note>
       </trans-unit>
+      <trans-unit id="Edit Profile">
+        <source>Edit Profile</source>
+        <target>编辑主页</target>
+        <note>edit profile</note>
+      </trans-unit>
       <trans-unit id="Enter a spot">
         <source>Enter a spot</source>
         <target>输入一个景点</target>
         <note>enter a spot</note>
       </trans-unit>
       <trans-unit id="FAVORS">
-          <source>FAVORS</source>
-          <target>点赞</target>
-          <note>title for favor page</note>
+        <source>FAVORS</source>
+        <target>点赞</target>
+        <note>title for favor page</note>
       </trans-unit>
       <trans-unit id="LIVE NOW">
         <source>LIVE NOW</source>
@@ -327,9 +332,9 @@
         <note>No comment provided by engineer.</note>
       </trans-unit>
       <trans-unit id="VIEWS">
-          <source>VIEWS</source>
-          <target>人浏览</target>
-          <note>views on profile page post</note>
+        <source>VIEWS</source>
+        <target>人浏览</target>
+        <note>views on profile page post</note>
       </trans-unit>
     </body>
   </file>
