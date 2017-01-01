@@ -11,6 +11,11 @@
       <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.2" build-num="8C30a"/>
     </header>
     <body>
+      <trans-unit id="1jr-Jy-MLF.text">
+        <source>The post is no longer existed</source>
+        <target>这个帖子已经被删除了</target>
+        <note>Class = "UILabel"; text = "The post is no longer existed"; ObjectID = "1jr-Jy-MLF";</note>
+      </trans-unit>
       <trans-unit id="5R5-1C-Vl6.placeholder">
         <source>Add a short title for your video</source>
         <target>为您的视频添加一个标题</target>
@@ -256,20 +261,45 @@
       <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="8.2" build-num="8C30a"/>
     </header>
     <body>
+      <trans-unit id="Are you sure you want to delete this shot? All the data associated with the shot will be removed as well">
+        <source>Are you sure you want to delete this shot? All the data associated with the shot will be removed as well</source>
+        <target>您确定要删除这个帖子吗？所有的信息包含在内都会被一起删除</target>
+        <note>delete post alert description</note>
+      </trans-unit>
       <trans-unit id="COMMENTS">
         <source>COMMENTS</source>
         <target>评论</target>
         <note>title</note>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target>取消</target>
+        <note>cancel main action</note>
       </trans-unit>
       <trans-unit id="DELETING...">
         <source>DELETING...</source>
         <target>正在删除...</target>
         <note>comment deleting</note>
       </trans-unit>
-      <trans-unit id="Edit Profile">
-        <source>Edit Profile</source>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <target>删除</target>
+        <note>delete post action</note>
+      </trans-unit>
+      <trans-unit id="Delete This Shot">
+        <source>Delete This Shot</source>
+        <target>删除帖子</target>
+        <note>delete post alert title</note>
+      </trans-unit>
+      <trans-unit id="Do you want to report this shot? A shot is considered inappropriate when it contains voilent, pornography, or misleading content">
+        <source>Do you want to report this shot? A shot is considered inappropriate when it contains voilent, pornography, or misleading content</source>
+        <target>你需要举报这个帖子吗？不恰当的帖子包括暴力，不雅和误导的内容</target>
+        <note>report post description</note>
+      </trans-unit>
+      <trans-unit id="EDIT PROFILE">
+        <source>EDIT PROFILE</source>
         <target>编辑主页</target>
-        <note>edit profile</note>
+        <note>Edit profile button text</note>
       </trans-unit>
       <trans-unit id="Enter a spot">
         <source>Enter a spot</source>
@@ -305,6 +335,16 @@
         <source>PUBLISHED</source>
         <target>已发送</target>
         <note>Finished sharing post</note>
+      </trans-unit>
+      <trans-unit id="Report Inappropriate">
+        <source>Report Inappropriate</source>
+        <target>举报</target>
+        <note>report post action</note>
+      </trans-unit>
+      <trans-unit id="Report This Shot">
+        <source>Report This Shot</source>
+        <target>举报这个帖子</target>
+        <note>report post</note>
       </trans-unit>
       <trans-unit id="SEARCHING...">
         <source>SEARCHING...</source>

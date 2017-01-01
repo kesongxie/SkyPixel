@@ -79,4 +79,6 @@ static NSString *const ShotDeviceKey = @"shotDevice";
 
 +(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description shotBy: (ShotDevice*)shotDevice videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail completionHandler: (void(^)(VideoStream *videoStram, NSError *error)) callback;
 
+
++(void)deleteShot: (VideoStream*)videoStream completionHandler: (void(^)(CKRecordID *recordId, NSError *error))callback;
 @end

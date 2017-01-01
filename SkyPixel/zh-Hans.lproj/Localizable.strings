@@ -1,8 +1,26 @@
+/* delete post alert description */
+"Are you sure you want to delete this shot? All the data associated with the shot will be removed as well" = "您确定要删除这个帖子吗？所有的信息包含在内都会被一起删除";
+
 /* title */
 "COMMENTS" = "评论";
 
+/* cancel main action */
+"Cancel" = "取消";
+
 /* comment deleting */
 "DELETING..." = "正在删除...";
+
+/* delete post action */
+"Delete" = "删除";
+
+/* delete post alert title */
+"Delete This Shot" = "删除帖子";
+
+/* report post description */
+"Do you want to report this shot? A shot is considered inappropriate when it contains voilent, pornography, or misleading content" = "你需要举报这个帖子吗？不恰当的帖子包括暴力，不雅和误导的内容";
+
+/* Edit profile button text */
+"EDIT PROFILE" = "编辑主页";
 
 /* enter a spot */
 "Enter a spot" = "输入一个景点";
@@ -24,6 +42,12 @@
 
 /* Finished sharing post */
 "PUBLISHED" = "已发送";
+
+/* report post action */
+"Report Inappropriate" = "举报";
+
+/* report post */
+"Report This Shot" = "举报这个帖子";
 
 /* searching status */
 "SEARCHING..." = "正在搜索...";

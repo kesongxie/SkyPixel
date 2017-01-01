@@ -118,19 +118,17 @@
     }];
 }
 
-
-//add a user to the user favor list
--(void)deleteFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord *videoRecord, NSError *error)) callBack{
-    //refetch the record
+-(void)addFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord *videoRecord, NSError *error)) callBack{
     NSMutableArray<CKReference*> *favorUserList = [NSMutableArray arrayWithArray:self.favorUserList];
-    [favorUserList removeObject:userReference];
+    [favorUserList insertObject:userReference atIndex:0];
     [self.record setObject:favorUserList forKey:FavorUserListKey];
     [self updateRecord:callBack];
 }
 
--(void)addFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord *videoRecord, NSError *error)) callBack{
+-(void)deleteFavorUser: (CKReference*)userReference completionHandler: (void (^)(CKRecord *videoRecord, NSError *error)) callBack{
+    //refetch the record
     NSMutableArray<CKReference*> *favorUserList = [NSMutableArray arrayWithArray:self.favorUserList];
-    [favorUserList insertObject:userReference atIndex:0];
+    [favorUserList removeObject:userReference];
     [self.record setObject:favorUserList forKey:FavorUserListKey];
     [self updateRecord:callBack];
 }
@@ -208,7 +206,6 @@
 }
 
 
-
 +(void)fetchLive: (CLLocation*)location withRadius: (CGFloat)searchRadius completionHandler:(void(^)(NSMutableArray<VideoStream*> *videoStreams, NSError *error)) callback{
     CKDatabase *publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f",location, searchRadius];
@@ -262,7 +259,6 @@
         description = [NSString stringWithFormat:@"Shot by %@\n%@", shotDevice.deviceName, description];
     }
     record[DescriptionKey] = description;
-    
     PHCachingImageManager *cacheManager = [[PHCachingImageManager alloc]init];
     [cacheManager requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset  *_Nullable asset, AVAudioMix  *_Nullable audioMix, NSDictionary  *_Nullable info) {
         NSURL *videoURL = [(AVURLAsset *)asset URL]; //this contains the file url
@@ -307,6 +303,21 @@
     NSString *thumbnailImageFileName = [NSString stringWithFormat:@"%@.png",videoFileName];
     return [paths.firstObject stringByAppendingPathComponent: thumbnailImageFileName];
 }
+
++(void)deleteShot: (VideoStream*)videoStream completionHandler: (void(^)(CKRecordID *recordId, NSError *error))callback{
+    CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
+    CKRecordID *recordId = videoStream.record.recordID;
+    [db deleteRecordWithID:recordId completionHandler:^(CKRecordID * _Nullable recordID, NSError * _Nullable error) {
+        if(error == nil){
+            callback(recordID, nil);
+        }else{
+            NSLog(@"Failed to delete record: %@", error.localizedDescription);
+            callback(nil, error);
+        }
+    }];
+}
+
+
 
 
 

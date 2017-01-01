@@ -244,7 +244,7 @@
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     AppDelegate *deleagte = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKReference *loggedinReference = [[CKReference alloc]initWithRecord:deleagte.loggedInRecord action:CKReferenceActionNone];
+    CKReference *loggedinReference = deleagte.loggedInUser.reference;
     CKReference *commentOwnerReference = [[CKReference alloc]initWithRecord:self.commentList[indexPath.row].userRecord action:CKReferenceActionNone];
     if([loggedinReference isEqual:self.videoStream.userReference] || [loggedinReference isEqual:commentOwnerReference]){
         return YES;

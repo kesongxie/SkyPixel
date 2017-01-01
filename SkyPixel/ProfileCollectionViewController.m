@@ -23,8 +23,9 @@ static CGFloat const Space = 16;
 @interface ProfileCollectionViewController()<UIViewControllerTransitioningDelegate,  UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) ProfileHeaderView *headerView;
-@property (nonatomic) BOOL preferStatusBarHidden;
 @property (strong, nonatomic) HorizontalSlideInAnimator *animator;
+@property (nonatomic) BOOL preferStatusBarHidden;
+
 
 @end
 
@@ -88,7 +89,7 @@ static CGFloat const Space = 16;
     self.headerView.bioLabel.text = self.user.bio;
     self.headerView.followBtn.layer.cornerRadius = 3.0;
     if([self isCurrentUserProfile]){
-        [self.headerView.followBtn setTitle:NSLocalizedString(@"Edit Profile", "Edit profile button text") forState:UIControlStateNormal];
+        [self.headerView.followBtn setTitle:NSLocalizedString(@"EDIT PROFILE", "Edit profile button text") forState:UIControlStateNormal];
     }
     [self.headerView.backBtn addTarget:self action:@selector(backBtnTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.headerView.backBtnOrigin = self.headerView.backBtn.frame.origin;
@@ -126,7 +127,6 @@ static CGFloat const Space = 16;
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     PostCollectionViewCell *cell = (PostCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionPostCell" forIndexPath:indexPath];
-    
     VideoStream *videoStream = [[VideoStream alloc]initWithCKRecord:self.user.videoStreamRecord[indexPath.row]];
     cell.videoStream = videoStream;
     cell.layer.cornerRadius = 4.0;

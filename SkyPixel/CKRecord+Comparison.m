@@ -1,14 +1,14 @@
 //
-//  CKReference+Comparison.m
+//  CKRecord+Comparison.m
 //  SkyPixel
 //
-//  Created by Xie kesong on 12/19/16.
+//  Created by Xie kesong on 12/31/16.
 //  Copyright © 2016 ___KesongXie___. All rights reserved.
 //
 
-#import "CKReference+Comparison.h"
+#import "CKRecord+Comparison.h"
 
-@implementation CKReference (Comparison)
+@implementation CKRecord (Comparison)
 
 -(BOOL) isEqual:(id)object{
     if([object isKindOfClass:[CKReference class]]){

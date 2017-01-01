@@ -17,6 +17,8 @@
 #import "HorizontalSlideInAnimator.h"
 #import "ShotDetailNavigationController.h"
 #import "SkyCastNavigationViewController.h"
+#import "ProfileCollectionViewController.h"
+#import "VideoStream+Comparison.h"
 
 //constants
 static NSString *const FavorIconWhite = @"favor-icon";
@@ -44,6 +46,7 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 @property (weak, nonatomic) IBOutlet UIStackView *commentWrapperView;
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *optionWrapperView;
+@property (weak, nonatomic) IBOutlet UIView *postNotExistedView;
 
 //video player properties
 @property (weak, nonatomic) IBOutlet PlayerView *playerView;
@@ -54,7 +57,7 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) AVPlayerItem *playerItem;
 @property (strong, nonatomic) AVPlayer *player;
-@property (strong, nonatomic) NSString *payerItemContext;
+@property (strong, nonatomic) NSString *playerItemContext;
 @property (strong, nonatomic) HorizontalSlideInAnimator *animator;
 @property (nonatomic) NSInteger numberOfVideoLoadingTrial;
 
@@ -63,6 +66,7 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 @property (nonatomic) BOOL viewControllerWillDeallocate;
 @property (nonatomic) BOOL isVideoPaused;
 @property (nonatomic) BOOL isVideoFinishedLoading;
+@property (nonatomic) BOOL isShotNotExisted;
 
 /**
  update the user information, such as fullname, avator, etc
@@ -112,6 +116,23 @@ this is function is responsible for updating the favor and comment count
  Check whether this is the current loggedin user's shot
  */
 -(BOOL)isCurrentUserShot;
+
+/**
+ Delete the shot
+ */
+-(void)deleteShot: (void(^)(CKRecordID *recordId, NSError *error))callback;
+
+
+/**
+ show the view indicate the post does not exist, the scorllView and pinFooterView will set to hidden as well
+ */
+-(void)showShotNotExistedView;
+
+/**
+ adjust the UI after a shot is deleted
+ */
+-(void)userDidDeletePost: (NSNotification *)notification;
+
 @end
 
 @implementation ShotDetailViewController
@@ -124,11 +145,12 @@ this is function is responsible for updating the favor and comment count
     }else if([self.navigationController isKindOfClass:[SkyCastNavigationViewController class]]){
          [self.navigationController popViewControllerAnimated:YES];
     }
-   
 }
 
 -(void) viewDidLoad{
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidDeletePost:) name:UserDidDeletePostNotificationName object:nil];
+    
     if(self.videoStream != nil){
         [self updateUI];
         //convert latitude and longitude to human-readable string
@@ -168,16 +190,24 @@ this is function is responsible for updating the favor and comment count
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
     [self.player setMuted:NO];
     if(self.isVideoFinishedLoading && !self.isVideoPaused){
         [self resumePlaying];
     }
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     self.isViewVisible = NO;
     [self.player setMuted:YES];
+}
+
+
+-(void)showShotNotExistedView{
+    [self.postNotExistedView setHidden:NO];
+    [self.view bringSubviewToFront:self.postNotExistedView];
 }
 
 -(void) updateUI{
@@ -197,9 +227,6 @@ this is function is responsible for updating the favor and comment count
         self.descriptionLabel.text = NSLocalizedString(@"No description available", @"default message");
         self.descriptionLabel.textColor = [UIColor colorWithRed:90/255.0 green:90/255.0 blue:90/255.0 alpha:1]; //lighter gray for default message
     }
-
-    
-    
     [self updatePinBottomViewUI];
 }
 
@@ -288,7 +315,6 @@ this is function is responsible for updating the favor and comment count
     NSString* mainActionTitle;
     NSString* cancelActionTitle = NSLocalizedString(@"Cancel", @"cancel main action");
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:cancelActionTitle style:UIAlertActionStyleCancel handler:nil];
-
     if([self isCurrentUserShot]){
         //current user's shot
         alertTitle = NSLocalizedString(@"Delete This Shot", @"delete post alert title");
@@ -296,12 +322,33 @@ this is function is responsible for updating the favor and comment count
         mainActionTitle = NSLocalizedString(@"Delete", @"delete post action");
         mainAction = [UIAlertAction actionWithTitle:mainActionTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             //delete action
+            [self deleteShot:^(CKRecordID *recordId, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // VideoStream *deletedVideoStream = self.videoStream;
+                    // NSDictionary *userInfo = @{DeletedVideoStreamKey: deletedVideoStream};
+                    // NSNotification *notification = [[NSNotification alloc]initWithName:UserDidDeletePostNotificationName object:nil userInfo:userInfo];
+                    [self resetPlayer];
+                    if([self.navigationController.presentingViewController isKindOfClass:[ProfileCollectionViewController class]]){
+                        //removing shots from profile
+                        ProfileCollectionViewController* profileCVC = (ProfileCollectionViewController*)self.navigationController.presentingViewController;
+                        [profileCVC.user removeVideoStreamRecordFromUser:self.videoStream.record];
+                        [profileCVC.collectionView reloadData];
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    }else{
+                        //clear from the map
+                        [self.navigationController popViewControllerAnimated:YES];
+                        //send notification to SkyCastViewController to update the UI
+
+                    }
+                });
+            }];
+            
         }];
     }else{
         //otherwise
         alertTitle = NSLocalizedString(@"Report This Shot", @"report post");
         alertDescription = NSLocalizedString(@"Do you want to report this shot? A shot is considered inappropriate when it contains voilent, pornography, or misleading content", @"report post description");
-        mainActionTitle = NSLocalizedString(@"Report", @"report post action");
+        mainActionTitle = NSLocalizedString(@"Report Inappropriate", @"report post action");
         mainAction = [UIAlertAction actionWithTitle:mainActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             //report action
         }];
@@ -317,8 +364,7 @@ this is function is responsible for updating the favor and comment count
 
 -(void)favorTapped: (UITapGestureRecognizer*)gesture{
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKRecordID *loggedInReferenceId = [delegate.loggedInRecord recordID];
-    CKReference *loggedInReference = [[CKReference alloc]initWithRecordID:loggedInReferenceId action:CKReferenceActionDeleteSelf];
+    CKReference *loggedInReference = delegate.loggedInUser.reference;
     __block UIImage *heartIconImage;
     __block NSNumber *count = [[NSNumberFormatter alloc]numberFromString:self.favorCountLabel.text];
     if([self.videoStream.favorUserList containsObject:loggedInReference]){
@@ -393,11 +439,19 @@ this is function is responsible for updating the favor and comment count
     }
 }
 
-
-
 -(BOOL)isCurrentUserShot{
     AppDelegate* appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     return [self.videoStream.user.reference isEqual:appDelegate.loggedInUser.reference];
+}
+
+-(void)deleteShot: (void(^)(CKRecordID *recordId, NSError *error))callback{
+    [VideoStream deleteShot:self.videoStream completionHandler:^(CKRecordID *recordId, NSError *error) {
+        callback(recordId, error);
+    }];
+}
+
+-(void)userDidDeletePost: (NSNotification *)notification{
+    //handle UI updates after deleting
 }
 
 +(void)pushShotDetailWithVideoStream:(UINavigationController*)navigationController withVideoStream: (VideoStream*) videoStream{
@@ -447,7 +501,7 @@ this is function is responsible for updating the favor and comment count
         NSArray *assetKeys = @[@"playable", @"hasProtectedContent"];
         [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(didPlayToEnd:) name:@"AVPlayerItemDidPlayToEndTimeNotification" object:nil];
         self.playerItem = [[AVPlayerItem alloc] initWithAsset: asset automaticallyLoadedAssetKeys:assetKeys];
-        [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_payerItemContext];
+        [self.playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew  context: &_playerItemContext];
         // Associate the player item with the player
         self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
         self.playerView.player = self.player;
@@ -469,7 +523,7 @@ this is function is responsible for updating the favor and comment count
 
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == &_payerItemContext) {
+    if (context == &_playerItemContext) {
         dispatch_async(dispatch_get_main_queue(),^{
             if ((self.player.currentItem != nil) &&
                 ([self.player.currentItem status] == AVPlayerItemStatusReadyToPlay)) {
@@ -491,8 +545,11 @@ this is function is responsible for updating the favor and comment count
 
 
 -(void)resetPlayer{
-    [self.playerItem removeObserver:self forKeyPath:@"status" context:&_payerItemContext];
+    NSLog(@"removing obersever");
+    [self.playerItem removeObserver:self forKeyPath:@"status" context:&_playerItemContext];
+    self.playerItemContext = nil;
     [self.player pause];
+
 }
 
 

@@ -78,6 +78,32 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="09Q-c1-Eaz" userLabel="PostNotExistView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera-icon-gray-big" translatesAutoresizingMaskIntoConstraints="NO" id="Vap-lJ-JTI">
+                                        <rect key="frame" x="158" y="231.5" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="M3y-pV-kvM"/>
+                                            <constraint firstAttribute="width" constant="60" id="ecv-Gl-MvR"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The post is no longer existed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jr-Jy-MLF">
+                                        <rect key="frame" x="20" y="299.5" width="335" height="23.5"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                        <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="1jr-Jy-MLF" firstAttribute="top" secondItem="Vap-lJ-JTI" secondAttribute="bottom" constant="8" id="DOp-2U-E1F"/>
+                                    <constraint firstAttribute="trailing" secondItem="1jr-Jy-MLF" secondAttribute="trailing" constant="20" id="E8s-qt-2Os"/>
+                                    <constraint firstItem="Vap-lJ-JTI" firstAttribute="centerY" secondItem="09Q-c1-Eaz" secondAttribute="centerY" constant="-40" id="Kgx-fd-pcq"/>
+                                    <constraint firstItem="1jr-Jy-MLF" firstAttribute="leading" secondItem="09Q-c1-Eaz" secondAttribute="leading" constant="20" id="Vma-FY-7Qe"/>
+                                    <constraint firstItem="Vap-lJ-JTI" firstAttribute="centerX" secondItem="09Q-c1-Eaz" secondAttribute="centerX" id="vIL-78-ncN"/>
+                                </constraints>
+                            </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zka-2K-5Dv">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <subviews>
@@ -124,17 +150,17 @@
                                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     </view>
                                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-triangle" translatesAutoresizingMaskIntoConstraints="NO" id="3Ga-3G-mnz" userLabel="Play icon View">
-                                                        <rect key="frame" x="172" y="97.5" width="30" height="30"/>
+                                                        <rect key="frame" x="172" y="98" width="30" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="30" id="EJg-Np-5Fn"/>
                                                             <constraint firstAttribute="height" constant="30" id="lxV-9G-Urj"/>
                                                         </constraints>
                                                     </imageView>
                                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="dHb-eL-SDi">
-                                                        <rect key="frame" x="177" y="102.5" width="20" height="20"/>
+                                                        <rect key="frame" x="177" y="103" width="20" height="20"/>
                                                     </activityIndicatorView>
                                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pause-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Fpz-RN-d8w">
-                                                        <rect key="frame" x="172" y="97.5" width="30" height="30"/>
+                                                        <rect key="frame" x="172" y="98" width="30" height="30"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="1WA-gQ-F0q"/>
                                                             <constraint firstAttribute="width" constant="30" id="fja-Yt-oIx"/>
@@ -325,13 +351,17 @@
                             <constraint firstItem="Zka-2K-5Dv" firstAttribute="leading" secondItem="xIb-bk-xNi" secondAttribute="leading" id="187-tz-dka"/>
                             <constraint firstItem="Zka-2K-5Dv" firstAttribute="top" secondItem="Mpx-V6-cF2" secondAttribute="bottom" id="Gpq-wh-91X"/>
                             <constraint firstItem="rKr-3M-Uw0" firstAttribute="height" secondItem="xIb-bk-xNi" secondAttribute="height" priority="250" id="GrQ-0j-bp1"/>
+                            <constraint firstItem="09Q-c1-Eaz" firstAttribute="height" secondItem="xIb-bk-xNi" secondAttribute="height" id="KeA-gF-BpC"/>
                             <constraint firstAttribute="trailing" secondItem="Zka-2K-5Dv" secondAttribute="trailing" id="Li9-Fc-tcg"/>
+                            <constraint firstItem="09Q-c1-Eaz" firstAttribute="leading" secondItem="xIb-bk-xNi" secondAttribute="leading" id="Lvl-gt-N0a"/>
                             <constraint firstItem="Zka-2K-5Dv" firstAttribute="width" secondItem="xIb-bk-xNi" secondAttribute="width" id="S0v-NI-sr2"/>
                             <constraint firstItem="g8X-aS-j8g" firstAttribute="top" secondItem="Zka-2K-5Dv" secondAttribute="bottom" id="VHY-Hn-nHg"/>
                             <constraint firstItem="Kuf-Hx-s05" firstAttribute="leading" secondItem="xIb-bk-xNi" secondAttribute="leading" id="ai1-YM-vFU"/>
                             <constraint firstItem="g8X-aS-j8g" firstAttribute="top" secondItem="Kuf-Hx-s05" secondAttribute="bottom" id="hTx-Uh-qH4"/>
+                            <constraint firstItem="09Q-c1-Eaz" firstAttribute="width" secondItem="xIb-bk-xNi" secondAttribute="width" id="iOI-F4-DSL"/>
                             <constraint firstAttribute="trailing" secondItem="Kuf-Hx-s05" secondAttribute="trailing" id="nNg-u0-OOX"/>
                             <constraint firstItem="rKr-3M-Uw0" firstAttribute="width" secondItem="xIb-bk-xNi" secondAttribute="width" id="s7D-mE-gmh"/>
+                            <constraint firstItem="09Q-c1-Eaz" firstAttribute="top" secondItem="Mpx-V6-cF2" secondAttribute="bottom" id="tKc-pH-lT0"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -362,6 +392,7 @@
                         <outlet property="pinFooterView" destination="Kuf-Hx-s05" id="sNZ-c1-Unz"/>
                         <outlet property="playIconImageView" destination="3Ga-3G-mnz" id="8pB-QY-hbp"/>
                         <outlet property="playerView" destination="YZv-d0-Nf1" id="8rT-L7-kbB"/>
+                        <outlet property="postNotExistedView" destination="09Q-c1-Eaz" id="boF-Vw-nfF"/>
                         <outlet property="scrollView" destination="Zka-2K-5Dv" id="xsT-Ux-GbV"/>
                         <outlet property="videoHeightConstraint" destination="vTv-qL-vvs" id="8Zg-PV-OUq"/>
                         <outlet property="videoTitleLabel" destination="C88-mv-IyG" id="atF-jO-hEq"/>
@@ -371,7 +402,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="svv-4C-zgS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3396" y="493"/>
+            <point key="canvasLocation" x="3396" y="492.50374812593708"/>
         </scene>
         <!--Sky Cast Navigation View Controller-->
         <scene sceneID="IdH-eY-lW8">
@@ -1785,6 +1816,7 @@
     <resources>
         <image name="back-icon" width="30" height="30"/>
         <image name="back-icon-white" width="30" height="30"/>
+        <image name="camera-icon-gray-big" width="150" height="150"/>
         <image name="check-icon" width="30" height="30"/>
         <image name="comment-icon" width="36" height="36"/>
         <image name="dot-icon" width="24" height="24"/>

@@ -56,15 +56,13 @@ static NSString *const VideoStreamKey = @"videostream";
 +(void)sendComment: (NSString*)text inVideo: (VideoStream*)videostream completionHandler: (void (^)(Comment *comment, NSError *error)) callBack{
     //get the current loggedin credential
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    CKRecord *loggedInUserRecord = delegate.loggedInRecord;
-    CKReference *userReference = [[CKReference alloc]initWithRecord:loggedInUserRecord action:CKReferenceActionDeleteSelf];
-  
+    User *loggedInUser = delegate.loggedInUser;
     //create a comment record to insert to database
     CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
     NSDate *now = [[NSDate alloc]init];
     CKRecord *record = [[CKRecord alloc]initWithRecordType:@"Comment"];
     record[TextKey] = text;
-    record[UserKey] = userReference;
+    record[UserKey] = loggedInUser.reference;
     record[VideoStreamKey] = videostream.reference;
     record[CreatedDateKey] = now;
     [db saveRecord:record completionHandler:^(CKRecord  *_Nullable commentRecord, NSError  *_Nullable error) {
@@ -72,7 +70,7 @@ static NSString *const VideoStreamKey = @"videostream";
             //add comment reference to the videostream
             CKReference *commentReference = [[CKReference alloc]initWithRecord:commentRecord action:CKReferenceActionNone];
             [videostream addCommentReference:commentReference completionHandler:nil];
-            Comment *comment = [[Comment alloc]initWithRecord:commentRecord WithUserRecord:loggedInUserRecord];
+            Comment *comment = [[Comment alloc]initWithRecord:commentRecord WithUserRecord:loggedInUser.record];
             callBack(comment, error);
         }else{
             NSLog(@"error is %@", error.localizedDescription);

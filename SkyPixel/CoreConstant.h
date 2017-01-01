@@ -29,6 +29,8 @@ static NSString *const SearchBarShouldBecomeActiveNotificationName = @"SearchBar
 /*! @brief The notification name for notifying that the main conview should disappear */
 static NSString *const MainViewShouldDisappearNotificationName = @"mainViewShouldDisappear";
 
+/*! @brief The notification name for notifying that the user is deleting post */
+static NSString *const UserDidDeletePostNotificationName = @"mainViewShouldDisappear";
 
 
 
@@ -47,6 +49,11 @@ static NSString *const LocationSelectedTitleKey = @"title";
 
 /*! @brief The userinfo key for the LocationSelectedNotificationName notification, the value is a NSString */
 static NSString *const LocationSelectedSubTitleKey = @"subtitle";
+
+/*! @brief The userinfo key for the UserDidDeletePostNotificationName notification, the value is a VideoStream */
+static NSString *const DeletedVideoStreamKey = @"DeletedVideoStream";
+
+
 
 
 //MARK: - storyboard constant

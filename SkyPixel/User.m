@@ -8,6 +8,7 @@
 
 #import "User.h"
 #import "VideoStream.h"
+#import "CKRecord+Comparison.h"
 
 @interface User()
 
@@ -61,6 +62,9 @@
     return [[UIImage alloc]initWithData:imageData];
 }
 
+-(void)removeVideoStreamRecordFromUser: (CKRecord *)videoStreamRecord{
+    [self.videoStreamRecord removeObject:videoStreamRecord];
+}
 
 +(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord *userRecord, NSError *error)) callback{
     CKRecordID *recordID = reference.recordID;

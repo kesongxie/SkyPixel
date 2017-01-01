@@ -34,8 +34,11 @@ static NSString *const CoverKey = @"cover";
 
 -(id)initWithRecord: (CKRecord*) record;
 
+-(void)removeVideoStreamRecordFromUser: (CKRecord *)videoStreamRecord;
+
 +(void) fetchUserWithReference:(CKReference*) reference completionHandler: (void (^)(CKRecord *userRecord, NSError *error)) callback;
 
 +(void)loggedIn: (void(^)(User *user, NSError *error)) callback;
+
 
 @end
