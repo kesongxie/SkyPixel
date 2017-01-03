@@ -26,7 +26,6 @@ static CGFloat const Space = 16;
 @property (strong, nonatomic) HorizontalSlideInAnimator *animator;
 @property (nonatomic) BOOL preferStatusBarHidden;
 
-
 @end
 
 @implementation ProfileCollectionViewController

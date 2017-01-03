@@ -128,7 +128,7 @@ static NSString *const ShowCastingSegueIdentifier = @"ShowCasting";
     self.navigationItem.title = NSLocalizedString(@"SEARCHING...", @"searching status");;
     self.isFetchingRecord = YES;
     self.videoStreamAnnotations = [[NSMutableArray alloc]init];
-    [VideoStream fetchLive:self.locationCenter withRadius:searchRadius completionHandler:^(NSMutableArray<VideoStream *> *videoStreams, NSError *error) {
+    [VideoStream fetchVideoInLocationWithRadius:self.locationCenter withRadius:searchRadius completionHandler:^(NSMutableArray<VideoStream *> *videoStreams, NSError *error) {
          dispatch_async(dispatch_get_main_queue(), ^{
             if(error == nil){
                 for(VideoStream *videoStream in videoStreams){
@@ -212,7 +212,7 @@ static NSString *const ShowCastingSegueIdentifier = @"ShowCasting";
         imageView.clipsToBounds = YES;
         view.leftCalloutAccessoryView = imageView;
 
-        //configure right callout accessory view and btn
+        //configure right callout accessory view and button
         UIImage *arrowIcon = [UIImage imageNamed:@"arrow-icon"];
         UIButton *disclosureBtn = [[UIButton alloc]init];
         [disclosureBtn sizeToFit];

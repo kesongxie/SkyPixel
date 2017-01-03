@@ -75,7 +75,7 @@ static NSString *const ShotDeviceKey = @"shotDevice";
 
 +(void)fetchVideoStreamForUser:(CKReference*)userReference completionHandler:(void(^)(NSArray<CKRecord*> *results, NSError *error)) callback;
 
-+(void)fetchLive: (CLLocation*)location withRadius: (CGFloat)searchRadius completionHandler:(void(^)(NSMutableArray<VideoStream*> *videoStreams, NSError *error)) callback;
++(void)fetchVideoInLocationWithRadius: (CLLocation*)location withRadius: (CGFloat)searchRadius completionHandler:(void(^)(NSMutableArray<VideoStream*> *videoStreams, NSError *error)) callback;
 
 +(void)shareVideoStream: (NSString*)title ofLocation: (CLLocation*)location withDescription: (NSString*)description shotBy: (ShotDevice*)shotDevice videoAsset:(PHAsset*)asset previewThumbNail:(UIImage*)thumbnail completionHandler: (void(^)(VideoStream *videoStram, NSError *error)) callback;
 

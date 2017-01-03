@@ -205,8 +205,7 @@
     }];
 }
 
-
-+(void)fetchLive: (CLLocation*)location withRadius: (CGFloat)searchRadius completionHandler:(void(^)(NSMutableArray<VideoStream*> *videoStreams, NSError *error)) callback{
++(void)fetchVideoInLocationWithRadius: (CLLocation*)location withRadius: (CGFloat)searchRadius completionHandler:(void(^)(NSMutableArray<VideoStream*> *videoStreams, NSError *error)) callback{
     CKDatabase *publicDB = [[CKContainer defaultContainer] publicCloudDatabase];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f",location, searchRadius];
     CKQuery *query = [[CKQuery alloc] initWithRecordType:VideoStreamRecordType predicate: predicate];
@@ -214,23 +213,29 @@
         if(error == nil){
             if(videoStreamRecords){
                 NSMutableArray<VideoStream*> *resultVideoStream = [[NSMutableArray alloc]init];
-                for(CKRecord *streamRecord in videoStreamRecords){
-                    VideoStream *videoStream = [[VideoStream alloc]initWithCKRecord:streamRecord];
-                    [videoStream fetchUserForVideoStream:^(CKRecord *userRecord, NSError *error) {
-                        if(error == nil){
-                            User *user = [[User alloc]initWithRecord:userRecord];
-                            videoStream.user = user;
-                            [resultVideoStream insertObject:videoStream atIndex:0];
-                            if(resultVideoStream.count == videoStreamRecords.count){
-                                //finished fetching
-                                callback(resultVideoStream, error);
+                if(videoStreamRecords.count > 0){
+                    for(CKRecord *streamRecord in videoStreamRecords){
+                        VideoStream *videoStream = [[VideoStream alloc]initWithCKRecord:streamRecord];
+                        [videoStream fetchUserForVideoStream:^(CKRecord *userRecord, NSError *error) {
+                            if(error == nil){
+                                User *user = [[User alloc]initWithRecord:userRecord];
+                                videoStream.user = user;
+                                [resultVideoStream insertObject:videoStream atIndex:0];
+                                if(resultVideoStream.count == videoStreamRecords.count){
+                                    //finished fetching
+                                    callback(resultVideoStream, error);
+                                }
+                            }else{
+                                 callback(nil, error);
+                                 NSLog(@"%@", error.localizedDescription);
                             }
-                        }else{
-                             callback(nil, error);
-                             NSLog(@"%@", error.localizedDescription);
-                        }
-                    }];
+                        }];
+                    }
+                }else{
+                    callback(nil, nil);
                 }
+            }else{
+                 callback(nil, nil);
             }
         }else{
             callback(nil, error);
