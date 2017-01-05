@@ -80,7 +80,7 @@ static CGFloat const Space = 16;
 -(void)setHeaderView:(ProfileHeaderView *)headerView{
     _headerView =  headerView;
     [self.headerView.avatorImageView becomeAvatorProifle:self.user.thumbImage];
-    self.headerView.shotsCountLabel.text = [NSString stringWithFormat:@"%i", self.user.videoStreamRecord.count];
+    self.headerView.shotsCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.user.videoStreamRecord.count];
     self.headerView.avatorImageView.layer.borderColor = [UIColor whiteColor].CGColor;
     self.headerView.avatorImageView.layer.borderWidth = 3.0;
     self.headerView.fullnameLabel.text = self.user.fullname;

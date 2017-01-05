@@ -34,7 +34,6 @@
     self.tableView.dataSource = self;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    
     self.navigationItem.title = NSLocalizedString(@"FAVORS", @"title for favor page");
     UIImage *backBtnImage = [UIImage imageNamed:@"back-icon"];
     self.backBtn = [[UIBarButtonItem alloc]initWithImage:backBtnImage style:UIBarButtonItemStylePlain target:self action:@selector(backBtnTapped:)];
@@ -60,6 +59,7 @@
     CGFloat headerViewHeight = size.height - self.navigationController.navigationBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
     self.headerView.frame = CGRectMake(0, 0, headerViewWidth, headerViewHeight);
     [self.tableView bringSubviewToFront:self.headerView];
+    [self.activityIndicatorView stopAnimating];
 }
 
 -(void)hideHeaderView{
@@ -74,27 +74,27 @@
     CKDatabase *db = [CKContainer defaultContainer].publicCloudDatabase;
     self.userList = [[NSMutableArray alloc]init];
     __block NSInteger fetchUserCounter = 0;
-    for(CKReference *reference in self.favorUserList){
-        CKRecordID *recordID = reference.recordID;
-        [db fetchRecordWithID:recordID completionHandler:^(CKRecord  *_Nullable userRecord, NSError  *_Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if(error == nil){
-                    User *user = [[User alloc]initWithRecord:userRecord];
-                    [self.userList addObject:user];
-                }else{
-                    NSLog(@"failed to fetch record %@", error.localizedDescription);
-                }
-                fetchUserCounter += 1;
-                if(fetchUserCounter == self.favorUserList.count){
-                    //done with fetching
-                    [self.activityIndicatorView stopAnimating];
-                    [self.tableView reloadData];
-                }
-            });
-        }];
+    if( self.favorUserList.count > 0){
+        for(CKReference *reference in self.favorUserList){
+            CKRecordID *recordID = reference.recordID;
+            [db fetchRecordWithID:recordID completionHandler:^(CKRecord  *_Nullable userRecord, NSError  *_Nullable error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(error == nil){
+                        User *user = [[User alloc]initWithRecord:userRecord];
+                        [self.userList addObject:user];
+                    }else{
+                        NSLog(@"failed to fetch record %@", error.localizedDescription);
+                    }
+                    fetchUserCounter += 1;
+                    if(fetchUserCounter == self.favorUserList.count){
+                        //done with fetching
+                        [self.activityIndicatorView stopAnimating];
+                        [self.tableView reloadData];
+                    }
+                });
+            }];
+        }
     }
-    
-    
 }
 
 -(void)backBtnTapped:(UIBarButtonItem*)backBtn{
