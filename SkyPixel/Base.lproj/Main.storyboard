@@ -1217,9 +1217,9 @@
                                 <constraint firstItem="E5E-GQ-LZm" firstAttribute="top" secondItem="51q-ed-QTa" secondAttribute="bottom" constant="8" symbolic="YES" id="fiY-O4-N0S"/>
                                 <constraint firstItem="E5E-GQ-LZm" firstAttribute="leading" secondItem="7g7-Rb-2Ft" secondAttribute="leading" constant="16" id="gBK-4v-kpH"/>
                                 <constraint firstAttribute="trailing" secondItem="jPn-J4-W9X" secondAttribute="trailing" id="h48-bT-V2I"/>
-                                <constraint firstItem="Ea0-Pa-0JR" firstAttribute="baseline" secondItem="51q-ed-QTa" secondAttribute="baseline" id="m4n-5N-5Iw"/>
                                 <constraint firstItem="xXF-Qj-Ent" firstAttribute="leading" secondItem="Nu1-wN-gne" secondAttribute="leading" id="p9U-7c-tpP"/>
                                 <constraint firstItem="Nu1-wN-gne" firstAttribute="top" secondItem="GWS-eW-8SD" secondAttribute="bottom" constant="8" symbolic="YES" id="wKS-W2-iDQ"/>
+                                <constraint firstItem="Ea0-Pa-0JR" firstAttribute="centerY" secondItem="51q-ed-QTa" secondAttribute="centerY" id="ydI-MT-qh7"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="Nu1-wN-gne" secondAttribute="trailing" constant="20" id="ynN-06-Rzx"/>
                                 <constraint firstAttribute="bottom" secondItem="E5E-GQ-LZm" secondAttribute="bottom" constant="20" id="zac-g0-Qtb"/>
                                 <constraint firstItem="GWS-eW-8SD" firstAttribute="centerX" secondItem="jPn-J4-W9X" secondAttribute="centerX" id="zvS-t4-7qc"/>
