@@ -22,15 +22,15 @@
     if(ellapseTimeSeconds < 15){
         output = [NSString stringWithFormat:@"Just Now"];
     }else if(ellapseTimeSeconds < 60){
-        output = [NSString stringWithFormat:@"%is", ellapseTimeSeconds];
+        output = [NSString stringWithFormat:@"%lis", (long)ellapseTimeSeconds];
     }else if(ellapseTimeSeconds < 60  *60){
-        output = [NSString stringWithFormat:@"%im", ellapseTimeSeconds / 60];
+        output = [NSString stringWithFormat:@"%lim", (long)ellapseTimeSeconds / 60];
     }else if(ellapseTimeSeconds < 60  *60  *24){
-        output = [NSString stringWithFormat:@"%ih", ellapseTimeSeconds / 3600];
+        output = [NSString stringWithFormat:@"%lih", (long)ellapseTimeSeconds / 3600];
     }else if(ellapseTimeSeconds < 60  *60  *24  *7){
-        output = [NSString stringWithFormat:@"%id", ellapseTimeSeconds /(3600*24)];
+        output = [NSString stringWithFormat:@"%lid", (long)ellapseTimeSeconds /(3600*24)];
     }else{
-        output = [NSString stringWithFormat:@"%iweek", ellapseTimeSeconds /(3600*24*7)];
+        output = [NSString stringWithFormat:@"%liweek", (long)ellapseTimeSeconds /(3600*24*7)];
     }
     return output;
 }

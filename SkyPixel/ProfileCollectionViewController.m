@@ -33,6 +33,7 @@ static CGFloat const Space = 16;
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
+    self.collectionView.alwaysBounceVertical = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -56,6 +57,7 @@ static CGFloat const Space = 16;
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
 }
+
 
 
 -(BOOL)prefersStatusBarHidden{
@@ -86,6 +88,7 @@ static CGFloat const Space = 16;
     self.headerView.fullnameLabel.text = self.user.fullname;
     self.headerView.coverImageView.image = self.user.coverThumbImage;
     self.headerView.bioLabel.text = self.user.bio;
+
     self.headerView.followBtn.layer.cornerRadius = 3.0;
     if([self isCurrentUserProfile]){
         [self.headerView.followBtn setTitle:NSLocalizedString(@"EDIT PROFILE", "Edit profile button text") forState:UIControlStateNormal];
@@ -160,8 +163,8 @@ static CGFloat const Space = 16;
 
 //MARK: - CollectionViewFlowLayout
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = (self.view.frame.size.width - 3  *Space) / 2;
-    return CGSizeMake(width, width + 44);
+    CGFloat width = (self.view.frame.size.width - 3 * Space) / 2;
+    return CGSizeMake(width, width + 64);
 }
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{

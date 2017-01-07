@@ -10,6 +10,8 @@
 
 @interface ProfileHeaderView : UICollectionReusableView
 
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *avatorImageView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
@@ -20,5 +22,7 @@
 @property (nonatomic) CGFloat orginCoverHeight;
 @property (nonatomic) CGPoint backBtnOrigin;
 @property (weak, nonatomic) IBOutlet UILabel *shotsCountLabel;
+
+
 
 @end
