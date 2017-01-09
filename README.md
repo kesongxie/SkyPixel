@@ -3,8 +3,6 @@ Follow and share nearby drone footage at your finger tip. Edit (README.md, comin
 
 Author: Kesong Xie
 
-Time Spent: 3 weeks
-
 Language: Objective-C
 
 Testing Environment: iPhone physical device running iOS 10.2, Xcode Version 8.2 beta
@@ -30,9 +28,9 @@ Deployment Target: iOS 10 and above
   <br/>
   Technical Keywords: <strong>MapKit, UISearchController, Cloudkit</strong>
   </li>
-  <li>View video footage details including video content, title, location associated with the footage, number of viewers, description, author and more 
+  <li>View video footage details including video content, title, location associated with the footage, number of viewers, description, author, live streaming the user who is currently controlling the drone 
    <br/>
-   Technical Keywords: <strong>AVFoundation, CLGeocoder/CoreLocation, Cloudkit, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning</strong>
+   Technical Keywords: <strong>WebRTC, AVFoundation, CLGeocoder/CoreLocation, Cloudkit, UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning</strong>
    </li>
   <li>Users can favor or comment a specific video shot
    <br/>
