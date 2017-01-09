@@ -59,7 +59,7 @@ Deployment Target: iOS 10 and above
 
 <h1>Screen Shot Demostration</h1>
 <div>
-<img src="https://github.com/kesongxie/SkyPixel/blob/master/SkyPixel/screen%20shot%20/ScreenShot.png">
+<img src="https://github.com/kesongxie/SkyPixel/blob/WebRTC/SkyPixel/screen%20shot%20/WebRTC%20Demo.png">
 </div>
 
 
