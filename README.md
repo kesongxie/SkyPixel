@@ -7,7 +7,7 @@ Time Spent: 3 weeks
 
 Language: Objective-C
 
-Testing Environment: iPhone physical device running iOS 10.2, Xcode Version 8.2 beta
+Testing Environment: iPhone physical device running iOS 10.2, Xcode Version 8.2 beta, iCloud Drive enabled
 
 Testing: Go to the right upper corner search icon and enter one of the following location that has already had videos associated with it: UCSD, Stanford University, Eiffel Tower, Madison Square Garden(You may also try to compose a new video and the video will appear at the location associated with it)
 
