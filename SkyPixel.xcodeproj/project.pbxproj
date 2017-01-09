@@ -55,9 +55,13 @@
 		98F8BD9A1E08F7F300A9E3D2 /* CommentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD991E08F7F300A9E3D2 /* CommentListViewController.m */; };
 		98F8BD9D1E08F80B00A9E3D2 /* CommnentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BD9C1E08F80B00A9E3D2 /* CommnentTableViewCell.m */; };
 		98F8BDA11E08FB8F00A9E3D2 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 98F8BDA01E08FB8F00A9E3D2 /* Comment.m */; };
+		A4D72067F5021889ABD374A4 /* libPods-SkyPixel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1F9D62001BE6E6C950F779 /* libPods-SkyPixel.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		050F841571EF97ABF6E8EA1D /* Pods-SkyPixel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyPixel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SkyPixel/Pods-SkyPixel.debug.xcconfig"; sourceTree = "<group>"; };
+		51A0425E02CBB832EB7C5C7E /* Pods-SkyPixel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyPixel.release.xcconfig"; path = "Pods/Target Support Files/Pods-SkyPixel/Pods-SkyPixel.release.xcconfig"; sourceTree = "<group>"; };
+		6E1F9D62001BE6E6C950F779 /* libPods-SkyPixel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SkyPixel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		980498831E02A72D0091A37C /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ContainerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		980498851E02A7380091A37C /* ContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ContainerViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		980498891E03729E0091A37C /* LocationSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationSearchTableViewController.m; sourceTree = "<group>"; };
@@ -160,6 +164,7 @@
 			files = (
 				98DDFFFB1DF600D300E2E762 /* MapKit.framework in Frameworks */,
 				98E6491F1E15D51400E0383A /* CloudKit.framework in Frameworks */,
+				A4D72067F5021889ABD374A4 /* libPods-SkyPixel.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +257,7 @@
 				98C3DD551DF0F5CC00F6B49B /* SkyPixel */,
 				98C3DD541DF0F5CC00F6B49B /* Products */,
 				98DDFFF91DF600D300E2E762 /* Frameworks */,
+				B9FEE3CEDE475664D35E0922 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -395,6 +401,7 @@
 			children = (
 				98E6491E1E15D51400E0383A /* CloudKit.framework */,
 				98DDFFFA1DF600D300E2E762 /* MapKit.framework */,
+				6E1F9D62001BE6E6C950F779 /* libPods-SkyPixel.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -447,6 +454,15 @@
 			name = "Comment list";
 			sourceTree = "<group>";
 		};
+		B9FEE3CEDE475664D35E0922 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				050F841571EF97ABF6E8EA1D /* Pods-SkyPixel.debug.xcconfig */,
+				51A0425E02CBB832EB7C5C7E /* Pods-SkyPixel.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -454,9 +470,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98C3DD6A1DF0F5CC00F6B49B /* Build configuration list for PBXNativeTarget "SkyPixel" */;
 			buildPhases = (
+				FA3906F7D40B9D15DDF1E8D8 /* [CP] Check Pods Manifest.lock */,
 				98C3DD4F1DF0F5CC00F6B49B /* Sources */,
 				98C3DD501DF0F5CC00F6B49B /* Frameworks */,
 				98C3DD511DF0F5CC00F6B49B /* Resources */,
+				B8ABE1730BE655543AC1C436 /* [CP] Embed Pods Frameworks */,
+				166BE5BCF5203E5C51CDDD30 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -527,6 +546,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		166BE5BCF5203E5C51CDDD30 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SkyPixel/Pods-SkyPixel-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8ABE1730BE655543AC1C436 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SkyPixel/Pods-SkyPixel-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FA3906F7D40B9D15DDF1E8D8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		98C3DD4F1DF0F5CC00F6B49B /* Sources */ = {
@@ -712,12 +779,14 @@
 		};
 		98C3DD6B1DF0F5CC00F6B49B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 050F841571EF97ABF6E8EA1D /* Pods-SkyPixel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SkyPixel/SkyPixel.entitlements;
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 2ATYTS9SNC;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SkyPixel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
@@ -725,23 +794,27 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		98C3DD6C1DF0F5CC00F6B49B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 51A0425E02CBB832EB7C5C7E /* Pods-SkyPixel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SkyPixel/SkyPixel.entitlements;
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 2ATYTS9SNC;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = SkyPixel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kesongxie.SkyPixel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

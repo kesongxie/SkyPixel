@@ -82,14 +82,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera-icon-gray-big" translatesAutoresizingMaskIntoConstraints="NO" id="Vap-lJ-JTI">
-                                        <rect key="frame" x="158" y="231.5" width="60" height="60"/>
+                                        <rect key="frame" x="158" y="232" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="M3y-pV-kvM"/>
                                             <constraint firstAttribute="width" constant="60" id="ecv-Gl-MvR"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The post is no longer existed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1jr-Jy-MLF">
-                                        <rect key="frame" x="20" y="299.5" width="335" height="23.5"/>
+                                        <rect key="frame" x="20" y="300" width="335" height="23.5"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                         <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -166,18 +166,28 @@
                                                             <constraint firstAttribute="width" constant="30" id="fja-Yt-oIx"/>
                                                         </constraints>
                                                     </imageView>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Skv-Jo-vS2" userLabel="Remote View" customClass="RTCEAGLVideoView">
+                                                        <rect key="frame" x="275" y="125" width="100" height="100"/>
+                                                        <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="100" id="OgE-Wg-M6z"/>
+                                                            <constraint firstAttribute="width" constant="100" id="mm5-Dj-to1"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="R1F-JS-7ts" secondAttribute="trailing" id="0WP-S0-JXR"/>
                                                     <constraint firstItem="dHb-eL-SDi" firstAttribute="centerX" secondItem="12B-ce-dUD" secondAttribute="centerX" id="208-7B-2gP"/>
                                                     <constraint firstItem="3Ga-3G-mnz" firstAttribute="centerX" secondItem="12B-ce-dUD" secondAttribute="centerX" id="36o-Mc-QHT"/>
                                                     <constraint firstItem="R1F-JS-7ts" firstAttribute="top" secondItem="12B-ce-dUD" secondAttribute="top" id="3e3-qi-lII"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Skv-Jo-vS2" secondAttribute="bottom" id="6gm-No-GJz"/>
                                                     <constraint firstItem="Fpz-RN-d8w" firstAttribute="centerX" secondItem="12B-ce-dUD" secondAttribute="centerX" id="99T-uH-l5E"/>
                                                     <constraint firstItem="Fpz-RN-d8w" firstAttribute="centerY" secondItem="12B-ce-dUD" secondAttribute="centerY" id="EWB-3a-LvB"/>
                                                     <constraint firstItem="3Ga-3G-mnz" firstAttribute="centerY" secondItem="12B-ce-dUD" secondAttribute="centerY" id="OoD-N3-3B1"/>
                                                     <constraint firstItem="dHb-eL-SDi" firstAttribute="centerY" secondItem="12B-ce-dUD" secondAttribute="centerY" id="R60-Kz-Boz"/>
                                                     <constraint firstAttribute="bottom" secondItem="R1F-JS-7ts" secondAttribute="bottom" id="U1W-35-qch"/>
                                                     <constraint firstItem="R1F-JS-7ts" firstAttribute="leading" secondItem="12B-ce-dUD" secondAttribute="leading" id="dT5-5m-rg9"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Skv-Jo-vS2" secondAttribute="trailing" id="rGB-3P-r7l"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rCR-eK-7ew" userLabel="Location Label">
@@ -393,6 +403,8 @@
                         <outlet property="playIconImageView" destination="3Ga-3G-mnz" id="8pB-QY-hbp"/>
                         <outlet property="playerView" destination="YZv-d0-Nf1" id="8rT-L7-kbB"/>
                         <outlet property="postNotExistedView" destination="09Q-c1-Eaz" id="boF-Vw-nfF"/>
+                        <outlet property="remoteUserView" destination="Skv-Jo-vS2" id="fhS-gh-Ccw"/>
+                        <outlet property="remoteVideoViewHeightConstraint" destination="OgE-Wg-M6z" id="JBc-8V-jpw"/>
                         <outlet property="scrollView" destination="Zka-2K-5Dv" id="xsT-Ux-GbV"/>
                         <outlet property="videoHeightConstraint" destination="vTv-qL-vvs" id="8Zg-PV-OUq"/>
                         <outlet property="videoTitleLabel" destination="C88-mv-IyG" id="atF-jO-hEq"/>
@@ -633,7 +645,7 @@
                                 <rect key="frame" x="0.0" y="381" width="375" height="94"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j5Z-LP-B8e" id="ynY-26-ge3">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="93.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location-icon-medium" translatesAutoresizingMaskIntoConstraints="NO" id="J4h-Q0-13a">
@@ -1159,7 +1171,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="bio" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXF-Qj-Ent">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="bio" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXF-Qj-Ent">
                                             <rect key="frame" x="20" y="230" width="335" height="20"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                             <nil key="textColor"/>
@@ -1188,6 +1200,12 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SHOTS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ea0-Pa-0JR">
+                                            <rect key="frame" x="39" y="316" width="60" height="25"/>
+                                            <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E5E-GQ-LZm" userLabel="Sperator View">
                                             <rect key="frame" x="20" y="348" width="335" height="1"/>
                                             <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -1195,12 +1213,6 @@
                                                 <constraint firstAttribute="height" constant="1" id="Cxd-w8-EhH"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SHOTS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ea0-Pa-0JR">
-                                            <rect key="frame" x="39" y="316" width="60" height="25"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="18"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>

@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <libjingle_peerconnection/RTCEAGLVideoView.h>
+#import <AppRTC/ARDAppClient.h>
 #import "VideoStream.h"
 #import "User.h"
 
-@interface ShotDetailViewController : UIViewController<UIViewControllerTransitioningDelegate>
+
+@interface ShotDetailViewController : UIViewController<UIViewControllerTransitioningDelegate,ARDAppClientDelegate, RTCEAGLVideoViewDelegate>
 
 @property (strong, nonatomic) VideoStream *videoStream;
 

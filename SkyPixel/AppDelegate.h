@@ -11,8 +11,6 @@
 #import <CloudKit/CloudKit.h>
 #import "User.h"
 
-
-
 static NSNotificationName const FinishedLoggedInNotificationName = @"FinishedLoggedInNotificationName";
 static NSString *const FinishedLoggedInNotificationInfoUserKey = @"user";
 

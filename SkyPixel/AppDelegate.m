@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "VideoStream.h"
+#import "RTCPeerConnectionFactory.h"
 
 
 @interface AppDelegate ()
@@ -24,6 +25,7 @@
             NSDictionary *userInfo = @{FinishedLoggedInNotificationInfoUserKey: self.loggedInUser};
             NSNotification *notification = [[NSNotification alloc]initWithName:FinishedLoggedInNotificationName object:self userInfo:userInfo];
             [[NSNotificationCenter defaultCenter]postNotification:notification];
+            [RTCPeerConnectionFactory initializeSSL];
         }
     }];
     return YES;
@@ -54,6 +56,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [RTCPeerConnectionFactory deinitializeSSL];
 }
 
 @end

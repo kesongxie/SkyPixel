@@ -62,6 +62,9 @@ static NSString *const ChooseDeviceNavigationControllerIden = @"ChooseDeviceNavi
 static NSString *const PostNavigationControllerIden = @"PostNavigationController";
 static NSString *const ProfileCollectionViewControllerIden = @"ProfileCollectionViewController";
 static NSString *const ShotDetailViewControllerIden = @"ShotDetailViewController";
+static NSString *const FavorUserListViewControllerIden = @"FavorUserListViewController";
+static NSString *const CommentListViewControllerIden = @"CommentListViewController";
+
 
 
 

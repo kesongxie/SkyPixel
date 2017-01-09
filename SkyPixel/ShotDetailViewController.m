@@ -23,6 +23,8 @@
 //constants
 static NSString *const FavorIconWhite = @"favor-icon";
 static NSString *const FavorIconRed = @"favor-icon-red";
+static NSString *const ServerHostURL = @"https://appr.tc";
+
 static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 
 @interface ShotDetailViewController()
@@ -37,6 +39,8 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *locationBtn;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoHeightConstraint;
+//Live video stream
+@property (weak, nonatomic) IBOutlet RTCEAGLVideoView *remoteUserView;
 
 //pinFooterView properties
 @property (weak, nonatomic) IBOutlet UIView *pinFooterView;
@@ -67,6 +71,15 @@ static NSInteger const MaximumNumberOfVideoLoadingTrial = 50;
 @property (nonatomic) BOOL isVideoPaused;
 @property (nonatomic) BOOL isVideoFinishedLoading;
 @property (nonatomic) BOOL isShotNotExisted;
+
+//Live video stream
+@property (strong, nonatomic) RTCVideoTrack *remoteUserVideoTrack;
+@property (strong, nonatomic) ARDAppClient *client;
+@property (strong, nonatomic) NSString *userLiveChannelURL;
+
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *remoteVideoViewHeightConstraint;
+
 
 /**
  update the user information, such as fullname, avator, etc
@@ -174,6 +187,7 @@ this is function is responsible for updating the favor and comment count
         });
     }];
     [self addTapGesture];
+    [self.remoteUserView setDelegate:self];
 }
 
 -(void) viewDidLayoutSubviews{
@@ -191,10 +205,20 @@ this is function is responsible for updating the favor and comment count
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self.player setMuted:NO];
+    [self.player setMuted:YES];
     if(self.isVideoFinishedLoading && !self.isVideoPaused){
         [self resumePlaying];
     }
+    
+    //Connect to the live user
+    [self disconnect];
+    self.client = [[ARDAppClient alloc] initWithDelegate:self];
+    [self.client setServerHostUrl:ServerHostURL];
+    
+//    self.userLiveChannelURL = [NSString stringWithFormat:@"%@/r/%@", ServerHostURL, self.videoStream.record.recordID.recordName];
+    
+    self.userLiveChannelURL = @"xie234";
+    [self.client connectToRoomWithId:self.userLiveChannelURL options:nil];
     
 }
 
@@ -408,8 +432,8 @@ this is function is responsible for updating the favor and comment count
 
 -(void)favorWrapperViewTapped: (UITapGestureRecognizer*)gesture{
     //segue to the favor list view controller
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    FavorUserListViewController *favorUserListVC= (FavorUserListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"FavorUserListViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
+    FavorUserListViewController *favorUserListVC= (FavorUserListViewController*)[storyboard instantiateViewControllerWithIdentifier:FavorUserListViewControllerIden];
     if(favorUserListVC){
         favorUserListVC.favorUserList = self.videoStream.favorUserList;
         [self.navigationController pushViewController:favorUserListVC animated:YES];
@@ -419,8 +443,8 @@ this is function is responsible for updating the favor and comment count
 
 -(void)commentWrapperViewTapped: (UITapGestureRecognizer*)gesture{
     //show a new segue
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    CommentListViewController *commentListVC = (CommentListViewController*)[storyboard instantiateViewControllerWithIdentifier:@"CommentListViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
+    CommentListViewController *commentListVC = (CommentListViewController*)[storyboard instantiateViewControllerWithIdentifier:CommentListViewControllerIden];
     if(commentListVC){
         commentListVC.videoStream = self.videoStream;
         [self.navigationController pushViewController:commentListVC animated:YES];
@@ -429,7 +453,7 @@ this is function is responsible for updating the favor and comment count
 
 -(void)avatorImageViewTapped: (UITapGestureRecognizer*)gesture{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:MainStoryboardName bundle:nil];
-    ProfileCollectionViewController *profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:@"ProfileCollectionViewController"];
+    ProfileCollectionViewController *profileCVC = (ProfileCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier:ProfileCollectionViewControllerIden];
     if(profileCVC){
         profileCVC.user = self.videoStream.user;
         profileCVC.transitioningDelegate = self;
@@ -553,6 +577,24 @@ this is function is responsible for updating the favor and comment count
 }
 
 
+//MARK: - live video stream
+- (void)disconnect {
+    if (self.client) {
+        if (self.remoteUserVideoTrack) [self.remoteUserVideoTrack removeRenderer:self.remoteUserView];
+        self.remoteUserVideoTrack = nil;
+        [self.remoteUserView renderFrame:nil];
+        [self.client disconnect];
+    }
+}
+
+
+- (void)remoteDisconnected {
+    if (self.remoteUserVideoTrack) [self.remoteUserVideoTrack removeRenderer:self.remoteUserView];
+    self.remoteUserVideoTrack = nil;
+    [self.remoteUserView renderFrame:nil];
+}
+
+
 //MARK: - Custom transition
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source{
     self.animator = [[HorizontalSlideInAnimator alloc] init];
@@ -562,5 +604,45 @@ this is function is responsible for updating the favor and comment count
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
     return self.animator;
 }
+
+//MARK: - ARDAppClientDelegate
+- (void)appClient:(ARDAppClient *)client didChangeState:(ARDAppClientState)state {
+    switch (state) {
+    case kARDAppClientStateConnected:
+    NSLog(@"Client connected.");
+    break;
+    case kARDAppClientStateConnecting:
+    NSLog(@"Client connecting.");
+    break;
+    case kARDAppClientStateDisconnected:
+    NSLog(@"Client disconnected.");
+    [self remoteDisconnected];
+    break;
+    }
+}
+
+
+-(void)videoView:(RTCEAGLVideoView *)videoView didChangeVideoSize:(CGSize)size{
+    self.remoteVideoViewHeightConstraint.constant = self.remoteUserView.frame.size.width * size.height / size.width;
+}
+
+-(void)appClient:(ARDAppClient *)client didError:(NSError *)error{
+    NSLog(@"error %@", error.localizedDescription);
+}
+
+- (void)appClient:(ARDAppClient *)client didReceiveLocalVideoTrack:(RTCVideoTrack *)localVideoTrack{
+    NSLog(@"did receive local track");
+}
+
+
+- (void)appClient:(ARDAppClient *)client didReceiveRemoteVideoTrack:(RTCVideoTrack *)remoteVideoTrack {
+    self.remoteUserVideoTrack = remoteVideoTrack;
+    [self.remoteUserVideoTrack addRenderer:self.remoteUserView];
+    
+
+}
+
+
+
 
 @end

@@ -40,5 +40,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Live stream your drone flight</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We want to use your microphone</string>
 </dict>
 </plist>
